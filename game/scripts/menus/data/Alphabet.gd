@@ -142,11 +142,11 @@ func get_last_letter():
 
 func screen_center(axis:String):
 	match axis.to_upper():
-		"X": position.x = (Game.SCREEN["width"] * 0.5) - (width / 2.0)
-		"Y": position.y = (Game.SCREEN["height"] * 0.5) - (height / 2.0)
+		"X": position.x = (0.5 * Game.SCREEN["width"]) - (width / 2.0)
+		"Y": position.y = (0.5 * Game.SCREEN["height"]) - (height / 2.0)
 		"XY": position = Vector2(
-			(Game.SCREEN["width"] * 0.5) - (width / 2.0),
-			(Game.SCREEN["height"] * 0.5) - (height / 2.0)
+			(0.5 * Game.SCREEN["width"]) - (width / 2.0),
+			(0.5 * Game.SCREEN["height"]) - (height / 2.0)
 		)
 
 func _on_change_text():

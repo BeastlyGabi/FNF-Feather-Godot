@@ -103,7 +103,7 @@ func save_controls():
 	var save_file:Dictionary = {}
 	var file = FileAccess.open(controls_path, FileAccess.READ_WRITE)
 	if not ResourceLoader.exists(controls_path):
-		_ready_settings()
+		_ready_controls()
 	else:
 		if not file.get_as_text() == null or len(file.get_as_text()) > 1:
 			save_file = JSON.parse_string(file.get_as_text())
@@ -152,6 +152,6 @@ func _settings_save_file(_le_file:String):
 	else:
 		var file = FileAccess.open(_le_file, FileAccess.READ)
 		if not file.get_as_text() == null and not file.get_as_text().is_empty():
-				return JSON.parse_string(file.get_as_text().replace("}}", "}"))
+				return JSON.parse_string(file.get_as_text())
 	
 	return {}
