@@ -145,9 +145,9 @@ func _settings_save_file(_le_file:String):
 	else:
 		var file = FileAccess.open(_le_file, FileAccess.READ)
 		if not file.get_as_text() == null and not file.get_as_text().is_empty():
-			var err = JSON.parse_string(file.get_as_text())
-			if not err == null:
-				json = JSON.parse_string(file.get_as_text())
+			var string_parsed = JSON.parse_string(file.get_as_text())
+			if not string_parsed == null:
+				json = string_parsed
 			else:
 				push_error("save data corrupted! path: ", _le_file)
 				file.store_string("{}")
