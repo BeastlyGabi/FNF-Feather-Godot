@@ -85,33 +85,24 @@ func _ready_controls():
 	file.store_string(JSON.stringify(controls_file, '\t'))
 
 func save_settings():
-	var save_file:Dictionary = {}
-	var file = FileAccess.open(settings_path, FileAccess.READ_WRITE)
-	if not ResourceLoader.exists(settings_path):
-		_ready_settings()
-	else:
-		if not file.get_as_text() == null or len(file.get_as_text()) > 1:
-			save_file = JSON.parse_string(file.get_as_text())
+	var save_file:Dictionary = _settings_save_file(settings_path)
 	
 	for pref in _prefs:
 		save_file[pref] = _prefs[pref]
 	
+	var file = FileAccess.open(settings_path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(save_file, '\t'))
 	update_prefs()
 
 func save_controls():
-	var save_file:Dictionary = {}
-	var file = FileAccess.open(controls_path, FileAccess.READ_WRITE)
-	if not ResourceLoader.exists(controls_path):
-		_ready_controls()
-	else:
-		if not file.get_as_text() == null or len(file.get_as_text()) > 1:
-			save_file = JSON.parse_string(file.get_as_text())
-	
+	var save_file:Dictionary = _settings_save_file(controls_path)
+
 	for key in _controls:
 		save_file[key] = _controls[key]
 	
+	var file = FileAccess.open(controls_path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(save_file, '\t'))
+	update_prefs()
 
 func update_prefs():
 	Engine.max_fps = _prefs["framerate"]
@@ -146,12 +137,19 @@ func set_setting(_name:String, value:Variant):
 		_prefs[_name] = value
 
 func _settings_save_file(_le_file:String):
+	var json:Dictionary = {}
+	
 	if not ResourceLoader.exists(_le_file):
 		var file = FileAccess.open(_le_file, FileAccess.WRITE)
 		file.store_string("{}")
 	else:
 		var file = FileAccess.open(_le_file, FileAccess.READ)
 		if not file.get_as_text() == null and not file.get_as_text().is_empty():
-				return JSON.parse_string(file.get_as_text())
+			var err = JSON.parse_string(file.get_as_text())
+			if not err == null:
+				json = JSON.parse_string(file.get_as_text())
+			else:
+				push_error("save data corrupted! path: ", _le_file)
+				file.store_string("{}")
 	
-	return {}
+	return json
