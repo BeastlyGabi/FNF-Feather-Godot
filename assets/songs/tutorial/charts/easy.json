@@ -439,8 +439,8 @@
         "needsVoices": false,
         "player1": "bf",
         "player2": "gf",
+        "player3": "gf",
         "stage": "stage",
-        "sectionLengths": [],
         "speed": 1
     },
     "bpm": 100,

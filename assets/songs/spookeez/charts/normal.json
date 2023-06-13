@@ -2202,7 +2202,9 @@
             }
         ],
         "player2": "spooky",
+        "player3": "gf",
         "song": "Spookeez",
+        "stage": "spooky",
         "validScore": true,
         "needsVoices": true,
         "speed": 1.7,

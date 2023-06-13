@@ -3,8 +3,6 @@
         "song": "Stress",
         "bpm": 178,
         "needsVoices": true,
-        "player1": "bf-holding-gf",
-        "player2": "tankman",
         "speed": 1.75,
         "notes": [
             {

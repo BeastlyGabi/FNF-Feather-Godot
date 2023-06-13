@@ -71,7 +71,7 @@ icon = "spooky"
 [sub_resource type="Resource" id="Resource_l1l3x"]
 script = ExtResource("3_7el2v")
 name = "South"
-folder = "South"
+folder = "south"
 difficulties = Array[String](["easy", "normal", "hard"])
 color = Color(0.133333, 0.2, 0.266667, 1)
 icon = "spooky"

@@ -5,7 +5,7 @@
         "needsVoices": true,
         "player1": "bf-car",
         "player2": "mom-car",
-        "gfVersion": "gf-car",
+        "player3": "gf-car",
         "speed": 1.6,
         "notes": [
             {

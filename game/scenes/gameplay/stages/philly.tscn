@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7mncfy5c1ci8"]
+
+[ext_resource type="Script" path="res://game/scenes/gameplay/stages/philly.gd" id="1_wc1r0"]
+[ext_resource type="Texture2D" uid="uid://dlx58icrucj4b" path="res://assets/images/stages/philly/sky.png" id="2_cjx7u"]
+[ext_resource type="Texture2D" uid="uid://lc2dxcfmo4kx" path="res://assets/images/stages/philly/street.png" id="3_c18vf"]
+[ext_resource type="Texture2D" uid="uid://7taqir5p5l5j" path="res://assets/images/stages/philly/city.png" id="3_mmrmh"]
+[ext_resource type="Texture2D" uid="uid://bd46h6f3yprky" path="res://assets/images/stages/philly/train.png" id="4_cawvp"]
+[ext_resource type="Texture2D" uid="uid://dbd5fka14sluh" path="res://assets/images/stages/philly/win.png" id="4_t0jvy"]
+[ext_resource type="Texture2D" uid="uid://co7vdmq4m38rt" path="res://assets/images/stages/philly/behindTrain.png" id="7_gvywo"]
+
+[node name="philly" type="Node2D"]
+script = ExtResource("1_wc1r0")
+player_position = Vector2(800, 380)
+spectator_position = Vector2(450, 200)
+opponent_position = Vector2(150, 380)
+opponent_camera = Vector2(300, 0)
+
+[node name="P_Canvas" type="ParallaxBackground" parent="."]
+scroll_base_offset = Vector2(0.35, 0.35)
+scroll_ignore_camera_zoom = true
+
+[node name="P_Layer" type="ParallaxLayer" parent="P_Canvas"]
+
+[node name="Sky" type="Sprite2D" parent="P_Canvas/P_Layer"]
+position = Vector2(748.942, 434.25)
+scale = Vector2(1.18168, 1.18168)
+texture = ExtResource("2_cjx7u")
+
+[node name="City" type="Sprite2D" parent="P_Canvas/P_Layer"]
+position = Vector2(754.098, 432.04)
+scale = Vector2(1.00532, 1.00532)
+texture = ExtResource("3_mmrmh")
+
+[node name="Win" type="Sprite2D" parent="P_Canvas/P_Layer/City"]
+position = Vector2(-8, 6)
+texture = ExtResource("4_t0jvy")
+
+[node name="Street" type="Sprite2D" parent="."]
+position = Vector2(728.898, 467.75)
+scale = Vector2(1.08953, 1.08953)
+texture = ExtResource("3_c18vf")
+
+[node name="Train" type="Sprite2D" parent="."]
+position = Vector2(3665, 482)
+texture = ExtResource("4_cawvp")
+
+[node name="BehindTrain" type="Sprite2D" parent="."]
+position = Vector2(697.75, 463.29)
+scale = Vector2(1.02574, 1.02574)
+texture = ExtResource("7_gvywo")

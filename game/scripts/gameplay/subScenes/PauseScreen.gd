@@ -74,6 +74,7 @@ func _process(delta):
 					get_tree().paused = false
 				
 				"restart song":
+					game.stop_music()
 					Game.reset_scene()
 					SoundHelper.stop_music()
 					queue_free()
@@ -82,12 +83,14 @@ func _process(delta):
 					reload_options_list(Game.gameplay_song["difficulties"])
 				
 				"change options":
+					game.stop_music()
 					Game.options_to_gameplay = true
 					Game.switch_scene("scenes/menus/OptionsMenu")
 					SoundHelper.stop_music()
 					queue_free()
 				
 				"exit to menu":
+					game.stop_music()
 					match Game.gameplay_mode:
 						0: Game.switch_scene("scenes/menus/StoryMenu")
 						_: Game.switch_scene("scenes/menus/FreeplayMenu")

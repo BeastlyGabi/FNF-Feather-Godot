@@ -1,8 +1,7 @@
 {
 	"song": {
 		"player1": "bf-holding-gf",
-		"events": [],
-		"gfVersion": "pico-speaker",
+		"player3": "pico-speaker",
 		"notes": [
 			{
 				"sectionNotes": [

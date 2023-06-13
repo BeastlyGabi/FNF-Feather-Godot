@@ -5,7 +5,7 @@
         "needsVoices": true,
         "player1": "bf",
         "player2": "tankman",
-        "gfVersion": "gf-tankmen",
+        "player3": "gf-tankmen",
         "speed": 1.4,
         "notes": [
             {

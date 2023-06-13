@@ -5,6 +5,8 @@
         "needsVoices": true,
         "player1": "bf",
         "player2": "monster",
+        "player3": "gf",
+        "stage": "spooky",
         "speed": 1.3,
         "notes": [
             {

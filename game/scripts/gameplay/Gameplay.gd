@@ -7,6 +7,7 @@ var LOADED_NOTE_SCENES:Dictionary = {
 
 const PAUSE_SCREEN = preload("res://game/scenes/gameplay/subScenes/PauseScreen.tscn")
 const DEFAULT_CHAR = preload("res://game/scenes/gameplay/characters/bf.tscn")
+const DEFAULT_STAGE = preload("res://game/scenes/gameplay/stages/stage.tscn")
 
 var judgements:Array[Judgement] = [
 	# Name, Score Gain, Health Gain/Loss Accuracy Modifier, Note Splashes, Image
@@ -43,11 +44,10 @@ var event_list:Array[ChartEvent] = []
 
 @onready var combo_group:CanvasGroup = $Combo_Group
 
+var stage:Stage
 var spectator:Character
 var opponent:Character
 var player:Character
-
-@onready var stage:Stage = $Stage
 
 var valid_score:bool = true
 var script_stack:Array[FFScript] = []
@@ -71,6 +71,12 @@ func load_scripts_at(path:String):
 func _ready():
 	load_scripts_at("res://assets/data/scripts/global")
 	load_scripts_at("res://assets/data/scripts/songs/" + SONG.name)
+	
+	var stage_path:String = "res://game/scenes/gameplay/stages/" + SONG.stage + ".tscn"
+	if ResourceLoader.exists(stage_path):
+		stage = load(stage_path).instantiate()
+	else:
+		stage = DEFAULT_STAGE.instantiate()
 	
 	var opponent_is_spectator:bool = SONG.characters[1] == SONG.characters[2]
 	
@@ -101,9 +107,13 @@ func _ready():
 	if opponent_is_spectator:
 		spectator.queue_free()
 	
+	add_child(stage)
 	stage.add_child(spectator)
 	stage.add_child(opponent)
 	stage.add_child(player)
+	
+	remove_child(combo_group)
+	add_child(combo_group)
 	
 	stage.modulate.a = Settings.get_setting("stage_visibility") * 0.01
 	
@@ -381,6 +391,7 @@ func on_beat(beat:int):
 	for i in script_stack.size():
 		script_stack[i].on_beat(beat)
 	
+	stage.on_beat(beat)
 	_characters_dance(beat)
 	
 	for i in [icon_P1, icon_P2]:
@@ -420,6 +431,8 @@ func on_step(step:int):
 	for strum in strum_lines.get_children():
 		for note in strum.notes.get_children():
 			note.on_step(step)
+	
+	stage.on_step(step)
 
 func on_sect(sect:int):
 	for i in script_stack.size():
@@ -428,6 +441,8 @@ func on_sect(sect:int):
 	for strum in strum_lines.get_children():
 		for note in strum.notes.get_children():
 			note.on_sect(sect)
+	
+	stage.on_sect(sect)
 
 func trigger_event(event:ChartEvent):
 	match event.name:
@@ -452,10 +467,13 @@ func trigger_event(event:ChartEvent):
 			var offset:Vector2 = Vector2(char.camera_offset.x + stage_offset.x, char.camera_offset.y + stage_offset.y)
 			camera.position = Vector2(char.get_camera_midpoint().x + offset.x, char.get_camera_midpoint().y + offset.y)
 
-func end_song():
+func stop_music():
 	inst.stop()
 	if not voices.stream == null:
 		voices.stop()
+	
+func end_song():
+	stop_music()
 	
 	if valid_score:
 		Game.save_song_score(Game.gameplay_song["folder"] + '-' + Game.gameplay_song["difficulty"], score, "songs")

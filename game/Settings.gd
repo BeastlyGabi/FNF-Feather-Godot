@@ -151,7 +151,7 @@ func _settings_save_file(_le_file:String):
 		file.store_string("{}")
 	else:
 		var file = FileAccess.open(_le_file, FileAccess.READ)
-		if not file.get_as_text() == null or len(file.get_as_text()) > 1:
-			return JSON.parse_string(file.get_as_text())
+		if not file.get_as_text() == null and not file.get_as_text().is_empty():
+				return JSON.parse_string(file.get_as_text().replace("}}", "}"))
 	
 	return {}

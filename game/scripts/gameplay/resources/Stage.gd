@@ -14,3 +14,7 @@ class_name Stage extends Node2D
 @export var player_camera:Vector2 = Vector2.ZERO
 @export var spectator_camera:Vector2 = Vector2.ZERO
 @export var opponent_camera:Vector2 = Vector2.ZERO
+
+func on_beat(beat:int): pass
+func on_step(step:int): pass
+func on_sect(sect:int): pass

@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b34ahafdf2bpt"]
+[gd_scene load_steps=9 format=3 uid="uid://b34ahafdf2bpt"]
 
 [ext_resource type="Script" path="res://game/scripts/gameplay/Gameplay.gd" id="1_jtwcs"]
 [ext_resource type="PackedScene" uid="uid://fy40g2whkeii" path="res://game/scenes/gameplay/StrumLine.tscn" id="2_i6r1x"]
 [ext_resource type="Texture2D" uid="uid://dxxla7hd00vqo" path="res://assets/images/ui/healthBar.png" id="3_naaee"]
 [ext_resource type="Texture2D" uid="uid://dx5xo0fug3yv0" path="res://assets/images/icons/face.png" id="4_kngdf"]
 [ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="5_02sbc"]
-[ext_resource type="PackedScene" uid="uid://c68fsnh2ty4ty" path="res://game/scenes/gameplay/stages/stage.tscn" id="6_ojsku"]
 [ext_resource type="Texture2D" uid="uid://cfswoa07evgxl" path="res://assets/images/ui/countdown/normal/go.png" id="8_6gggy"]
 [ext_resource type="Script" path="res://game/resources/FFSprite2D.gd" id="9_7flc6"]
 
@@ -26,11 +25,8 @@ script = ExtResource("1_jtwcs")
 [node name="Game_Camera" type="Camera2D" parent="."]
 position = Vector2(610, 352)
 
-[node name="Stage" parent="." instance=ExtResource("6_ojsku")]
-position = Vector2(-2, -13)
-
 [node name="Combo_Group" type="CanvasGroup" parent="."]
-position = Vector2(610, 208)
+position = Vector2(610, 352)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -54,6 +50,7 @@ fill_mode = 1
 texture_under = ExtResource("3_naaee")
 texture_progress = ExtResource("3_naaee")
 tint_under = Color(1, 0, 0, 1)
+tint_over = Color(1, 1, 1, 0)
 tint_progress = Color(0.466667, 1, 0, 1)
 
 [node name="Player_Icon" type="Sprite2D" parent="UI/Health_Bar"]
