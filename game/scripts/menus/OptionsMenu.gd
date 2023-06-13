@@ -108,8 +108,9 @@ func _process(delta):
 				focusing_on_options = false
 				_reset_category_txt()
 				Game.flicker_loops = 2
-				get_tree().create_tween().tween_property(self, "cur_selection", 0, 0.05) \
-				.finished.connect(update_selection)
+				
+				cur_selection = 0
+				update_selection()
 
 func update_option(new_selection:int = 0):
 	if _cur_options[cur_selection].reference == null \
