@@ -81,7 +81,7 @@ description = "What should the song speed and pitch be?"
 num_min = 0.5
 num_max = 3.1
 num_factor = 0.05
-display_mode = "%.1f"
+display_mode = "%.2f"
 choices = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_ku86f"]
@@ -92,7 +92,7 @@ description = "Define the speed of your notes, 0 for the default chart speed."
 num_min = 0.0
 num_max = 10.1
 num_factor = 0.1
-display_mode = "%.1f"
+display_mode = "%.2f"
 choices = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_gm7m2"]
