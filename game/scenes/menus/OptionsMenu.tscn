@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://0t5tihq1487y"]
+[gd_scene load_steps=31 format=3 uid="uid://0t5tihq1487y"]
 
 [ext_resource type="Script" path="res://game/scripts/menus/OptionsMenu.gd" id="1_8noml"]
 [ext_resource type="Texture2D" uid="uid://mfo5xdgme5ob" path="res://assets/images/menus/menuDesat.png" id="1_yb8mo"]
@@ -51,17 +51,6 @@ num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_ku86f"]
-script = ExtResource("2_6cs3o")
-option = "Scroll Speed"
-reference = "note_speed"
-description = "Define the speed of your notes, 0 for the default chart speed."
-num_min = 0.0
-num_max = 10.1
-num_factor = 0.1
-display_mode = "%.1f"
-choices = Array[String]([])
-
 [sub_resource type="Resource" id="Resource_b41hv"]
 script = ExtResource("2_6cs3o")
 option = "Break Judgement"
@@ -95,22 +84,44 @@ num_factor = 0.05
 display_mode = "%.1f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_p6snu"]
+[sub_resource type="Resource" id="Resource_ku86f"]
 script = ExtResource("2_6cs3o")
-option = "CPU Receptors"
-reference = "cpu_receptors"
-description = "If the CPU Receptors should be visible during gameplay."
+option = "Scroll Speed"
+reference = "note_speed"
+description = "Define the speed of your notes, 0 for the default chart speed."
+num_min = 0.0
+num_max = 10.1
+num_factor = 0.1
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_gm7m2"]
+script = ExtResource("2_6cs3o")
+option = "Colored Health Bar"
+reference = "character_healthcolors"
+description = "If the healthbar should be colored with the character's health color"
 num_min = 0.0
 num_max = 1.0
 num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_jojc1"]
+[sub_resource type="Resource" id="Resource_245nv"]
 script = ExtResource("2_6cs3o")
-option = "Opaque Hold Notes"
-reference = "opaque_sustains"
-description = "Makes the Hold Notes completely opaque insetad os slightly transparent."
+option = "Combo Stacking"
+reference = "combo_stacking"
+description = "If judgement and combo objects should stack on top of each other."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_p6snu"]
+script = ExtResource("2_6cs3o")
+option = "CPU Receptors"
+reference = "cpu_receptors"
+description = "If the CPU Receptors should be visible during gameplay."
 num_min = 0.0
 num_max = 1.0
 num_factor = 0.0
@@ -128,33 +139,11 @@ num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_2wua3"]
-script = ExtResource("2_6cs3o")
-option = "Flashing Menus"
-reference = "flashing_lights"
-description = "If there should be flashing lights on menus."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
 [sub_resource type="Resource" id="Resource_wywfl"]
 script = ExtResource("2_6cs3o")
 option = "Note Quantization"
 reference = "note_quantization"
 description = "If notes should be colored according to the song beat."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_245nv"]
-script = ExtResource("2_6cs3o")
-option = "Combo Stacking"
-reference = "combo_stacking"
-description = "If judgement and combo objects should stack on top of each other."
 num_min = 0.0
 num_max = 1.0
 num_factor = 0.0
@@ -194,6 +183,28 @@ num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
+[sub_resource type="Resource" id="Resource_jojc1"]
+script = ExtResource("2_6cs3o")
+option = "Opaque Hold Notes"
+reference = "opaque_sustains"
+description = "Makes the Hold Notes completely opaque insetad os slightly transparent."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_2wua3"]
+script = ExtResource("2_6cs3o")
+option = "Flashing Menus"
+reference = "flashing_lights"
+description = "If there should be flashing lights on menus."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
 [sub_resource type="Resource" id="Resource_ny7kb"]
 script = ExtResource("2_6cs3o")
 option = "Stage Visibility"
@@ -205,22 +216,22 @@ num_factor = 1.0
 display_mode = "%.0f"
 choices = Array[String]([])
 
+[sub_resource type="Resource" id="Resource_yowwo"]
+script = ExtResource("2_6cs3o")
+option = "Framerate Cap"
+reference = "framerate"
+description = "Define your FPS Cap, let it be 0 for uncapping it"
+num_min = 0.0
+num_max = 245.0
+num_factor = 5.0
+display_mode = "%.0f"
+choices = Array[String]([])
+
 [sub_resource type="Resource" id="Resource_xg6ek"]
 script = ExtResource("2_6cs3o")
 option = "V-Sync"
 reference = "vsync"
 description = "If framerate should be tied to your monitor's refresh rate."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_gm7m2"]
-script = ExtResource("2_6cs3o")
-option = "Colored Health Bar"
-reference = "character_healthcolors"
-description = "If the healthbar should be colored with the character's health color"
 num_min = 0.0
 num_max = 1.0
 num_factor = 0.0
@@ -301,9 +312,10 @@ _data = {
 
 [node name="OptionsMenu" type="Node2D"]
 script = ExtResource("1_8noml")
-gameplay_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_lvqcm"), SubResource("Resource_w1xer"), SubResource("Resource_kohrc"), SubResource("Resource_ov6xb"), SubResource("Resource_ku86f")])
-behavior_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_b41hv"), SubResource("Resource_tbul6"), SubResource("Resource_orj44")])
-visual_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_p6snu"), SubResource("Resource_jojc1"), SubResource("Resource_ihqh8"), SubResource("Resource_2wua3"), SubResource("Resource_wywfl"), SubResource("Resource_245nv"), SubResource("Resource_pwoif"), SubResource("Resource_k0vys"), SubResource("Resource_qlab2"), SubResource("Resource_ny7kb"), SubResource("Resource_xg6ek"), SubResource("Resource_gm7m2")])
+gameplay_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_lvqcm"), SubResource("Resource_w1xer"), SubResource("Resource_kohrc"), SubResource("Resource_ov6xb")])
+behavior_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_b41hv"), SubResource("Resource_tbul6"), SubResource("Resource_orj44"), SubResource("Resource_ku86f")])
+visual_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_gm7m2"), SubResource("Resource_245nv"), SubResource("Resource_p6snu"), SubResource("Resource_ihqh8"), SubResource("Resource_wywfl"), SubResource("Resource_pwoif"), SubResource("Resource_k0vys"), SubResource("Resource_qlab2")])
+accessibility_options = Array[ExtResource("2_6cs3o")]([SubResource("Resource_jojc1"), SubResource("Resource_2wua3"), SubResource("Resource_ny7kb"), SubResource("Resource_yowwo"), SubResource("Resource_xg6ek")])
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.431373, 0.431373, 0.835294, 1)
