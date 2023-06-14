@@ -1,11 +1,13 @@
 extends CanvasLayer
 
+@onready var beep:AudioStreamPlayer = $Scroll
+
 func _ready():
 	$ProgressBar.modulate.a = 0.0
 
 var tween:Tween
 func show_the_thing():
-	$ProgressBar.value = db_to_linear(AudioServer.get_bus_volume_db(0)) * 100.0
+	$ProgressBar.value = Settings.get_setting("volume")
 	$ProgressBar.modulate.a = 1.0
 	if not tween == null:
 		tween.stop()
@@ -16,14 +18,11 @@ func show_the_thing():
 func _input(event:InputEvent):
 	if Input.is_action_just_pressed("ui_volume_up") or Input.is_action_just_pressed("ui_volume_down"):
 		var is_up:bool = Input.is_action_just_pressed("ui_volume_up")
-		var value:float = 0.5 if is_up else -0.5
-		var shift_thing:float = 0.0
+		var value:float = 0.1 if is_up else -0.1
 		
-		if Input.is_key_label_pressed(KEY_SHIFT):
-			shift_thing = 4.0 if is_up else -4.0
-			value = value + shift_thing
-		
-		var new_volume:float = clampf(AudioServer.get_bus_volume_db(0) + value, -49, 0)
-		AudioServer.set_bus_volume_db(0, new_volume)
-		SoundHelper.play_sound("res://assets/audio/sfx/scrollMenu.ogg")
+		Settings.set_setting("volume", clampf(Settings.get_setting("volume") + value, 0.0, 1.0))
+		AudioServer.set_bus_volume_db(0, linear_to_db(Settings.get_setting("volume")))
 		show_the_thing()
+		beep.play(0.0)
+		
+		Settings.save_settings()

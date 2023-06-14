@@ -32,6 +32,8 @@ var _prefs:Dictionary = {
 	### OTHER ###
 	"framerate": 60,
 	"vsync": true,
+	
+	"volume": 1.0
 }
 
 var _controls:Dictionary = {

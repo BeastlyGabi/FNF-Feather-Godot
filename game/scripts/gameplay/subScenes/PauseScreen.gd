@@ -38,8 +38,11 @@ func _ready():
 			if not i == game.player_strums.receptors.get_child_count() - 1:
 				key_text.text += " / "
 		
+		key_text.modulate.a = 0.0
 		key_text.position.x = (Game.SCREEN["width"] - key_text.size.x) / 2.0
 		add_child(key_text)
+		
+		tweener.tween_property(key_text, "modulate:a", 1.0, 0.40)
 	
 	for info in [song_text, time_text, diff_text]:
 		info.modulate.a = 0.0
