@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cpy2iqt4gl7ui"]
+[gd_scene load_steps=7 format=3 uid="uid://cpy2iqt4gl7ui"]
 
 [ext_resource type="Script" path="res://game/menus/FreeplayMenu.gd" id="1_um7fc"]
 [ext_resource type="Script" path="res://game/menus/data/FreeplaySong.gd" id="2_c2ctb"]
@@ -14,49 +14,9 @@ difficulties = Array[String](["normal"])
 color = Color(0.572549, 0.443137, 0.992157, 1)
 icon = "bf-pixel"
 
-[sub_resource type="Resource" id="Resource_mu056"]
-script = ExtResource("2_c2ctb")
-name = "Ghost VIP"
-folder = "ghost-vip"
-difficulties = Array[String](["easy", "normal", "hard"])
-color = Color(0.572549, 0.443137, 0.992157, 1)
-icon = "face"
-
-[sub_resource type="Resource" id="Resource_usqtl"]
-script = ExtResource("2_c2ctb")
-name = "Ectospasm"
-folder = "ectospasm"
-difficulties = Array[String](["hell", "truehell"])
-color = Color(0.639216, 1, 0.898039, 1)
-icon = "bf"
-
-[sub_resource type="Resource" id="Resource_n8wy2"]
-script = ExtResource("2_c2ctb")
-name = "Sporting"
-folder = "sporting"
-difficulties = Array[String](["hard"])
-color = Color(0.572549, 0.443137, 0.992157, 1)
-icon = "face"
-
-[sub_resource type="Resource" id="Resource_1vdr8"]
-script = ExtResource("2_c2ctb")
-name = "Rano"
-folder = "rano"
-difficulties = Array[String](["hard"])
-color = Color(0.572549, 0.443137, 0.992157, 1)
-icon = "face"
-
-[sub_resource type="Resource" id="Resource_1n0eu"]
-script = ExtResource("2_c2ctb")
-name = "Chill"
-folder = "chill"
-difficulties = Array[String](["hard"])
-color = Color(0.572549, 0.443137, 0.992157, 1)
-icon = "dad"
-
 [node name="FreeplayMenu" type="Node2D"]
 script = ExtResource("1_um7fc")
-songs = Array[ExtResource("2_c2ctb")]([SubResource("Resource_bapld"), SubResource("Resource_mu056"), SubResource("Resource_usqtl"), SubResource("Resource_n8wy2"), SubResource("Resource_1vdr8"), SubResource("Resource_1n0eu")])
+songs = Array[ExtResource("2_c2ctb")]([SubResource("Resource_bapld")])
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(643, 365)
