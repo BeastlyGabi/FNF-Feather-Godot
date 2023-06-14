@@ -1,10 +1,9 @@
 class_name Gameplay extends MusicBeatNode2D
 
-var LOADED_NOTE_SCENES:Dictionary = {
+var NOTE_TYPES:Dictionary = {
 	"default": preload("res://game/gameplay/notes/default.tscn"),
 	"quant": preload("res://game/gameplay/notes/default-quant.tscn")
 }
-
 
 const PAUSE_SCREEN = preload("res://game/gameplay/subScenes/PauseScreen.tscn")
 const DEFAULT_CHAR = preload("res://game/gameplay/characters/bf.tscn")
@@ -330,13 +329,14 @@ func process_notes():
 			break
 		
 		var note_type:String = "default"
-		if ResourceLoader.exists("res://game/scenes/gameplay/notes/" + note.type + ".tscn"):
+		if ResourceLoader.exists("res://game/gameplay/notes/" + note.type + ".tscn"):
+			NOTE_TYPES[note.type] = load("res://game/gameplay/notes/" + note.type + ".tscn")
 			note_type = note.type
 		
 		if note_type == "default" and Settings.get_setting("note_quantization"):
 			note_type = "quant"
 		
-		var new_note:Note = LOADED_NOTE_SCENES[note_type].instantiate() \
+		var new_note:Note = NOTE_TYPES[note_type].instantiate() \
 		.set_note(note.time - Conductor.note_offset, note.direction % 4, note_type)
 		
 		new_note.speed = note_speed
@@ -593,10 +593,9 @@ var accuracy:float = 0.00:
 var judgements_gotten:Dictionary = {}
 
 func note_hit(note:Note):
-	for cool_note in player_strums.notes.get_children():
-		var event = cool_note.on_note_hit(true)
-		if event == Note.EVENT_STOP:
-			return
+	var event = note.on_note_hit(true)
+	if event == Note.EVENT_STOP:
+		return
 	
 	if note.was_good_hit: return
 	note.was_good_hit = true
@@ -670,10 +669,9 @@ func note_hit(note:Note):
 		note.queue_free()
 
 func cpu_note_hit(note:Note, strum_line:StrumLine):
-	for cool_note in strum_line.notes.get_children():
-		var event = cool_note.on_note_hit(strum_line == player_strums)
-		if event == Note.EVENT_STOP:
-			return
+	var event = note.on_note_hit(strum_line == player_strums)
+	if event == Note.EVENT_STOP:
+		return
 	
 	if note.arrow.visible and note.must_press:
 		strum_line.pop_splash(note)
@@ -690,10 +688,9 @@ func cpu_note_hit(note:Note, strum_line:StrumLine):
 		note.queue_free()
 
 func note_miss(note:Note, play_anim:bool = true):
-	for cool_note in player_strums.notes.get_children():
-		var event = cool_note.on_note_miss()
-		if event == Note.EVENT_STOP:
-			return
+	var event = note.on_note_miss()
+	if event == Note.EVENT_STOP:
+		return
 	
 	if not note.can_be_missed:
 		return
