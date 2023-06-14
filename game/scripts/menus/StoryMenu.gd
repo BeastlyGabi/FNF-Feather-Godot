@@ -79,7 +79,7 @@ func _process(delta:float):
 		Game.gameplay_mode = 0
 		Game.gameplay_song["playlist"] = songs.duplicate()
 		Game.gameplay_song["week_namespace"] = Game.game_weeks[cur_selection].week_namespace
-		Game.reset_story_playlist(songs[cur_selection].difficulties[cur_difficulty])
+		Game.reset_story_playlist(Game.game_weeks[cur_selection].difficulties[cur_difficulty])
 		
 		Game.switch_scene("scenes/gameplay/Gameplay")
 		SoundHelper.stop_music()
