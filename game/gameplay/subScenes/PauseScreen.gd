@@ -16,17 +16,17 @@ func _ready():
 	SoundHelper.play_music(Game.PAUSE_MUSIC, -30, true)
 	SoundHelper.music.seek(randi_range(0, SoundHelper.music.stream.get_length() / 2.0))
 	
-	if Game.gameplay_song["difficulties"].size() > 1:
+	if Song.difficulty_list.size() > 1:
 		main_options.insert(2, "Change Difficulty")
 	
 	var tweener:Tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
 	
 	background.color.a = 0.0
 	tweener.tween_property(background, "color:a", 0.6, 0.40)
-	song_text.text = Game.gameplay_song["name"]
+	song_text.text = Song.data["name"]
 	time_text.text = Game.format_to_time(game.inst.get_playback_position()) \
 	+ " / " + Game.format_to_time(game.inst.stream.get_length()) if not game.inst == null else "00:00 / 00:00"
-	diff_text.text = Game.gameplay_song["difficulty"].to_upper()
+	diff_text.text = Song.data["difficulty"].to_upper()
 	
 	if Settings.get_setting("show_keybinds"):
 		var key_text:Label = song_text.duplicate()
@@ -61,9 +61,9 @@ func _process(delta):
 		update_selection(-1 if is_up else 1)
 	
 	if Input.is_action_just_pressed("ui_accept"):
-		if current_list == Game.gameplay_song["difficulties"]:
+		if current_list == Song.difficulty_list:
 			if not current_list[cur_selection] == "BACK":
-				Game.gameplay_song["difficulty"] = current_list[cur_selection]
+				Song.data["difficulty"] = current_list[cur_selection]
 				SoundHelper.stop_music()
 				Game.reset_scene()
 				queue_free()
@@ -83,7 +83,7 @@ func _process(delta):
 					queue_free()
 				
 				"change difficulty":
-					reload_options_list(Game.gameplay_song["difficulties"])
+					reload_options_list(Song.difficulty_list)
 				
 				"change options":
 					game.stop_music()
@@ -94,10 +94,10 @@ func _process(delta):
 				
 				"exit to menu":
 					game.stop_music()
-					match Game.gameplay_mode:
-						0: Game.switch_scene("menus/StoryMenu")
+					match Song.gameplay_mode:
+						Song.STORY_MODE: Game.switch_scene("menus/StoryMenu")
 						_: Game.switch_scene("menus/FreeplayMenu")
-						#2: Game.switch_scene("gameplay/editors/ChartEditor")
+						Song.CHARTING_MODE: Game.switch_scene("gameplay/editors/ChartEditor")
 					
 					SoundHelper.stop_music()
 					queue_free()
@@ -119,7 +119,7 @@ func reload_options_list(new_list:Array[String]):
 		pause_items.remove_child(letter)
 	
 	current_list = new_list
-	if current_list == Game.gameplay_song["difficulties"] and not current_list.has("BACK"):
+	if current_list == Song.difficulty_list and not current_list.has("BACK"):
 		current_list.insert(current_list.size(), "BACK")
 	
 	for i in new_list.size():

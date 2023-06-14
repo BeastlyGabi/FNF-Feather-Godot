@@ -76,10 +76,10 @@ func _process(delta:float):
 		var songs:Array[FreeplaySong] = Game.game_weeks[cur_selection].songs
 		
 		# set the song playlist
-		Game.gameplay_mode = 0
-		Game.gameplay_song["playlist"] = songs.duplicate()
-		Game.gameplay_song["week_namespace"] = Game.game_weeks[cur_selection].week_namespace
-		Game.reset_story_playlist(Game.game_weeks[cur_selection].difficulties[cur_difficulty])
+		Song.playlist = songs.duplicate()
+		Song.gameplay_mode = Song.STORY_MODE
+		Song.cur_week = Game.game_weeks[cur_selection].week_namespace
+		Song.reset_story_song(Game.game_weeks[cur_selection].difficulties[cur_difficulty])
 		
 		Game.switch_scene("gameplay/Gameplay")
 		SoundHelper.stop_music()
@@ -139,7 +139,7 @@ func update_difficulty(new_difficulty:int = 0):
 				diff_sprite.position.x + diff_sprite.texture.get_width() / 1.58 if i == 2 else \
 				diff_sprite.position.x - diff_sprite.texture.get_width() / 1.58, 0.15)
 	
-	score_final = Game.get_song_score(Game.game_weeks[cur_selection].week_namespace + " Week -" + difficulties[cur_difficulty], "weeks")
+	score_final = Song.get_score(Game.game_weeks[cur_selection].week_namespace + " Week -" + difficulties[cur_difficulty], "weeks")
 	last_difficulty = difficulties[cur_difficulty]
 
 func update_tracks_label():

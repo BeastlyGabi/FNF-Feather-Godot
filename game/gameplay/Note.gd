@@ -1,9 +1,6 @@
 class_name Note extends Node2D
 
-enum NoteActionEvent {
-	STOP, # Stops the Target Event
-	KEEP # Doesn't do shit it's basically like returning nothing
-}
+enum NoteActionEvent {STOP, KEEP}
 
 var time:float = 0.0
 var direction:int = 0

@@ -18,9 +18,11 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_jtwcs")
 
-[node name="Inst" type="AudioStreamPlayer" parent="."]
+[node name="Sounds" type="Node" parent="."]
 
-[node name="Voices" type="AudioStreamPlayer" parent="."]
+[node name="Inst" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Game_Camera" type="Camera2D" parent="."]
 position = Vector2(610, 352)

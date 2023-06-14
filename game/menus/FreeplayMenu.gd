@@ -52,11 +52,11 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_accept"):
 			is_input_locked = true
 			
-			Game.gameplay_mode = 1
-			Game.gameplay_song["name"] = songs[cur_selection].name
-			Game.gameplay_song["folder"] = songs[cur_selection].folder
-			Game.gameplay_song["difficulty"] = songs[cur_selection].difficulties[cur_difficulty]
-			Game.gameplay_song["difficulties"] = songs[cur_selection].difficulties
+			Song.gameplay_mode = Song.FREEPLAY_MODE
+			Song.data["name"] = songs[cur_selection].name
+			Song.data["folder"] = songs[cur_selection].folder
+			Song.data["difficulty"] = songs[cur_selection].difficulties[cur_difficulty]
+			Song.difficulty_list = songs[cur_selection].difficulties
 			
 			Game.switch_scene("gameplay/Gameplay")
 			SoundHelper.stop_music()
@@ -109,7 +109,7 @@ func update_difficulty(new_difficulty:int = 0):
 	if difficulties[cur_difficulty] != last_difficulty:
 		last_difficulty = difficulties[cur_difficulty]
 	
-	score_final = Game.get_song_score(songs[cur_selection].folder + '-' + difficulties[cur_difficulty], "songs")
+	score_final = Song.get_score(songs[cur_selection].folder + '-' + difficulties[cur_difficulty], "songs")
 	
 	await(get_tree().create_timer(0.15).timeout)
 	play_selected_song()

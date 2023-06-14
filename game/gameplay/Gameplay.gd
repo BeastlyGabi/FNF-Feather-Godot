@@ -24,8 +24,10 @@ var note_list:Array[ChartNote] = []
 var event_list:Array[ChartEvent] = []
 
 @onready var camera:Camera2D = $Game_Camera
-@onready var inst:AudioStreamPlayer = $Inst
-@onready var voices:AudioStreamPlayer = $Voices
+
+@onready var sounds:Node = $Sounds
+@onready var inst:AudioStreamPlayer = $Sounds/Inst
+@onready var voices:AudioStreamPlayer = $Sounds/Voices
 
 
 @onready var ui:CanvasLayer = $UI
@@ -56,11 +58,11 @@ var script_stack:Array[FFScript] = []
 func _init():
 	super._init()
 	
-	SONG = Chart.load_chart(Game.gameplay_song["folder"], Game.gameplay_song["difficulty"])
+	SONG = Chart.load_chart(Song.data["folder"], Song.data["difficulty"])
 	if not SONG == null:
 		note_list = SONG.notes
 		event_list = SONG.events
-		Game.CURRENT_SONG = SONG
+		Song.current = SONG
 
 func load_scripts_at(path:String):
 	for file in DirAccess.get_files_at(path):
@@ -155,17 +157,27 @@ func _ready():
 	for file in DirAccess.get_files_at("res://assets/songs/" + SONG.name + "/audio"):
 		
 		if file.ends_with(".import"):
+			var built_in:bool = false
+			
 			if file.begins_with("Inst"):
+				built_in = true
 				inst.stream = load("res://assets/songs/" + SONG.name + "/audio/" + file.replace(".import", ""))
-				inst.stream.loop = false
 				inst.pitch_scale = Settings.get_setting("song_pitch")
+				inst.finished.connect(end_song)
+				inst.stream.loop = false
 			
 			if file.begins_with("Voices") or file.begins_with("Vocals"):
+				built_in = true
 				voices.stream = load("res://assets/songs/" + SONG.name + "/audio/" + file.replace(".import", ""))
+				voices.pitch_scale = Settings.get_setting("song_pitch")
 				voices.stream.loop = false
-				voices.pitch_scale = inst.pitch_scale
-	
-	inst.finished.connect(end_song)
+			
+			if not built_in:
+				var new_music:AudioStreamPlayer = AudioStreamPlayer.new()
+				new_music.stream = load("res://assets/songs/" + SONG.name + "/audio/" + file.replace(".import", ""))
+				new_music.pitch_scale = Settings.get_setting("song_pitch")
+				new_music.stream.loop = false
+				sounds.add_child(new_music)
 	
 	counter_text.visible = Settings.get_setting("judgement_counter")
 	
@@ -251,9 +263,9 @@ func reset_countdown_timer():
 func start_song():
 	starting_song = false
 	
-	inst.play(0.0)
-	if not voices.stream == null:
-		voices.play(0.0)
+	for sound in sounds.get_children():
+		if not sound.stream == null:
+			sound.play(0.0)
 
 var health_bar_width:float:
 	get: return health_bar.texture_progress.get_size().x
@@ -469,34 +481,33 @@ func trigger_event(event:ChartEvent):
 			camera.position = Vector2(char.get_camera_midpoint().x + offset.x, char.get_camera_midpoint().y + offset.y)
 
 func stop_music():
-	inst.stop()
-	if not voices.stream == null:
-		voices.stop()
+	for sound in sounds.get_children():
+		if not sound.stream == null:
+			sound.stop()
 	
 func end_song():
 	stop_music()
 	
 	if valid_score:
-		Game.save_song_score(Game.gameplay_song["folder"] + '-' + Game.gameplay_song["difficulty"], score, "songs")
+		Song.save_score(Song.data["folder"] + '-' + Song.data["difficulty"], score, "songs")
 	
-	match Game.gameplay_mode:
-		0:
-			if Game.gameplay_song["playlist"].size() > 1:
-				Game.gameplay_song["playlist"].pop_front()
+	match Song.gameplay_mode:
+		Song.STORY_MODE:
+			if Song.playlist.size() > 1:
+				Song.playlist.pop_front()
+				Song.total_week_score += score
 				
-				Game.total_week_score += score
-				
-				Game.gameplay_song["name"] = Game.gameplay_song["playlist"][0].name
-				Game.gameplay_song["folder"] = Game.gameplay_song["playlist"][0].folder
-				Game.reset_scene()
+				Song.data["name"] = Song.playlist[0].name
+				Song.data["folder"] = Song.playlist[0].folder
+				Song.reset_scene()
 				
 			else:
 				if valid_score:
-					Game.save_song_score(Game.gameplay_song["week_namespace"] + " Week -" + Game.gameplay_song["difficulty"], Game.total_week_score, "weeks")
+					Song.save_score(Song.cur_week + " Week -" + Game.gameplay_song["difficulty"], Game.total_week_score, "weeks")
 				Game.switch_scene("menus/StoryMenu")
 			
 		_: Game.switch_scene("menus/FreeplayMenu")
-		2: Game.switch_scene("gameplay/editors/ChartEditor")
+		Song.CHARTING_MODE: Game.switch_scene("gameplay/editors/ChartEditor")
 
 var keys_held:Array[bool] = []
 

@@ -1,4 +1,4 @@
-class_name Versioning
+class_name Versioning extends Node
 
 # Stable, Beta, In-Dev
 enum VersionType {IRIS, LUNA, LILYPAD}
