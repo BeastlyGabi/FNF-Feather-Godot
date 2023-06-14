@@ -111,6 +111,7 @@ func update_prefs():
 	var v_sync_mode = DisplayServer.VSYNC_DISABLED
 	if _prefs["vsync"]: v_sync_mode = DisplayServer.VSYNC_ADAPTIVE
 	DisplayServer.window_set_vsync_mode(v_sync_mode)
+	AudioServer.set_bus_volume_db(0, linear_to_db(get_setting("volume")))
 
 func refresh_keys(key:String):
 	var key_mapper:Array[InputEvent] = InputMap.action_get_events(key)

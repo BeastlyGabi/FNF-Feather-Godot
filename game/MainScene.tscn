@@ -1,8 +1,8 @@
 [gd_scene load_steps=34 format=3 uid="uid://c0jle7sarqcee"]
 
 [ext_resource type="Script" path="res://game/MainScene.gd" id="1_ffjtr"]
-[ext_resource type="Script" path="res://game/scripts/menus/data/GameWeek.gd" id="2_y5gd6"]
-[ext_resource type="Script" path="res://game/scripts/menus/data/FreeplaySong.gd" id="3_7el2v"]
+[ext_resource type="Script" path="res://game/menus/data/GameWeek.gd" id="2_y5gd6"]
+[ext_resource type="Script" path="res://game/menus/data/FreeplaySong.gd" id="3_7el2v"]
 
 [sub_resource type="Resource" id="Resource_vecpa"]
 script = ExtResource("3_7el2v")

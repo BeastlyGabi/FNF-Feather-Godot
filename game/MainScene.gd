@@ -16,12 +16,12 @@ const note_colors:Array[String] = ["purple", "blue", "green", "red"]
 func _ready():
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	
-	switch_scene("scenes/SplashScreen" if not skip_splash else "scenes/menus/TitleScreen", true)
+	switch_scene("SplashScreen" if not skip_splash else "menus/TitleScreen", true)
 
 ### SCENE SWITCHER ###
 
 var LAST_SCENE:String = ""
-const TRANSITION = preload("res://game/scenes/backend/Transition.tscn")
+const TRANSITION = preload("res://game/autoload/Transition.tscn")
 
 var options_to_gameplay:bool = false
 
