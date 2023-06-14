@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bj1tccjq03ffb"]
+
+[ext_resource type="SpriteFrames" path="res://assets/images/ui/letters/bold.res" id="1_hdpq2"]
+[ext_resource type="Script" path="res://game/menus/data/Alphabet.gd" id="1_mib87"]
+
+[node name="Alphabet" type="ReferenceRect"]
+script = ExtResource("1_mib87")
+
+[node name="Template" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(27, 34)
+sprite_frames = ExtResource("1_hdpq2")
+animation = &"&"

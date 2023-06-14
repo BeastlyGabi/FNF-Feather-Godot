@@ -1,0 +1,103 @@
+[gd_scene load_steps=12 format=3 uid="uid://cpy2iqt4gl7ui"]
+
+[ext_resource type="Script" path="res://game/menus/FreeplayMenu.gd" id="1_um7fc"]
+[ext_resource type="Script" path="res://game/menus/data/FreeplaySong.gd" id="2_c2ctb"]
+[ext_resource type="Texture2D" uid="uid://mfo5xdgme5ob" path="res://assets/images/menus/menuDesat.png" id="3_xwkbp"]
+[ext_resource type="Script" path="res://game/menus/data/Alphabet.gd" id="4_45k6n"]
+[ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="5_qb20e"]
+
+[sub_resource type="Resource" id="Resource_bapld"]
+script = ExtResource("2_c2ctb")
+name = "Test"
+folder = "test"
+difficulties = Array[String](["normal"])
+color = Color(0.572549, 0.443137, 0.992157, 1)
+icon = "bf-pixel"
+
+[sub_resource type="Resource" id="Resource_mu056"]
+script = ExtResource("2_c2ctb")
+name = "Ghost VIP"
+folder = "ghost-vip"
+difficulties = Array[String](["easy", "normal", "hard"])
+color = Color(0.572549, 0.443137, 0.992157, 1)
+icon = "face"
+
+[sub_resource type="Resource" id="Resource_usqtl"]
+script = ExtResource("2_c2ctb")
+name = "Ectospasm"
+folder = "ectospasm"
+difficulties = Array[String](["hell", "truehell"])
+color = Color(0.639216, 1, 0.898039, 1)
+icon = "bf"
+
+[sub_resource type="Resource" id="Resource_n8wy2"]
+script = ExtResource("2_c2ctb")
+name = "Sporting"
+folder = "sporting"
+difficulties = Array[String](["hard"])
+color = Color(0.572549, 0.443137, 0.992157, 1)
+icon = "face"
+
+[sub_resource type="Resource" id="Resource_1vdr8"]
+script = ExtResource("2_c2ctb")
+name = "Rano"
+folder = "rano"
+difficulties = Array[String](["hard"])
+color = Color(0.572549, 0.443137, 0.992157, 1)
+icon = "face"
+
+[sub_resource type="Resource" id="Resource_1n0eu"]
+script = ExtResource("2_c2ctb")
+name = "Chill"
+folder = "chill"
+difficulties = Array[String](["hard"])
+color = Color(0.572549, 0.443137, 0.992157, 1)
+icon = "dad"
+
+[node name="FreeplayMenu" type="Node2D"]
+script = ExtResource("1_um7fc")
+songs = Array[ExtResource("2_c2ctb")]([SubResource("Resource_bapld"), SubResource("Resource_mu056"), SubResource("Resource_usqtl"), SubResource("Resource_n8wy2"), SubResource("Resource_1vdr8"), SubResource("Resource_1n0eu")])
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(643, 365)
+texture = ExtResource("3_xwkbp")
+
+[node name="Alphabet_Template" type="ReferenceRect" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_45k6n")
+bold = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Score_Box" type="ColorRect" parent="UI"]
+offset_left = 1001.0
+offset_right = 1286.0
+offset_bottom = 59.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Score_Text" type="Label" parent="UI"]
+offset_left = 1001.0
+offset_right = 1286.0
+offset_bottom = 32.0
+theme_override_fonts/font = ExtResource("5_qb20e")
+theme_override_font_sizes/font_size = 32
+text = "PERSONAL BEST:0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Diff_Text" type="Label" parent="UI"]
+offset_left = 1001.0
+offset_top = 34.0
+offset_right = 1286.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("5_qb20e")
+theme_override_font_sizes/font_size = 24
+text = "< DIFFICULTY >
+"
+horizontal_alignment = 1
+
+[node name="Song_Group" type="Node" parent="."]
+
+[node name="Icon_Group" type="Node" parent="."]

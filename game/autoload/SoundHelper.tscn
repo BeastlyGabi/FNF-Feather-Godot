@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg3jk2nbiw4e5"]
+
+[ext_resource type="Script" path="res://game/autoload/SoundHelper.gd" id="1_opaoy"]
+
+[node name="SoundHelper" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_opaoy")
+
+[node name="MUSIC_STREAM" type="AudioStreamPlayer" parent="."]
+
+[node name="SOUNDS_PLAYED" type="Node" parent="."]

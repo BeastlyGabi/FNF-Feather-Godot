@@ -1,0 +1,377 @@
+[gd_scene load_steps=31 format=3 uid="uid://0t5tihq1487y"]
+
+[ext_resource type="Script" path="res://game/menus/OptionsMenu.gd" id="1_4o4po"]
+[ext_resource type="Script" path="res://game/menus/options/GameOption.gd" id="2_njuek"]
+[ext_resource type="Texture2D" uid="uid://mfo5xdgme5ob" path="res://assets/images/menus/menuDesat.png" id="3_ghgcm"]
+[ext_resource type="Script" path="res://game/menus/data/Alphabet.gd" id="4_j1obe"]
+[ext_resource type="SpriteFrames" uid="uid://duku6tvrkmxpy" path="res://assets/images/menus/optionsMenu/checkboxThingie.res" id="5_rcshy"]
+[ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="6_5vdng"]
+
+[sub_resource type="Resource" id="Resource_lvqcm"]
+script = ExtResource("2_njuek")
+option = "Change Keybinds"
+reference = "keybinds"
+description = "Change your Keybinds to fit your liking."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_w1xer"]
+script = ExtResource("2_njuek")
+option = "Downscroll"
+reference = "downscroll"
+description = "If notes should come from upwards to downwards."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_kohrc"]
+script = ExtResource("2_njuek")
+option = "Ghost Tapping"
+reference = "ghost_tapping"
+description = "Allows you to press keys without missing while no notes are there to be hit."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_ov6xb"]
+script = ExtResource("2_njuek")
+option = "Centered Receptors"
+reference = "centered_receptors"
+description = "Centers your Receptors to the Screen."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_b41hv"]
+script = ExtResource("2_njuek")
+option = "Break Judgement"
+reference = "combo_break_judgement"
+description = "Set which judgement should cause a \"Combo Break\", Miss means disabled"
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String](["good", "bad", "shit", "miss"])
+
+[sub_resource type="Resource" id="Resource_tbul6"]
+script = ExtResource("2_njuek")
+option = "Timing Preset"
+reference = "timing_preset"
+description = "Define your timing preset."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String](["funkin", "etterna", "feather", "leather", "freestyle"])
+
+[sub_resource type="Resource" id="Resource_orj44"]
+script = ExtResource("2_njuek")
+option = "Song Pitch"
+reference = "song_pitch"
+description = "What should the song speed and pitch be?"
+num_min = 0.5
+num_max = 3.1
+num_factor = 0.05
+display_mode = "%.2f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_ku86f"]
+script = ExtResource("2_njuek")
+option = "Scroll Speed"
+reference = "note_speed"
+description = "Define the speed of your notes, 0 for the default chart speed."
+num_min = 0.0
+num_max = 10.1
+num_factor = 0.1
+display_mode = "%.2f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_gm7m2"]
+script = ExtResource("2_njuek")
+option = "Colored Health Bar"
+reference = "character_healthcolors"
+description = "If the healthbar should be colored with the character's health color"
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_245nv"]
+script = ExtResource("2_njuek")
+option = "Combo Stacking"
+reference = "combo_stacking"
+description = "If judgement and combo objects should stack on top of each other."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_p6snu"]
+script = ExtResource("2_njuek")
+option = "CPU Receptors"
+reference = "cpu_receptors"
+description = "If the CPU Receptors should be visible during gameplay."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_ihqh8"]
+script = ExtResource("2_njuek")
+option = "Note Splashes"
+reference = "note_splashes"
+description = "If the firework effect when hitting \"Sick\" ratings should be shown during gameplay."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_wywfl"]
+script = ExtResource("2_njuek")
+option = "Note Quantization"
+reference = "note_quantization"
+description = "If notes should be colored according to the song beat."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_pwoif"]
+script = ExtResource("2_njuek")
+option = "Judgement Counter"
+reference = "judgement_counter"
+description = "If a counter showing how many judgements you've gotten should be visible during gameplay"
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_k0vys"]
+script = ExtResource("2_njuek")
+option = "Hide Score"
+reference = "hide_score"
+description = "Hides the \"Score\" text from the UI."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_qlab2"]
+script = ExtResource("2_njuek")
+option = "Show Keybinds on Pause"
+reference = "show_keybinds"
+description = "If your keybinds should be shown when pausing the game."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_jojc1"]
+script = ExtResource("2_njuek")
+option = "Opaque Hold Notes"
+reference = "opaque_sustains"
+description = "Makes the Hold Notes completely opaque insetad os slightly transparent."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_2wua3"]
+script = ExtResource("2_njuek")
+option = "Flashing Menus"
+reference = "flashing_lights"
+description = "If there should be flashing lights on menus."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_ny7kb"]
+script = ExtResource("2_njuek")
+option = "Stage Visibility"
+reference = "stage_visibility"
+description = "Darkens Stage and Characters during gameplay."
+num_min = 0.0
+num_max = 101.0
+num_factor = 1.0
+display_mode = "%.0f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_yowwo"]
+script = ExtResource("2_njuek")
+option = "Framerate Cap"
+reference = "framerate"
+description = "Define your FPS Cap, let it be 0 for uncapping it"
+num_min = 0.0
+num_max = 245.0
+num_factor = 5.0
+display_mode = "%.0f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_xg6ek"]
+script = ExtResource("2_njuek")
+option = "V-Sync"
+reference = "vsync"
+description = "If framerate should be tied to your monitor's refresh rate."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Animation" id="Animation_rq4c0"]
+resource_name = "false"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Check Box unselected"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n6l1y"]
+resource_name = "true"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Check Box selecting animation"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5, -42)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 10]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yby8o"]
+_data = {
+"false": SubResource("Animation_rq4c0"),
+"true": SubResource("Animation_n6l1y")
+}
+
+[node name="OptionsMenu" type="Node2D"]
+script = ExtResource("1_4o4po")
+gameplay_options = Array[ExtResource("2_njuek")]([SubResource("Resource_lvqcm"), SubResource("Resource_w1xer"), SubResource("Resource_kohrc"), SubResource("Resource_ov6xb")])
+behavior_options = Array[ExtResource("2_njuek")]([SubResource("Resource_b41hv"), SubResource("Resource_tbul6"), SubResource("Resource_orj44"), SubResource("Resource_ku86f")])
+visual_options = Array[ExtResource("2_njuek")]([SubResource("Resource_gm7m2"), SubResource("Resource_245nv"), SubResource("Resource_p6snu"), SubResource("Resource_ihqh8"), SubResource("Resource_wywfl"), SubResource("Resource_pwoif"), SubResource("Resource_k0vys"), SubResource("Resource_qlab2")])
+accessibility_options = Array[ExtResource("2_njuek")]([SubResource("Resource_jojc1"), SubResource("Resource_2wua3"), SubResource("Resource_ny7kb"), SubResource("Resource_yowwo"), SubResource("Resource_xg6ek")])
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.431373, 0.431373, 0.835294, 1)
+position = Vector2(643, 365)
+texture = ExtResource("3_ghgcm")
+
+[node name="Alphabet_Template" type="ReferenceRect" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_j1obe")
+bold = true
+
+[node name="Attachment_Templetes" type="Node" parent="."]
+
+[node name="Checkbox" type="AnimatedSprite2D" parent="Attachment_Templetes"]
+visible = false
+scale = Vector2(0.75, 0.75)
+sprite_frames = ExtResource("5_rcshy")
+animation = &"Check Box unselected"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Attachment_Templetes/Checkbox"]
+libraries = {
+"": SubResource("AnimationLibrary_yby8o")
+}
+
+[node name="Options_Node" type="Node2D" parent="."]
+
+[node name="Attachments_Node" type="Node2D" parent="."]
+
+[node name="Category_Letter" type="ReferenceRect" parent="."]
+offset_left = 56.0
+offset_top = 68.0
+offset_right = 96.0
+offset_bottom = 108.0
+script = ExtResource("4_j1obe")
+bold = true
+letter_size = 0.7
+text = "Category Name"
+
+[node name="Description_Box" type="ColorRect" parent="."]
+visible = false
+offset_left = 101.0
+offset_top = 597.0
+offset_right = 1117.0
+offset_bottom = 708.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Descrption_Text" type="Label" parent="Description_Box"]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 1016.0
+offset_bottom = 112.0
+theme_override_fonts/font = ExtResource("6_5vdng")
+theme_override_font_sizes/font_size = 32
+text = "blah blah coolswag"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

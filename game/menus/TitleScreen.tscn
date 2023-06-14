@@ -1,0 +1,142 @@
+[gd_scene load_steps=10 format=3 uid="uid://by2kpchpcoui8"]
+
+[ext_resource type="Script" path="res://game/menus/TitleScreen.gd" id="1_2toub"]
+[ext_resource type="Texture2D" uid="uid://wmxychywwa2y" path="res://assets/images/menus/titleScreen/newgrounds_logo.png" id="3_3redo"]
+[ext_resource type="Texture2D" uid="uid://cssentfvtrlm" path="res://assets/images/menus/titleScreen/logo.png" id="4_gcenw"]
+[ext_resource type="SpriteFrames" path="res://assets/images/menus/titleScreen/gfDanceTitle.res" id="4_thr7w"]
+[ext_resource type="SpriteFrames" path="res://assets/images/menus/titleScreen/titleEnter.res" id="6_n8rsu"]
+[ext_resource type="PackedScene" uid="uid://bj1tccjq03ffb" path="res://game/menus/data/Alphabet.tscn" id="7_5r3p4"]
+
+[sub_resource type="Animation" id="Animation_g28pu"]
+resource_name = "danceLeft"
+length = 0.80001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"gfDance"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_nmu44"]
+resource_name = "danceLeft"
+length = 0.80001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [15, 16, 17, 18, 19, 20, 21, 22]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"gfDance"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ylwpu"]
+_data = {
+"danceLeft": SubResource("Animation_g28pu"),
+"danceRight": SubResource("Animation_nmu44")
+}
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource("1_2toub")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0, 0, 0, 1)
+
+[node name="TitleTexts" type="CanvasLayer" parent="."]
+
+[node name="NewgroundsSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(608, 512)
+texture = ExtResource("3_3redo")
+
+[node name="Girlfriend" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(904, 360)
+sprite_frames = ExtResource("4_thr7w")
+animation = &"gfDance"
+frame = 12
+
+[node name="Animation" type="AnimationPlayer" parent="Girlfriend"]
+speed_scale = 2.0
+libraries = {
+"": SubResource("AnimationLibrary_ylwpu")
+}
+
+[node name="GameLogo" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(352, 264)
+texture = ExtResource("4_gcenw")
+
+[node name="Title Enter" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(864, 624)
+sprite_frames = ExtResource("6_n8rsu")
+animation = &"Press Enter to Begin"
+
+[node name="Foreground" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Alphabet_Template" parent="." instance=ExtResource("7_5r3p4")]
+visible = false
+bold = true
