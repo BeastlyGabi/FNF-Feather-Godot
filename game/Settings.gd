@@ -14,6 +14,8 @@ var _prefs:Dictionary = {
 	"character_healthcolors": true,
 	"show_keybinds": true,
 	
+	"hide_accuracy": false,
+	
 	"stage_visibility": 100,
 	
 	"flashing_lights": true,

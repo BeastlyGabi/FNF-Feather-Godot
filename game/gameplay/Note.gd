@@ -77,7 +77,7 @@ func _process(delta:float):
 		end.flip_v = downscroll_multiplier < 0
 		end.modulate.a = hold.modulate.a
 	
-	var safe_threshold:float = Judgement.get_lowest() / (1.35 * Conductor.pitch_scale)
+	var safe_threshold:float = Judgement.get_lowest() / (1.25 * Conductor.pitch_scale)
 	can_be_hit = time > Conductor.position - safe_threshold and time < Conductor.position + safe_threshold
 	was_too_late = (time < Conductor.position - safe_threshold and not was_good_hit)
 

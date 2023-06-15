@@ -33,6 +33,11 @@ func _process(_delta:float):
 			var is_up:bool = Input.is_action_just_pressed("ui_up")
 			update_selection(-1 if is_up else 1)
 		
+		if Input.is_key_label_pressed(KEY_7):
+			var mod_menu = load("res://game/menus/ModsMenu.tscn")
+			get_tree().paused = true
+			add_child(mod_menu.instantiate())
+		
 		if Input.is_action_just_pressed("ui_accept"):
 			is_input_locked = true
 			
@@ -54,6 +59,11 @@ func _process(_delta:float):
 			else:
 				await get_tree().create_timer(1.0).timeout
 				_change_scene()
+		
+		if Input.is_action_just_pressed("ui_cancel"):
+			is_input_locked = true
+			SoundHelper.play_sound("res://assets/audio/sfx/cancelMenu.ogg")
+			Game.switch_scene("menus/TitleScreen")
 
 func update_selection(new_selection:int = 0) -> void:
 	cur_selection = wrapi(cur_selection + new_selection, 0, buttons.get_child_count())

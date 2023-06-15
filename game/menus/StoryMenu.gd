@@ -72,6 +72,11 @@ func _process(delta:float):
 		var is_left_p:bool = Input.is_action_just_pressed("ui_left")
 		update_difficulty(-1 if is_left_p else 1)
 	
+	if Input.is_key_label_pressed(KEY_7):
+		var mod_menu = load("res://game/menus/ModsMenu.tscn")
+		get_tree().paused = true
+		add_child(mod_menu.instantiate())
+	
 	if Input.is_action_just_pressed("ui_accept"):
 		var songs:Array[FreeplaySong] = Game.game_weeks[cur_selection].songs
 		

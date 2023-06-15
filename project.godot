@@ -26,6 +26,7 @@ Conductor="*res://game/resources/Conductor.gd"
 Overlay="*res://game/autoload/Overlay.tscn"
 VolumeTray="*res://game/autoload/VolumeTray.tscn"
 Song="*res://game/autoload/Song.gd"
+ModLoader="*res://game/autoload/ModLoader.gd"
 
 [display]
 

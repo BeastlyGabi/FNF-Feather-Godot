@@ -74,7 +74,7 @@ func _ready():
 	load_scripts_at("res://assets/data/scripts/global")
 	load_scripts_at("res://assets/data/scripts/songs/" + SONG.name)
 	
-	var stage_path:String = "res://game/scenes/gameplay/stages/" + SONG.stage + ".tscn"
+	var stage_path:String = "res://game/gameplay/stages/" + SONG.stage + ".tscn"
 	if ResourceLoader.exists(stage_path):
 		stage = load(stage_path).instantiate()
 	else:
@@ -82,7 +82,7 @@ func _ready():
 	
 	var opponent_is_spectator:bool = SONG.characters[1] == SONG.characters[2]
 	
-	var character_path:String = "res://game/scenes/gameplay/characters/"
+	var character_path:String = "res://game/gameplay/characters/"
 	if ResourceLoader.exists(character_path + SONG.characters[1] + ".tscn"):
 		opponent = load(character_path + SONG.characters[1] + ".tscn").instantiate()
 	else:
@@ -289,7 +289,7 @@ func _process(delta:float):
 	
 	# Update the UI elements and such
 	for i in [icon_P1, icon_P2]:
-		var i_lerp:float = lerpf(i.scale.x, 0.9, 0.15)
+		var i_lerp:float = lerpf(i.scale.x, 0.9, 0.05)
 		i.scale.x = i_lerp
 		i.scale.y = i_lerp
 	
@@ -363,23 +363,34 @@ var score_separator:String = " / "
 
 func update_score_text():
 	var rank_string:String = rank_name
-	var score_final:String = "" if Settings.get_setting("hide_score") else \
-	"SCORE: " + "%s" % score + score_separator
+	var score_final:String = ""
 	
 	var misses_name:String = "MISSES"
 	var miss_count:int = misses
 	
 	if not Settings.get_setting("combo_break_judgement") == "miss":
-		misses_name = "BREAKS"
+		misses_name = "COMBO BREAKS"
 		miss_count = breaks
 	
-	score_final += misses_name + ": " + "%s" % miss_count
-	if not clear_rank == null and not clear_rank == "":
-		score_final += " [" + clear_rank + "]"
+	score_final = ""
 	
-	score_final += score_separator + "RANK: " + rank_name
-	if total_notes_hit > 0:
-		score_final += " [" + "%.2f" % (accuracy * 100 / 100) + "%" + "]"
+	if not Settings.get_setting("hide_accuracy"):
+		if not Settings.get_setting("hide_score"):
+			score_final += "SCORE: " + "%s" % score + score_separator
+		
+		score_final += misses_name + ": " + "%s" % miss_count
+		if not clear_rank == null and not clear_rank == "":
+			score_final += " [" + clear_rank + "]"
+		
+		score_final += score_separator + "RANK: " + rank_name
+		if total_notes_hit > 0:
+			score_final += " [" + "%.2f" % (accuracy * 100 / 100) + "%" + "]"
+	
+	else:
+		if not Settings.get_setting("hide_score"):
+			score_final += "SCORE: " + str(score) + score_separator
+		
+		score_final += misses_name + ": " + str(miss_count)
 
 	score_text.text = score_final
 
@@ -525,9 +536,7 @@ func _input(event:InputEvent):
 			return
 		
 		keys_held[dir] = Input.is_action_pressed("note_" + Game.note_dirs[dir].to_lower())
-
-		var receptor:Receptor = player_strums.receptors.get_child(dir)
-
+		
 		var hit_notes:Array[Note] = []
 		# cool thanks swordcube
 		for note in player_strums.notes.get_children().filter(func(note:Note):
@@ -540,21 +549,18 @@ func _input(event:InputEvent):
 		if Input.is_action_just_pressed("note_" + Game.note_dirs[dir].to_lower()):
 			
 			if hit_notes.size() > 0:
-				var hit_note = hit_notes[0]
+				note_hit(hit_notes[0])
 				
 				# handles stacked notes
 				if hit_notes.size() > 1:
-					
 					for i in hit_notes.size():
 						if i == 0: continue
 						
 						var bad_note:Note = hit_notes[i]
-						if absf(bad_note.time - hit_note.time) <= 5.0 \
-							and hit_note.direction == dir:
+						if absf(bad_note.time - hit_notes[0].time) <= 5.0 \
+							and hit_notes[0].direction == dir:
 								bad_note.queue_free()
 						break
-				
-				note_hit(hit_note)
 			else:
 				if not Settings.get_setting("ghost_tapping"):
 					ghost_miss(dir)
@@ -587,8 +593,7 @@ var total_notes_hit:int = 0
 var accuracy:float = 0.00:
 	get:
 		if notes_accuracy <= 0.00: return 0.00
-		return (notes_accuracy / (total_notes_hit + misses))
-
+		return (notes_accuracy / (total_notes_hit + breaks))
 
 var judgements_gotten:Dictionary = {}
 
@@ -650,7 +655,9 @@ func note_hit(note:Note):
 		if note_judgement.name == Settings.get_setting("combo_break_judgement"):
 			if player.miss_animations.size() > 0:
 				player.play_anim(player.miss_animations[note.direction], true)
-				health -= 0.875
+				health -= 0.875 * damage_multiplier
+		
+		damage_multiplier = 0.0
 		
 		if not Settings.get_setting("combo_stacking"):
 			for c in combo_group.get_children():
@@ -700,13 +707,17 @@ func note_miss(note:Note, play_anim:bool = true):
 	
 	ghost_miss(note.direction, play_anim)
 
+var damage_multiplier:float = 0.0
+
 func ghost_miss(direction:int, play_anim:bool = true):
 	for i in script_stack.size():
 		script_stack[i].ghost_miss(direction)
 	
 	misses += 1
-	health -= 0.875
+	health -= 0.875 * damage_multiplier
 	score -= 50
+	
+	damage_multiplier += 0.25
 	
 	if play_anim and player.miss_animations.size() > 0:
 		player.play_anim(player.miss_animations[direction], true)

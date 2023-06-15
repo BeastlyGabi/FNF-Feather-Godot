@@ -36,7 +36,6 @@ static func load_chart(song_name:String, difficulty:String = "normal") -> Chart:
 	if "gfVersion" in chart_json and not chart_json.gfVersion == null: my_chart.characters[2] = chart_json.gfVersion
 	if "stage" in chart_json and not chart_json.stage == null: my_chart.stage = chart_json.stage
 	
-	
 	if "noteStyle" in chart_json and not chart_json.noteStyle == null: my_chart.song_style = chart_json.noteStyle
 	if "assetModifier" in chart_json and not chart_json.assetModifier == null: my_chart.song_style = chart_json.assetModifier
 	if "assetStyle" in chart_json and not chart_json.assetStyle == null: my_chart.song_style = chart_json.assetStyle

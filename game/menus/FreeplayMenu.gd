@@ -49,6 +49,11 @@ func _process(delta):
 			var is_left:bool = Input.is_action_just_pressed("ui_left")
 			update_difficulty(-1 if is_left else 1)
 		
+		if Input.is_key_label_pressed(KEY_7):
+			var mod_menu = load("res://game/menus/ModsMenu.tscn")
+			get_tree().paused = true
+			add_child(mod_menu.instantiate())
+		
 		if Input.is_action_just_pressed("ui_accept"):
 			is_input_locked = true
 			

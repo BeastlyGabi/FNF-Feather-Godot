@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://0t5tihq1487y"]
+[gd_scene load_steps=32 format=3 uid="uid://0t5tihq1487y"]
 
 [ext_resource type="Script" path="res://game/menus/OptionsMenu.gd" id="1_4o4po"]
 [ext_resource type="Script" path="res://game/menus/options/GameOption.gd" id="2_njuek"]
@@ -172,6 +172,17 @@ num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
+[sub_resource type="Resource" id="Resource_ae5cb"]
+script = ExtResource("2_njuek")
+option = "Hide Accuracy"
+reference = "hide_accuracy"
+description = "If accuracy should be hidden on the UI."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
 [sub_resource type="Resource" id="Resource_qlab2"]
 script = ExtResource("2_njuek")
 option = "Show Keybinds on Pause"
@@ -314,7 +325,7 @@ _data = {
 script = ExtResource("1_4o4po")
 gameplay_options = Array[ExtResource("2_njuek")]([SubResource("Resource_lvqcm"), SubResource("Resource_w1xer"), SubResource("Resource_kohrc"), SubResource("Resource_ov6xb")])
 behavior_options = Array[ExtResource("2_njuek")]([SubResource("Resource_b41hv"), SubResource("Resource_tbul6"), SubResource("Resource_orj44"), SubResource("Resource_ku86f")])
-visual_options = Array[ExtResource("2_njuek")]([SubResource("Resource_gm7m2"), SubResource("Resource_245nv"), SubResource("Resource_p6snu"), SubResource("Resource_ihqh8"), SubResource("Resource_wywfl"), SubResource("Resource_pwoif"), SubResource("Resource_k0vys"), SubResource("Resource_qlab2")])
+visual_options = Array[ExtResource("2_njuek")]([SubResource("Resource_gm7m2"), SubResource("Resource_245nv"), SubResource("Resource_p6snu"), SubResource("Resource_ihqh8"), SubResource("Resource_wywfl"), SubResource("Resource_pwoif"), SubResource("Resource_k0vys"), SubResource("Resource_ae5cb"), SubResource("Resource_qlab2")])
 accessibility_options = Array[ExtResource("2_njuek")]([SubResource("Resource_jojc1"), SubResource("Resource_2wua3"), SubResource("Resource_ny7kb"), SubResource("Resource_yowwo"), SubResource("Resource_xg6ek")])
 
 [node name="Background" type="Sprite2D" parent="."]
