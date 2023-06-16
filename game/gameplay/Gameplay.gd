@@ -59,8 +59,8 @@ func _init():
 	
 	SONG = Chart.load_chart(Song.data["folder"], Song.data["difficulty"])
 	if not SONG == null:
-		note_list = SONG.notes
-		event_list = SONG.events
+		note_list = SONG.notes.duplicate()
+		event_list = SONG.events.duplicate()
 		Song.current = SONG
 
 func load_scripts_at(path:String):
@@ -261,10 +261,7 @@ func reset_countdown_timer():
 
 func start_song():
 	starting_song = false
-	
-	for sound in sounds.get_children():
-		if not sound.stream == null:
-			sound.play(0.0)
+	play_music(0.0)
 
 var health_bar_width:float:
 	get: return health_bar.texture_progress.get_size().x
@@ -489,6 +486,11 @@ func trigger_event(event:ChartEvent):
 			
 			var offset:Vector2 = Vector2(char.camera_offset.x + stage_offset.x, char.camera_offset.y + stage_offset.y)
 			camera.position = Vector2(char.get_camera_midpoint().x + offset.x, char.get_camera_midpoint().y + offset.y)
+
+func play_music(time:float = 0.0):
+	for sound in sounds.get_children():
+		if not sound.stream == null:
+			sound.play(time)
 
 func stop_music():
 	for sound in sounds.get_children():
