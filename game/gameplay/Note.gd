@@ -27,6 +27,12 @@ var _sustain_loaded:bool = false
 @onready var hold:Line2D = $Hold
 @onready var end:Sprite2D = $End
 
+var arrow_width:float:
+	get:
+		if arrow != null:
+			return arrow.sprite_frames.get_frame_texture(arrow.animation, 0).get_width()
+		return 0.0
+
 var note_colors:Array[Color] = [
 	Color8(194, 75, 153), # PURPLE
 	Color8(0, 255, 255), # BLUE

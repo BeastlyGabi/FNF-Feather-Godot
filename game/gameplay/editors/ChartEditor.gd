@@ -7,6 +7,7 @@ var NOTE_TYPES:Dictionary = {
 
 var _SONG:Chart
 var current_zoom:float = 1.0
+var max_keys:int = 8
 
 func _ready():
 	SoundHelper.stop_music()
@@ -21,6 +22,8 @@ func _ready():
 	
 	_load_audio()
 	render_notes()
+	
+	#grid.size.y = _crochet_from_length()
 
 func _process(_delta:float):
 	if not inst == null and inst.playing:
@@ -38,6 +41,7 @@ func _input(event:InputEvent):
 						else:
 							sound.stop()
 				KEY_ESCAPE: Game.switch_scene("gameplay/Gameplay")
+				KEY_R: Game.reset_scene()
 
 func _exit_tree():
 	Overlay.visible = true
@@ -76,19 +80,21 @@ func _load_audio():
 				sounds.add_child(new_music)
 
 @onready var grid:TextureRect = $Grid_Layer/Grid
-@onready var rendered_notes:Control = $Grid_Layer/Rendered_Notes
-var grid_size:int = 40
+@onready var rendered_notes:Node2D = $Grid_Layer/Rendered_Notes
 
 func _update_grid_layer(): pass
 
 func _generate_notes(_time:float, _direction:int, _hold_length:float, _type:String = "default"):
 	var my_note:Note = NOTE_TYPES["default"].instantiate().set_note(_time, _direction, _type)
-	my_note.hold_length = _hold_length
+	#my_note.hold_length = _hold_length
 	
 	my_note.scale = Vector2(0.45, 0.45)
-	my_note.position.y = floor(y_from_time(_time))
-	
 	rendered_notes.add_child(my_note)
+	
+	var base_position:float = grid.position.x + grid.size.x / 2.0
+	my_note.position.x = grid.position.x + grid.size.x / 8.0 * my_note.direction
+	my_note.position.x += my_note.arrow_width * 0.15
+	my_note.position.y = y_from_time(_time)
 
 func render_notes():
 	while rendered_notes.get_child_count() > 0:
@@ -99,6 +105,12 @@ func render_notes():
 		var note:ChartNote = _SONG.notes[i]
 		_generate_notes(note.time, note.direction % _SONG.key_amount, note.length)
 
+func side_index(index:int, strum:int) -> int:
+	var true_index:int = index
+	if strum < 0: return true_index
+	for i in strum: true_index = (index + 4) % 8
+	return true_index
+
 func y_from_time(time:float) -> float:
 	return remap(time, 0, inst.stream.get_length(), 0, _crochet_from_length())
 
@@ -106,7 +118,7 @@ func time_from_y(y_pos:float) -> float:
 	return remap(y_pos, 0, _crochet_from_length(), 0, inst.stream.get_length())
 
 func _crochet_from_length() -> float:
-	return (inst.stream.get_length() / Conductor.step_crochet) * grid_size
+	return (inst.stream.get_length() / Conductor.step_crochet) * 30
 
 @onready var info_text:Label = $UI_Layer/Info_Text
 

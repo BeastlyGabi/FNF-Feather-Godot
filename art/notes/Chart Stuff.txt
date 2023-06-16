@@ -1,0 +1,44 @@
+------------------ STUFF TO ADD LATER
+
+Chart Snappings: [4, 8, 12, 16, 20, 24, 32, 48, 64]
+
+When a note is selected, it blinks
+
+When you hover over the grid, a "Ghost Note" shows up
+pointing to the respective direction of
+the current mouse position
+
+------------------ KEYBINDS
+
+> UI:
+	SPACE : Play/Pause Music
+
+	W Key : Navigate through grid (Upwards)
+	S Key : Navigate through grid (Downwards)
+
+	A Key: Jump to the Previous Section, if there are no sections left, go to the last one
+	D Key: Jump to the Next Section, if there are no sections left, go back to the first one
+
+	Left/Right Key: Change Snapping
+
+	Escape: Exit Charter into Test Mode (same as selecting "Play > Play from the Start" on the top bar, autosaves if pressed)
+	Backspace: Exit Charter into the Menus (autosaves if pressed)
+
+> NOTES
+	1 through 4 : Add/Remove Player Notes in current strumline step
+	5 through 8 : Add/Remove Opponent Notes in current strumline step
+
+	Q Key : Decrease Sustain Length (-0.25)
+	E Key : Increase Sustain Length (+0.25)
+
+------------------ MOUSE BINDS
+
+> UI
+	[Scroll Wheel]: Navigate through grid
+	[Ctrl + Scroll Wheel]: Increase/Decrease Grid Zoom
+
+> NOTES
+	[Left Click]: Select the Note
+	[Scroll Wheel]: Increase Sustain Length (if note is selected)
+	[Shift + Left Click / Delete Key]: Delete the Note
+	[Right Click]: Open "Note Properties" tab

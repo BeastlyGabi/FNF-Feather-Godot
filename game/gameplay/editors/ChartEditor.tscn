@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dsyq76fpuyo7g"]
+[gd_scene load_steps=7 format=3 uid="uid://dsyq76fpuyo7g"]
 
 [ext_resource type="Script" path="res://game/gameplay/editors/ChartEditor.gd" id="1_65usa"]
 [ext_resource type="Texture2D" uid="uid://mfo5xdgme5ob" path="res://assets/images/menus/menuDesat.png" id="2_4i8iv"]
 [ext_resource type="Texture2D" uid="uid://dgd3qgsia4c7t" path="res://assets/images/menus/chartEditor/tiles.png" id="3_bcqem"]
 [ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="4_7g1hf"]
-[ext_resource type="PackedScene" uid="uid://c0k561r0fvtr5" path="res://game/gameplay/notes/default.tscn" id="4_pifol"]
 
 [sub_resource type="Gradient" id="Gradient_usmy1"]
 colors = PackedColorArray(0.619608, 0.619608, 1, 0.137255, 0.858824, 0.858824, 0.658824, 0.137255)
@@ -42,26 +41,17 @@ texture = SubResource("GradientTexture2D_s8de3")
 modulate = Color(0.603922, 0.639216, 0.968627, 1)
 offset_left = 410.0
 offset_right = 794.0
-offset_bottom = 720.0
+offset_bottom = 768.0
 texture = ExtResource("3_bcqem")
 stretch_mode = 1
 
 [node name="Line_Separator" type="ColorRect" parent="Grid_Layer"]
 offset_left = 602.0
-offset_top = 3.0
 offset_right = 603.0
-offset_bottom = 720.0
+offset_bottom = 768.0
 color = Color(0.639216, 0.666667, 0.968627, 1)
 
-[node name="Rendered_Notes" type="Control" parent="Grid_Layer"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 410.0
-offset_right = 410.0
-
-[node name="default" parent="Grid_Layer/Rendered_Notes" instance=ExtResource("4_pifol")]
-position = Vector2(24, 71)
-scale = Vector2(0.45, 0.45)
+[node name="Rendered_Notes" type="Node2D" parent="Grid_Layer"]
 
 [node name="Strum_LIne" type="ColorRect" parent="Grid_Layer"]
 offset_left = 410.0
