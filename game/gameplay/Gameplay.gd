@@ -40,7 +40,7 @@ var event_list:Array[ChartEvent] = []
 @onready var icon_P1:PlumaSprite2D = $UI/Health_Bar/Player_Icon
 @onready var icon_P2:PlumaSprite2D = $UI/Health_Bar/Cpu_Icon
 
-@onready var strum_lines:Control = $UI/Strum_Lines
+@onready var strum_lines:Node2D = $UI/Strum_Lines
 @onready var player_strums:StrumLine = $UI/Strum_Lines/Player
 @onready var cpu_strums:StrumLine = $UI/Strum_Lines/CPU
 
