@@ -86,7 +86,8 @@ func _update_grid_layer(): pass
 
 func _generate_notes(_time:float, _direction:int, _hold_length:float, _type:String = "default"):
 	var my_note:Note = NOTE_TYPES["default"].instantiate().set_note(_time, _direction, _type)
-	#my_note.hold_length = _hold_length
+	my_note.in_edit = true
+	my_note.hold_length = _hold_length
 	
 	my_note.scale = Vector2(0.45, 0.45)
 	rendered_notes.add_child(my_note)
