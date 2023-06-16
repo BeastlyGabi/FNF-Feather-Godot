@@ -28,7 +28,7 @@ func _process(delta):
 	if SoundHelper.music.volume_db < 0.5:
 		SoundHelper.music.volume_db += 80.0 * delta
 	
-	score_lerp = lerp(score_lerp, float(score_final), 0.4)
+	score_lerp = lerp(score_lerp, float(score_final), 0.1)
 	score_text.text = "PERSONAL BEST:" + str(roundf(score_lerp))
 	_position_highscore()
 	
