@@ -37,8 +37,8 @@ var event_list:Array[ChartEvent] = []
 @onready var counter_text:Label = $UI/Judgement_Counter
 @onready var health_bar:TextureProgressBar = $UI/Health_Bar
 
-@onready var icon_P1:FFSprite2D = $UI/Health_Bar/Player_Icon
-@onready var icon_P2:FFSprite2D = $UI/Health_Bar/Cpu_Icon
+@onready var icon_P1:PlumaSprite2D = $UI/Health_Bar/Player_Icon
+@onready var icon_P2:PlumaSprite2D = $UI/Health_Bar/Cpu_Icon
 
 @onready var strum_lines:Node2D = $UI/Strum_Lines
 @onready var player_strums:StrumLine = $UI/Strum_Lines/Player
@@ -52,7 +52,7 @@ var opponent:Character
 var player:Character
 
 var valid_score:bool = true
-var script_stack:Array[FFScript] = []
+var script_stack:Array[PlumaScript] = []
 
 func _init():
 	super._init()
@@ -66,7 +66,7 @@ func _init():
 func load_scripts_at(path:String):
 	for file in DirAccess.get_files_at(path):
 		if file.ends_with(".gd") or file.ends_with(".gdscript"):
-			var script:FFScript = FFScript.load_script(path + "/" + file, self)
+			var script:PlumaScript = PlumaScript.load_script(path + "/" + file, self)
 			if not script_stack.has(script):
 				script_stack.append(script)
 
@@ -230,7 +230,7 @@ func process_countdown(reset:bool = false):
 	var intro_images:Array[String] = ["prepare", "ready", "set", "go"]
 	var intro_sounds:Array[String] = ["intro3", "intro2", "intro1", "introGo"]
 	
-	var countdown_sprite:FFSprite2D = $UI/Countdown_Template.duplicate()
+	var countdown_sprite:PlumaSprite2D = $UI/Countdown_Template.duplicate()
 	countdown_sprite.texture = load("res://assets/images/ui/countdown/" + SONG.song_style + "/" + intro_images[count_tick] + ".png")
 	countdown_sprite.visible = true
 	countdown_sprite.modulate.a = 1.0
@@ -280,7 +280,6 @@ func _process(delta:float):
 	else:
 		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 			Conductor.position = inst.get_playback_position() * 1000.0
-	
 	
 	if (player.hold_timer >= Conductor.step_crochet * player.sing_duration * 0.0011
 		and not keys_held.has(true)):
@@ -337,7 +336,7 @@ func process_notes():
 			note_type = "quant"
 		
 		var new_note:Note = NOTE_TYPES[note_type].instantiate() \
-		.set_note(note.time - Conductor.note_offset, note.direction % 4, note_type)
+		.set_note(note.time - Conductor.note_offset, note.direction % SONG.key_amount, note_type)
 		
 		new_note.speed = note_speed
 		new_note.hold_length = note.length
@@ -745,7 +744,7 @@ func decrease_combo(missing:bool, force:bool = false):
 	if missing: combo -= 1
 
 func display_judgement(judge:String, color = null):
-	var judgement:FFSprite2D = $Templates/Judgement.duplicate()
+	var judgement:PlumaSprite2D = $Templates/Judgement.duplicate()
 	judgement.texture = load("res://assets/images/ui/ratings/" + SONG.song_style + "/" + judge + ".png")
 	var og_scale:Vector2 = judgement.scale
 	
@@ -778,7 +777,7 @@ func display_combo(color = null):
 	var numbers:PackedStringArray = combo_string.split("")
 	
 	for i in numbers.size():
-		var combo_num:FFSprite2D = $Templates/Combo_Number.duplicate()
+		var combo_num:PlumaSprite2D = $Templates/Combo_Number.duplicate()
 		combo_num.texture = load("res://assets/images/ui/combo/" + SONG.song_style + "/num" + numbers[i] + ".png")
 		var og_scale:Vector2 = combo_num.scale
 		
@@ -816,7 +815,7 @@ func display_combo(color = null):
 	display_combo_sprite(color)
 
 func display_combo_sprite(color = null):
-	var combo_label:FFSprite2D = $Templates/Combo_Label.duplicate()
+	var combo_label:PlumaSprite2D = $Templates/Combo_Label.duplicate()
 	combo_label.texture = load("res://assets/images/ui/ratings/" + SONG.song_style + "/combo.png")
 	var og_scale:Vector2 = combo_label.scale
 	

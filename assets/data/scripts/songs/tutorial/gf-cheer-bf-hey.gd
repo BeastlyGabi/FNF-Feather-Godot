@@ -1,4 +1,4 @@
-extends FFScript
+extends PlumaScript
 
 func on_beat(beat:int):
 	if beat % 16 == 15 and beat > 16 && beat < 48:

@@ -9,7 +9,7 @@
 [ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="5_02sbc"]
 [ext_resource type="Texture2D" uid="uid://cn7nkjtmlqys1" path="res://assets/images/ui/ratings/normal/combo.png" id="5_8biyu"]
 [ext_resource type="Texture2D" uid="uid://cfswoa07evgxl" path="res://assets/images/ui/countdown/normal/go.png" id="8_6gggy"]
-[ext_resource type="Script" path="res://game/resources/FFSprite2D.gd" id="9_7flc6"]
+[ext_resource type="Script" path="res://game/resources/PlumaSprite2D.gd" id="9_7flc6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jxydb"]
 line_spacing = 8.0

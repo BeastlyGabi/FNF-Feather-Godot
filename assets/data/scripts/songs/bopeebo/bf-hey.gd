@@ -1,4 +1,4 @@
-extends FFScript
+extends PlumaScript
 
 func on_beat(beat:int):
 	if beat % 8 == 7 and game.player.anim_player.has_animation("hey"):

@@ -10,6 +10,7 @@ var hold_length:float = 0.0
 var speed:float = 1.0
 
 var splash:bool = false
+var in_edit:bool = false
 
 var is_hold:bool:
 	get: return hold_length > 0.0
@@ -52,7 +53,7 @@ func set_note(_time:float, _dir:int, _type:String = "default"):
 
 func _ready():
 	position = Vector2(-INF, INF)
-	arrow.play(Game.note_dirs[direction] + " note")	
+	arrow.play(Game.note_dirs[direction] + " note")
 	if is_hold: _load_sustain()
 	
 	if type == "default":
@@ -64,22 +65,23 @@ func _ready():
 			node.material.set_shader_parameter("color", note_colors[direction])
 
 func _process(delta:float):
-	if is_hold and _sustain_loaded:
-		var downscroll_multiplier = -1 if Settings.get_setting("downscroll") else 1
-		var sustain_scale:float = ((hold_length / 2.5 / Conductor.pitch_scale) * ((speed) / scale.y))
+	if not in_edit:
+		if is_hold and _sustain_loaded:
+			var downscroll_multiplier = -1 if Settings.get_setting("downscroll") else 1
+			var sustain_scale:float = ((hold_length / 2.5 / Conductor.pitch_scale) * ((speed) / scale.y))
+			
+			hold.points = [Vector2.ZERO, Vector2(0, sustain_scale)]
+			var last_point = hold.points.size()-1
+			var end_point:float = (hold.points[last_point].y + ((end.texture.get_height() \
+				* end.scale.y) / 2.0)) * downscroll_multiplier
+			
+			end.position = Vector2(hold.points[last_point].x, end_point + 24.0)
+			end.flip_v = downscroll_multiplier < 0
+			end.modulate.a = hold.modulate.a
 		
-		hold.points = [Vector2.ZERO, Vector2(0, sustain_scale)]
-		var last_point = hold.points.size()-1
-		var end_point:float = (hold.points[last_point].y + ((end.texture.get_height() \
-			* end.scale.y) / 2.0)) * downscroll_multiplier
-		
-		end.position = Vector2(hold.points[last_point].x, end_point + 24.0)
-		end.flip_v = downscroll_multiplier < 0
-		end.modulate.a = hold.modulate.a
-	
-	var safe_threshold:float = Judgement.get_lowest() / (1.25 * Conductor.pitch_scale)
-	can_be_hit = time > Conductor.position - safe_threshold and time < Conductor.position + safe_threshold
-	was_too_late = (time < Conductor.position - safe_threshold and not was_good_hit)
+		var safe_threshold:float = Judgement.get_lowest() / (1.25 * Conductor.pitch_scale)
+		can_be_hit = time > Conductor.position - safe_threshold and time < Conductor.position + safe_threshold
+		was_too_late = (time < Conductor.position - safe_threshold and not was_good_hit)
 
 func _load_sustain():
 	_sustain_loaded = false

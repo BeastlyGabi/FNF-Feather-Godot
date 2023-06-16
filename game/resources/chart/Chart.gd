@@ -8,6 +8,8 @@ var stage:String = "stage"
 var bpm:float = 100.0
 var speed:float = 1.0
 
+var key_amount:int = 4
+
 var notes:Array[ChartNote] = []
 var events:Array[ChartEvent] = []
 

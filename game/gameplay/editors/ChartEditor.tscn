@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsyq76fpuyo7g"]
+[gd_scene load_steps=8 format=3 uid="uid://dsyq76fpuyo7g"]
 
 [ext_resource type="Script" path="res://game/gameplay/editors/ChartEditor.gd" id="1_65usa"]
 [ext_resource type="Texture2D" uid="uid://mfo5xdgme5ob" path="res://assets/images/menus/menuDesat.png" id="2_4i8iv"]
 [ext_resource type="Texture2D" uid="uid://dgd3qgsia4c7t" path="res://assets/images/menus/chartEditor/tiles.png" id="3_bcqem"]
 [ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="4_7g1hf"]
+[ext_resource type="PackedScene" uid="uid://c0k561r0fvtr5" path="res://game/gameplay/notes/default.tscn" id="4_pifol"]
 
 [sub_resource type="Gradient" id="Gradient_usmy1"]
 colors = PackedColorArray(0.619608, 0.619608, 1, 0.137255, 0.858824, 0.858824, 0.658824, 0.137255)
@@ -14,6 +15,12 @@ fill_from = Vector2(1, 0)
 
 [node name="ChartEditor" type="Node2D"]
 script = ExtResource("1_65usa")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Inst" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Background_Layer" type="Node2D" parent="."]
 
@@ -29,7 +36,7 @@ position = Vector2(636.5, 360)
 scale = Vector2(19.8906, 11.25)
 texture = SubResource("GradientTexture2D_s8de3")
 
-[node name="Grid_Layer" type="Node2D" parent="."]
+[node name="Grid_Layer" type="CanvasGroup" parent="."]
 
 [node name="Grid" type="TextureRect" parent="Grid_Layer"]
 modulate = Color(0.603922, 0.639216, 0.968627, 1)
@@ -38,6 +45,23 @@ offset_right = 794.0
 offset_bottom = 720.0
 texture = ExtResource("3_bcqem")
 stretch_mode = 1
+
+[node name="Line_Separator" type="ColorRect" parent="Grid_Layer"]
+offset_left = 602.0
+offset_top = 3.0
+offset_right = 603.0
+offset_bottom = 720.0
+color = Color(0.639216, 0.666667, 0.968627, 1)
+
+[node name="Rendered_Notes" type="Control" parent="Grid_Layer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 410.0
+offset_right = 410.0
+
+[node name="default" parent="Grid_Layer/Rendered_Notes" instance=ExtResource("4_pifol")]
+position = Vector2(24, 71)
+scale = Vector2(0.45, 0.45)
 
 [node name="Strum_LIne" type="ColorRect" parent="Grid_Layer"]
 offset_left = 410.0
@@ -61,43 +85,19 @@ vertical_alignment = 1
 layout_mode = 3
 anchors_preset = 0
 
-[node name="Box_Info" type="ColorRect" parent="UI_Layer"]
+[node name="Info_Text" type="Label" parent="UI_Layer"]
 layout_mode = 0
-offset_left = -1.0
-offset_top = 105.0
-offset_right = 272.0
-offset_bottom = 201.0
-color = Color(0, 0, 0, 1)
-
-[node name="Song_Text" type="Label" parent="UI_Layer/Box_Info"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 8.0
-offset_right = 208.0
-offset_bottom = 40.0
-theme_override_fonts/font = ExtResource("4_7g1hf")
-theme_override_font_sizes/font_size = 32
-text = "SONG: Test"
-
-[node name="Song_Info" type="Label" parent="UI_Layer/Box_Info"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 43.0
-offset_right = 265.0
-offset_bottom = 64.0
+offset_top = 632.0
+offset_right = 200.0
+offset_bottom = 716.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_7g1hf")
 theme_override_font_sizes/font_size = 20
-text = "Speed: 1.6 - BPM: 150"
-
-[node name="Song_Author" type="Label" parent="UI_Layer/Box_Info"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 61.0
-offset_right = 253.0
-offset_bottom = 82.0
-theme_override_fonts/font = ExtResource("4_7g1hf")
-theme_override_font_sizes/font_size = 20
-text = "By: KawaiSprite, MtH"
+text = "BPM: 100.0
+SPEED: 1.0
+TIME: 0.00 / 0.00
+ZOOM: 1.0x / 3.0x"
 
 [node name="Top_Bar" type="ColorRect" parent="UI_Layer"]
 layout_mode = 0

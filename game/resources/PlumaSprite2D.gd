@@ -1,4 +1,4 @@
-class_name FFSprite2D extends Sprite2D
+class_name PlumaSprite2D extends Sprite2D
 
 var width:float:
 	get: return texture.get_width()

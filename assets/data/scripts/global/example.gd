@@ -1,6 +1,6 @@
 ## #This is an Example Script to get you started with Funkin' Feather's scripts
-## #Keep in mind to always extend "FFScript" as this is a script that affects only Gameplay
-extends FFScript
+## #Keep in mind to always extend "PlumaScript" as this is a script that affects only Gameplay
+extends PlumaScript
 
 func _ready(): pass
 func _post_ready(): pass

@@ -18,6 +18,9 @@ func fade_receptors_in():
 
 func _process(delta:float):
 	for note in notes.get_children():
+		if note.in_edit:
+			break
+		
 		var downscroll_multiplier = 1 if Settings.get_setting("downscroll") else -1
 		var distance = (Conductor.position - note.time) * (0.45 * note.speed)
 		var receptor:Receptor = receptors.get_child(note.direction)

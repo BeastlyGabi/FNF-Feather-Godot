@@ -1,8 +1,8 @@
-class_name FFScript extends Node
+class_name PlumaScript extends Node
 
 var game:Gameplay
 static func load_script(path:String, game:Gameplay):
-	var new_script:FFScript = load(path).new()
+	var new_script:PlumaScript = load(path).new()
 	new_script.game = game
 	return new_script
 
