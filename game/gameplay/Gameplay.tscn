@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://b34ahafdf2bpt"]
+[gd_scene load_steps=12 format=3 uid="uid://b34ahafdf2bpt"]
 
 [ext_resource type="Script" path="res://game/gameplay/Gameplay.gd" id="1_jtwcs"]
 [ext_resource type="PackedScene" uid="uid://fy40g2whkeii" path="res://game/gameplay/StrumLine.tscn" id="2_i6r1x"]
+[ext_resource type="Texture2D" uid="uid://bqp8rfk4fvg5x" path="res://assets/images/ui/ratings/normal/sick.png" id="2_oedo7"]
 [ext_resource type="Texture2D" uid="uid://dxxla7hd00vqo" path="res://assets/images/ui/healthBar.png" id="3_naaee"]
+[ext_resource type="Texture2D" uid="uid://yhdkmlhdmu1m" path="res://assets/images/ui/combo/normal/num1.png" id="4_3e0u8"]
 [ext_resource type="Texture2D" uid="uid://dx5xo0fug3yv0" path="res://assets/images/icons/face.png" id="4_kngdf"]
 [ext_resource type="FontFile" uid="uid://bo3t3laebx8h8" path="res://assets/data/fonts/vcr.ttf" id="5_02sbc"]
+[ext_resource type="Texture2D" uid="uid://cn7nkjtmlqys1" path="res://assets/images/ui/ratings/normal/combo.png" id="5_8biyu"]
 [ext_resource type="Texture2D" uid="uid://cfswoa07evgxl" path="res://assets/images/ui/countdown/normal/go.png" id="8_6gggy"]
 [ext_resource type="Script" path="res://game/resources/FFSprite2D.gd" id="9_7flc6"]
 
@@ -24,11 +27,33 @@ script = ExtResource("1_jtwcs")
 
 [node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
+[node name="Templates" type="Node" parent="."]
+
+[node name="Judgement" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(601, 309)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_oedo7")
+script = ExtResource("9_7flc6")
+
+[node name="Combo_Number" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(494, 412)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_3e0u8")
+script = ExtResource("9_7flc6")
+
+[node name="Combo_Label" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(578, 466)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_8biyu")
+script = ExtResource("9_7flc6")
+
 [node name="Game_Camera" type="Camera2D" parent="."]
 position = Vector2(610, 352)
 
-[node name="Combo_Group" type="CanvasGroup" parent="."]
-position = Vector2(610, 352)
+[node name="Combo_Group" type="Node" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="."]
 

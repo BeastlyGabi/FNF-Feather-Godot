@@ -86,4 +86,4 @@ ui_pause={
 [rendering]
 
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+environment/defaults/default_clear_color=Color(0.207843, 0.207843, 0.207843, 1)

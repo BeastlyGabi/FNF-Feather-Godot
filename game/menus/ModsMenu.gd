@@ -12,6 +12,7 @@ func _ready():
 			new_letter.id = i
 			new_letter.text = mods[i]
 			new_letter.menu_item = true
+			new_letter.visible = true
 			mods_node.add_child(new_letter)
 	
 	else:

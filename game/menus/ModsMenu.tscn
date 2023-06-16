@@ -24,6 +24,7 @@ stretch_mode = 1
 [node name="Mods_Node" type="Node2D" parent="."]
 
 [node name="Alphabet_Template" parent="." instance=ExtResource("3_fyqvf")]
+visible = false
 offset_left = 3.0
 offset_top = 4.0
 offset_right = 3.0

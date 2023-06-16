@@ -44,7 +44,7 @@ var event_list:Array[ChartEvent] = []
 @onready var player_strums:StrumLine = $UI/Strum_Lines/Player
 @onready var cpu_strums:StrumLine = $UI/Strum_Lines/CPU
 
-@onready var combo_group:CanvasGroup = $Combo_Group
+@onready var combo_group:Node = $Combo_Group
 
 var stage:Stage
 var spectator:Character
@@ -664,8 +664,8 @@ func note_hit(note:Note):
 				c.queue_free()
 		
 		display_judgement(note_judgement.img)
-		if combo >= 10 or combo == 0 or combo == 1:
-			display_combo()
+		#if combo >= 10 or combo == 0 or combo == 1:
+		display_combo()
 		
 		update_ranking()
 		update_score_text()
@@ -732,8 +732,8 @@ func ghost_miss(direction:int, play_anim:bool = true):
 			c.queue_free()
 	
 	display_judgement("miss")
-	if combo <= -10 or combo == -1 or combo == 0:
-		display_combo(Color8(96, 96, 96))
+	#if combo <= -10 or combo == -1 or combo == 0:
+	display_combo(Color8(96, 96, 96))
 	
 	update_ranking()
 	update_score_text()
@@ -745,14 +745,20 @@ func decrease_combo(missing:bool, force:bool = false):
 	if missing: combo -= 1
 
 func display_judgement(judge:String, color = null):
-	var judgement:FFSprite2D = FFSprite2D.new()
+	var judgement:FFSprite2D = $Templates/Judgement.duplicate()
 	judgement.texture = load("res://assets/images/ui/ratings/" + SONG.song_style + "/" + judge + ".png")
+	var og_scale:Vector2 = judgement.scale
+	
 	if SONG.song_style == "pixel":
 		judgement.scale = Vector2(4.5, 4.5)
 		judgement.texture_filter = TEXTURE_FILTER_NEAREST
 	else:
-		judgement.scale = Vector2(0.70, 0.70)
-	judgement.position.x += 30
+		judgement.scale = og_scale * 1.15
+	judgement.visible = true
+	
+	if not SONG.song_style == "pixel":
+		get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC) \
+		.tween_property(judgement, "scale", og_scale, 0.15)
 	
 	if not color == null:
 		judgement.modulate = color
@@ -763,29 +769,31 @@ func display_judgement(judge:String, color = null):
 	judgement.velocity.y = -randi_range(140, 175) * Conductor.pitch_scale
 	judgement.velocity.x = -randi_range(0, 10) * Conductor.pitch_scale
 	
-	last_judgement = judgement
-	
 	get_tree().create_tween().tween_property(judgement, "modulate:a", 0.0, 0.50) \
 	.set_delay(Conductor.step_crochet * 0.001).finished.connect(judgement.queue_free)
 
-
-var last_judgement:FFSprite2D
-
 func display_combo(color = null):
 	# split combo in half
-	var combo_string:String = ("x" + str(combo)) if not combo < 0 else str(combo)
+	var combo_string:String = ("x" + str(combo).pad_zeros(3)) if not combo < 0 else str(combo).pad_zeros(3)
 	var numbers:PackedStringArray = combo_string.split("")
 	
 	for i in numbers.size():
-		var combo_num:FFSprite2D = FFSprite2D.new()
+		var combo_num:FFSprite2D = $Templates/Combo_Number.duplicate()
 		combo_num.texture = load("res://assets/images/ui/combo/" + SONG.song_style + "/num" + numbers[i] + ".png")
-		combo_num.position.x = (45 * i) + last_judgement.position.x - 60
-		combo_num.position.y = last_judgement.position.y + 100
+		var og_scale:Vector2 = combo_num.scale
+		
 		if SONG.song_style == "pixel":
-			combo_num.scale = Vector2(5.0, 5.0)
+			combo_num.scale = 10.0 * og_scale
 			combo_num.texture_filter = TEXTURE_FILTER_NEAREST
 		else:
-			combo_num.scale = Vector2(0.50, 0.50)
+			combo_num.scale = og_scale * 0.85
+		
+		combo_num.visible = true
+		combo_num.position.x += (45 * i)
+		
+		if not SONG.song_style == "pixel":
+			get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC) \
+			.tween_property(combo_num, "scale", og_scale, 0.05)
 		
 		if not color == null:
 			combo_num.modulate = color
@@ -808,18 +816,23 @@ func display_combo(color = null):
 	display_combo_sprite(color)
 
 func display_combo_sprite(color = null):
-	var combo_label:FFSprite2D = FFSprite2D.new()
+	var combo_label:FFSprite2D = $Templates/Combo_Label.duplicate()
 	combo_label.texture = load("res://assets/images/ui/ratings/" + SONG.song_style + "/combo.png")
+	var og_scale:Vector2 = combo_label.scale
+	
 	if SONG.song_style == "pixel":
-		combo_label.scale = Vector2(6.0 * 0.50, 6.0 * 0.50)
+		combo_label.scale = og_scale * 8.0
 		combo_label.texture_filter = TEXTURE_FILTER_NEAREST
 	else:
-		combo_label.scale = Vector2(0.50, 0.50)
-	combo_label.position.x = last_judgement.position.x - 15
-	combo_label.position.y = last_judgement.position.y + 165
+		combo_label.scale = og_scale * 0.65
+	combo_label.visible = true
 	
 	if not color == null:
 		combo_label.modulate = color
+	
+	if not SONG.song_style == "pixel":
+		get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC) \
+		.tween_property(combo_label, "scale", og_scale, 0.05)
 	
 	combo_group.add_child(combo_label)
 	
@@ -853,17 +866,17 @@ func update_ranking():
 			
 		if judgements_gotten["good"] > 0:
 			
-			#if judgements_gotten["good"] >= 10:
-			clear_rank = "GFC"
-			#else:
-			#	clear_rank = "SDG"
+			if judgements_gotten["good"] >= 10:
+				clear_rank = "GFC"
+			else:
+				clear_rank = "SDG"
 			
 		if judgements_gotten["bad"] > 0:
 			
-			#if judgements_gotten["bad"] >= 10:
-			clear_rank = "FC"
-			#else:
-			#	clear_rank = "SDB"
+			if judgements_gotten["bad"] >= 10:
+				clear_rank = "FC"
+			else:
+				clear_rank = "SDB"
 	else:
 		if breaks < 10:
 			clear_rank = "SDCB"
