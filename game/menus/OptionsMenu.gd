@@ -10,13 +10,12 @@ var cur_category:String = "Gameplay"
 @onready var description_text:Label = $Description_Box/Descrption_Text
 
 var tools_options:Array[String] = ["XML Converter", "TXT Converter", "Chart Editor"]
-@export var categories:Array[String] = ["Gameplay", "Accessibility", "Behavior", "Visuals", "Tools"]
+@export var categories:Array[String] = ["Gameplay", "Behavior", "Visuals", "Tools"]
 
 # messy thing but whatev, i can improve upon this later -BeastlyGabi
 @export var gameplay_options:Array[GameOption] = []
 @export var behavior_options:Array[GameOption] = []
 @export var visual_options:Array[GameOption] = []
-@export var accessibility_options:Array[GameOption] = []
 
 var _cur_options:Array[GameOption] = []
 
@@ -27,7 +26,6 @@ func _switch_category():
 		"gameplay": reload_options_list(gameplay_options)
 		"behavior": reload_options_list(behavior_options)
 		"visuals": reload_options_list(visual_options)
-		"accessibility": reload_options_list(accessibility_options)
 		"tools": reload_options_list(tools_options)
 		_: _leave_scene()
 

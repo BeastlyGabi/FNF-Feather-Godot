@@ -28,22 +28,6 @@ func _ready():
 	+ " / " + Game.format_to_time(game.inst.stream.get_length()) if not game.inst == null else "00:00 / 00:00"
 	diff_text.text = Song.data["difficulty"].to_upper()
 	
-	if Settings.get_setting("show_keybinds"):
-		var key_text:Label = song_text.duplicate()
-		key_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		
-		key_text.text = ""
-		for i in game.player_strums.receptors.get_child_count():
-			key_text.text += Settings._controls["note_" + Game.note_dirs[i]][0]
-			if not i == game.player_strums.receptors.get_child_count() - 1:
-				key_text.text += " / "
-		
-		key_text.modulate.a = 0.0
-		key_text.position.x = (Game.SCREEN["width"] - key_text.size.x) / 2.0
-		add_child(key_text)
-		
-		tweener.tween_property(key_text, "modulate:a", 1.0, 0.40)
-	
 	for info in [song_text, time_text, diff_text]:
 		info.modulate.a = 0.0
 		info.size.x = 0
@@ -52,7 +36,7 @@ func _ready():
 	
 	reload_options_list(main_options)
 
-func _process(delta):
+func _process(delta:float):
 	if SoundHelper.music.volume_db < 0.8:
 		SoundHelper.music.volume_db += 3.5 * delta
 	

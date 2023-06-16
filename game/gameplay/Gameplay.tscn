@@ -57,8 +57,11 @@ position = Vector2(610, 352)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Strum_Lines" type="Node2D" parent="UI"]
-position = Vector2(-1, 0)
+[node name="Strum_Lines" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -1.0
+offset_right = -1.0
 
 [node name="CPU" parent="UI/Strum_Lines" instance=ExtResource("2_i6r1x")]
 position = Vector2(310, 624)
@@ -141,3 +144,4 @@ texture = ExtResource("8_6gggy")
 script = ExtResource("9_7flc6")
 
 [node name="Other" type="CanvasLayer" parent="."]
+layer = 5

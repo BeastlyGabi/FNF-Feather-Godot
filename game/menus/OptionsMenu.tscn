@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://0t5tihq1487y"]
+[gd_scene load_steps=28 format=3 uid="uid://0t5tihq1487y"]
 
 [ext_resource type="Script" path="res://game/menus/OptionsMenu.gd" id="1_4o4po"]
 [ext_resource type="Script" path="res://game/menus/options/GameOption.gd" id="2_njuek"]
@@ -51,17 +51,6 @@ num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_b41hv"]
-script = ExtResource("2_njuek")
-option = "Break Judgement"
-reference = "combo_break_judgement"
-description = "Set which judgement should cause a \"Combo Break\", Miss means disabled"
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String](["good", "bad", "shit", "miss"])
-
 [sub_resource type="Resource" id="Resource_tbul6"]
 script = ExtResource("2_njuek")
 option = "Timing Preset"
@@ -95,6 +84,28 @@ num_factor = 0.1
 display_mode = "%.2f"
 choices = Array[String]([])
 
+[sub_resource type="Resource" id="Resource_yowwo"]
+script = ExtResource("2_njuek")
+option = "Framerate Cap"
+reference = "framerate"
+description = "Define your FPS Cap, let it be 0 for uncapping it"
+num_min = 0.0
+num_max = 245.0
+num_factor = 5.0
+display_mode = "%.0f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_xg6ek"]
+script = ExtResource("2_njuek")
+option = "V-Sync"
+reference = "vsync"
+description = "If framerate should be tied to your monitor's refresh rate."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
 [sub_resource type="Resource" id="Resource_gm7m2"]
 script = ExtResource("2_njuek")
 option = "Colored Health Bar"
@@ -122,6 +133,17 @@ script = ExtResource("2_njuek")
 option = "CPU Receptors"
 reference = "cpu_receptors"
 description = "If the CPU Receptors should be visible during gameplay."
+num_min = 0.0
+num_max = 1.0
+num_factor = 0.0
+display_mode = "%.1f"
+choices = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_2wua3"]
+script = ExtResource("2_njuek")
+option = "Flashing Menus"
+reference = "flashing_lights"
+description = "If there should be flashing lights on menus."
 num_min = 0.0
 num_max = 1.0
 num_factor = 0.0
@@ -161,61 +183,6 @@ num_factor = 0.0
 display_mode = "%.1f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_k0vys"]
-script = ExtResource("2_njuek")
-option = "Hide Score"
-reference = "hide_score"
-description = "Hides the \"Score\" text from the UI."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_ae5cb"]
-script = ExtResource("2_njuek")
-option = "Hide Accuracy"
-reference = "hide_accuracy"
-description = "If accuracy should be hidden on the UI."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_qlab2"]
-script = ExtResource("2_njuek")
-option = "Show Keybinds on Pause"
-reference = "show_keybinds"
-description = "If your keybinds should be shown when pausing the game."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_jojc1"]
-script = ExtResource("2_njuek")
-option = "Opaque Hold Notes"
-reference = "opaque_sustains"
-description = "Makes the Hold Notes completely opaque insetad os slightly transparent."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_2wua3"]
-script = ExtResource("2_njuek")
-option = "Flashing Menus"
-reference = "flashing_lights"
-description = "If there should be flashing lights on menus."
-num_min = 0.0
-num_max = 1.0
-num_factor = 0.0
-display_mode = "%.1f"
-choices = Array[String]([])
-
 [sub_resource type="Resource" id="Resource_ny7kb"]
 script = ExtResource("2_njuek")
 option = "Stage Visibility"
@@ -227,22 +194,11 @@ num_factor = 1.0
 display_mode = "%.0f"
 choices = Array[String]([])
 
-[sub_resource type="Resource" id="Resource_yowwo"]
+[sub_resource type="Resource" id="Resource_jojc1"]
 script = ExtResource("2_njuek")
-option = "Framerate Cap"
-reference = "framerate"
-description = "Define your FPS Cap, let it be 0 for uncapping it"
-num_min = 0.0
-num_max = 245.0
-num_factor = 5.0
-display_mode = "%.0f"
-choices = Array[String]([])
-
-[sub_resource type="Resource" id="Resource_xg6ek"]
-script = ExtResource("2_njuek")
-option = "V-Sync"
-reference = "vsync"
-description = "If framerate should be tied to your monitor's refresh rate."
+option = "Opaque Hold Notes"
+reference = "opaque_sustains"
+description = "Makes the Hold Notes completely opaque insetad os slightly transparent."
 num_min = 0.0
 num_max = 1.0
 num_factor = 0.0
@@ -324,9 +280,8 @@ _data = {
 [node name="OptionsMenu" type="Node2D"]
 script = ExtResource("1_4o4po")
 gameplay_options = Array[ExtResource("2_njuek")]([SubResource("Resource_lvqcm"), SubResource("Resource_w1xer"), SubResource("Resource_kohrc"), SubResource("Resource_ov6xb")])
-behavior_options = Array[ExtResource("2_njuek")]([SubResource("Resource_b41hv"), SubResource("Resource_tbul6"), SubResource("Resource_orj44"), SubResource("Resource_ku86f")])
-visual_options = Array[ExtResource("2_njuek")]([SubResource("Resource_gm7m2"), SubResource("Resource_245nv"), SubResource("Resource_p6snu"), SubResource("Resource_ihqh8"), SubResource("Resource_wywfl"), SubResource("Resource_pwoif"), SubResource("Resource_k0vys"), SubResource("Resource_ae5cb"), SubResource("Resource_qlab2")])
-accessibility_options = Array[ExtResource("2_njuek")]([SubResource("Resource_jojc1"), SubResource("Resource_2wua3"), SubResource("Resource_ny7kb"), SubResource("Resource_yowwo"), SubResource("Resource_xg6ek")])
+behavior_options = Array[ExtResource("2_njuek")]([SubResource("Resource_tbul6"), SubResource("Resource_orj44"), SubResource("Resource_ku86f"), SubResource("Resource_yowwo"), SubResource("Resource_xg6ek")])
+visual_options = Array[ExtResource("2_njuek")]([SubResource("Resource_gm7m2"), SubResource("Resource_245nv"), SubResource("Resource_p6snu"), SubResource("Resource_2wua3"), SubResource("Resource_ihqh8"), SubResource("Resource_wywfl"), SubResource("Resource_pwoif"), SubResource("Resource_ny7kb"), SubResource("Resource_jojc1")])
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.431373, 0.431373, 0.835294, 1)

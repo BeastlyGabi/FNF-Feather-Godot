@@ -40,7 +40,7 @@ var event_list:Array[ChartEvent] = []
 @onready var icon_P1:PlumaSprite2D = $UI/Health_Bar/Player_Icon
 @onready var icon_P2:PlumaSprite2D = $UI/Health_Bar/Cpu_Icon
 
-@onready var strum_lines:Node2D = $UI/Strum_Lines
+@onready var strum_lines:Control = $UI/Strum_Lines
 @onready var player_strums:StrumLine = $UI/Strum_Lines/Player
 @onready var cpu_strums:StrumLine = $UI/Strum_Lines/CPU
 
@@ -185,7 +185,7 @@ func _ready():
 		keys_held.append(false)
 	
 	for i in judgements.size():
-		judgements_gotten[judgements[i].name] = 0
+		rank.judgements_hit[judgements[i].name] = 0
 	
 	update_score_text()
 	if counter_text.visible:
@@ -358,45 +358,23 @@ func process_events():
 var score_separator:String = " / "
 
 func update_score_text():
-	var rank_string:String = rank_name
 	var score_final:String = ""
 	
-	var misses_name:String = "MISSES"
-	var miss_count:int = misses
+	score_final = "SCORE: " + "%s" % score + score_separator
+	score_final += "MISSES: " + "%s" % misses
+	if not rank.cur_clear == null and not rank.cur_clear == "":
+		score_final += " [" + rank.cur_clear + "]"
 	
-	if not Settings.get_setting("combo_break_judgement") == "miss":
-		misses_name = "COMBO BREAKS"
-		miss_count = breaks
+	score_final += score_separator + "RANK: " + rank.cur_rank
+	if rank.total_notes_hit > 0:
+		score_final += " [" + "%.2f" % (rank.accuracy * 100 / 100) + "%" + "]"
 	
-	score_final = ""
-	
-	if not Settings.get_setting("hide_accuracy"):
-		if not Settings.get_setting("hide_score"):
-			score_final += "SCORE: " + "%s" % score + score_separator
-		
-		score_final += misses_name + ": " + "%s" % miss_count
-		if not clear_rank == null and not clear_rank == "":
-			score_final += " [" + clear_rank + "]"
-		
-		score_final += score_separator + "RANK: " + rank_name
-		if total_notes_hit > 0:
-			score_final += " [" + "%.2f" % (accuracy * 100 / 100) + "%" + "]"
-	
-	else:
-		if not Settings.get_setting("hide_score"):
-			score_final += "SCORE: " + str(score) + score_separator
-		
-		score_final += misses_name + ": " + str(miss_count)
-
 	score_text.text = score_final
 
 func update_judgement_counter():
 	var counter_final:String = ""
-	for i in judgements_gotten:
-		counter_final += i.to_upper() + ": " + str(judgements_gotten[i]) + '\n'
-	if not Settings.get_setting("combo_break_judgement") == "miss": 
-		counter_final += "MISS: " + str(misses)
-	
+	for i in rank.judgements_hit:
+		counter_final += i.to_pascal_case() + ": " + str(rank.judgements_hit[i]) + '\n'
 	counter_text.text = counter_final
 
 var cam_zoom:Dictionary = {
@@ -579,24 +557,10 @@ func get_input_dir(e:InputEventKey):
 
 var score:int = 0
 var misses:int = 0
-var breaks:int = 0:
-	get:
-		if not Settings.get_setting("combo_break_judgement") == "miss":
-			return misses + judgements_gotten[Settings.get_setting("combo_break_judgement")]
-		
-		return misses
-
 var health:float = 50
 var combo:int = 0
 
-var notes_accuracy:float = 0.00
-var total_notes_hit:int = 0
-var accuracy:float = 0.00:
-	get:
-		if notes_accuracy <= 0.00: return 0.00
-		return (notes_accuracy / (total_notes_hit + breaks))
-
-var judgements_gotten:Dictionary = {}
+var rank:Timings = Timings.new(self)
 
 func note_hit(note:Note):
 	var event = note.on_note_hit(true)
@@ -646,18 +610,10 @@ func note_hit(note:Note):
 		health += note_judgement.health / 50
 		
 		# Accuracy
-		total_notes_hit += 1
-		notes_accuracy += maxf(0, note_judgement.accuracy)
-		judgements_gotten[note_judgement.name] += 1
+		rank.update_accuracy(note_judgement)
 		
 		if note_judgement.name == "sick" or note.splash:
 			player_strums.pop_splash(note)
-		
-		if note_judgement.name == Settings.get_setting("combo_break_judgement"):
-			if player.miss_animations.size() > 0:
-				player.play_anim(player.miss_animations[note.direction], true)
-				health -= 0.875 * damage_multiplier
-		
 		damage_multiplier = 0.0
 		
 		if not Settings.get_setting("combo_stacking"):
@@ -668,7 +624,7 @@ func note_hit(note:Note):
 		#if combo >= 10 or combo == 0 or combo == 1:
 		display_combo()
 		
-		update_ranking()
+		rank.update_rank()
 		update_score_text()
 		if counter_text.visible:
 			update_judgement_counter()
@@ -736,7 +692,7 @@ func ghost_miss(direction:int, play_anim:bool = true):
 	#if combo <= -10 or combo == -1 or combo == 0:
 	display_combo(Color8(96, 96, 96))
 	
-	update_ranking()
+	rank.update_rank()
 	update_score_text()
 	if counter_text.visible:
 		update_judgement_counter()
@@ -843,41 +799,3 @@ func display_combo_sprite(color = null):
 	
 	get_tree().create_tween().tween_property(combo_label, "modulate:a", 0.0, 0.30) \
 	.set_delay(Conductor.step_crochet * 0.0005).finished.connect(combo_label.queue_free)
-
-var rank_name:String = "N/A"
-var clear_rank:String = ""
-var rankings:Dictionary = {
-	"S": 100.0, "A+": 95.0, "A": 90.0, "B": 85.0, "B-": 80.0, "C": 70.0,
-	"SX": 69.0, "D+": 68.0, "D": 50.0, "D-": 15.0, "F": 0
-}
-
-func update_ranking():
-	# loop through the rankings map
-	var biggest:float = 0.0
-	for rank in rankings.keys():
-		if rankings[rank] <= accuracy and rankings[rank] >= biggest:
-			rank_name = rank
-			biggest = accuracy
-	
-	clear_rank = ""
-	if breaks == 0: # Etterna shit
-		if judgements_gotten["sick"] > 0:
-			
-			clear_rank = "MFC"
-			
-		if judgements_gotten["good"] > 0:
-			
-			if judgements_gotten["good"] >= 10:
-				clear_rank = "GFC"
-			else:
-				clear_rank = "SDG"
-			
-		if judgements_gotten["bad"] > 0:
-			
-			if judgements_gotten["bad"] >= 10:
-				clear_rank = "FC"
-			else:
-				clear_rank = "SDB"
-	else:
-		if breaks < 10:
-			clear_rank = "SDCB"

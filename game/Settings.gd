@@ -12,9 +12,6 @@ var _prefs:Dictionary = {
 	"note_quantization": false,
 	"judgement_counter": false,
 	"character_healthcolors": true,
-	"show_keybinds": true,
-	
-	"hide_accuracy": false,
 	
 	"stage_visibility": 100,
 	
@@ -24,17 +21,13 @@ var _prefs:Dictionary = {
 	"opaque_sustains": false,
 	"note_splashes": true,
 	
-	"hide_score": false,
-	
 	### BEHAVIOR ###
 	"timing_preset": "etterna",
-	"combo_break_judgement": "miss",
 	"song_pitch": 1.0,
 	
 	### OTHER ###
 	"framerate": 60,
 	"vsync": true,
-	
 	"volume": 1.0
 }
 
