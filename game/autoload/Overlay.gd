@@ -16,6 +16,8 @@ func _process(_delta:float):
 		
 		$Text.text += "\nVRAM: " + Game.humanize_bytes(_vram) + " / " + \
 			Game.humanize_bytes(_vram_peak)
+	
+	$Text.text += "\nFF v" + Versioning.GAME_VERSION + " " + Versioning.get_codename()
 
 func _input(event:InputEvent):
 	if event is InputEventKey:

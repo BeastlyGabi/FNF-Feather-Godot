@@ -302,10 +302,10 @@ func _process(delta:float):
 	icon_P1.frame = 1 if health_bar.value < 20 else 0
 	icon_P2.frame = 1 if health_bar.value > 80 else 0
 	
-	var cam_lerp:float = lerpf(camera.zoom.x, stage.camera_zoom, 0.05)
+	var cam_lerp:float = lerpf(camera.zoom.x, stage.camera_zoom, 0.01)
 	camera.zoom = Vector2(cam_lerp, cam_lerp)
 	
-	var hud_lerp:float = lerpf(ui.scale.x, 1, 0.05)
+	var hud_lerp:float = lerpf(ui.scale.x, 1, 0.03)
 	ui.scale = Vector2(hud_lerp, hud_lerp)
 	hud_bump_reposition()
 	
@@ -406,8 +406,8 @@ func update_judgement_counter():
 var cam_zoom:Dictionary = {
 	"interval": 4,
 	"hud_interval": 4,
-	"bump_strength": 0.035,
-	"hud_bump_strength": 0.03
+	"bump_strength": 0.050,
+	"hud_bump_strength": 0.035
 }
 var icon_beat_scale:float = 0.25
 
