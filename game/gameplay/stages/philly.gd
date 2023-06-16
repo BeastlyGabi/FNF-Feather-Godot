@@ -4,8 +4,6 @@ extends Stage
 
 func _ready():
 	window.modulate.a = 0.0
-	
-
 
 var light_colors:Array[Color] = [
 	Color.from_string("#31A2FD", Color.WHITE),
@@ -15,6 +13,7 @@ var light_colors:Array[Color] = [
 	Color.from_string("#FBA633", Color.WHITE),
 ]
 var window_tweener:Tween
+
 func on_beat(beat:int):
 	if beat % 4 == 0:
 		window.modulate = light_colors[randi_range(0, light_colors.size() - 1)]

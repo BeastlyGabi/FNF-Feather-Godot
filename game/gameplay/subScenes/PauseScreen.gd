@@ -13,7 +13,7 @@ var main_options:Array[String] = ["Resume", "Restart Song", "Change Options", "E
 @onready var time_text:Label = $Time_Text
 
 func _ready():
-	SoundHelper.play_music(Game.PAUSE_MUSIC, -30, true)
+	SoundHelper.play_music(Game.PAUSE_MUSIC, -50, true)
 	SoundHelper.music.seek(randi_range(0, SoundHelper.music.stream.get_length() / 2.0))
 	
 	if Song.difficulty_list.size() > 1:
@@ -54,7 +54,7 @@ func _ready():
 
 func _process(delta):
 	if SoundHelper.music.volume_db < 0.8:
-		SoundHelper.music.volume_db += 2.5 * delta
+		SoundHelper.music.volume_db += 3.5 * delta
 	
 	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("ui_down"):
 		var is_up:bool = Input.is_action_just_pressed("ui_up")
