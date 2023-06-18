@@ -1,7 +1,7 @@
 [gd_scene load_steps=21 format=3 uid="uid://bfgv48nat0c6w"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/notes/strums/StrumLine.gd" id="1_4pl3r"]
-[ext_resource type="SpriteFrames" path="res://assets/images/notetypes/default/receptors.res" id="1_bb4hx"]
+[ext_resource type="SpriteFrames" path="res://assets/images/notestyles/default/receptors.res" id="1_bb4hx"]
 [ext_resource type="Shader" path="res://assets/data/shaders/ColorRGBMask.gdshader" id="2_4yihp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_usaus"]

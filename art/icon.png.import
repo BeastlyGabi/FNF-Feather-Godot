@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bq86h5hsb3u81"
-path="res://.godot/imported/note tail.png-3d4f4ef89fa308b78c1b29bb68ad3ce3.ctex"
+uid="uid://bma7rrgee53c7"
+path="res://.godot/imported/icon.png-c3d958876317c5b9ff9d73fef1b6123f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/notetypes/default/note tail.png"
-dest_files=["res://.godot/imported/note tail.png-3d4f4ef89fa308b78c1b29bb68ad3ce3.ctex"]
+source_file="res://art/icon.png"
+dest_files=["res://.godot/imported/icon.png-c3d958876317c5b9ff9d73fef1b6123f.ctex"]
 
 [params]
 

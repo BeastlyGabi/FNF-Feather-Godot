@@ -42,6 +42,6 @@ func play_anim(anim_name:String, forced:bool = false, speed:float = 1.0, reverse
 	anim.play(anim_name, -1, speed, reversed)
 	last_anim = anim_name
 
-func quick_dancer() -> bool: return anim != null and anim.get_animation("danceLeft") != null and anim.get_animation("danceRight") != null
+func quick_dancer() -> bool: return anim != null and anim.has_animation("danceLeft") and anim.has_animation("danceRight")
 func is_singing() -> bool: return anim != null and anim.current_animation.begins_with("sing")
 func is_missing() -> bool: return anim != null and anim.current_animation.ends_with("miss")

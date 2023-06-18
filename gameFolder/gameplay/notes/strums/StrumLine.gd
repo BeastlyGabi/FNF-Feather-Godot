@@ -84,12 +84,17 @@ func pop_splash(note:Note) -> void:
 	var receptor := receptors.get_child(note.direction)
 	var le_splash := note.get_node("Splash").duplicate()
 	le_splash.position = receptor.position
-	le_splash.position.y += 5
 	le_splash.modulate.a = 0.80
 	le_splash.visible = true
 	add_child(le_splash)
 	
-	le_splash.get_node("Anim_Player").play("splash")
+	var has_two_anims:bool = le_splash.get_node("Anim_Player").has_animation("splash_2")
+	var animation:String = "splash"
+	
+	if has_two_anims:
+		animation = "splash_" + str(randi_range(1, 2))
+	
+	le_splash.get_node("Anim_Player").play(animation)
 	le_splash.get_node("Anim_Player").animation_finished.connect(
 		func(_anim:StringName):
 			le_splash.queue_free()

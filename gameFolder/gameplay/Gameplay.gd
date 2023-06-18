@@ -1,6 +1,6 @@
 extends MusicBeatNode2D
 
-var NOTE_TYPES:Dictionary = {
+var NOTE_STYLES:Dictionary = {
 	"default": preload("res://gameFolder/gameplay/notes/default.tscn")
 }
 
@@ -94,7 +94,7 @@ func note_processing() -> void:
 		if note_data.time - Conductor.position > (3500 * speed):
 			break
 		
-		var new_note:Note = NOTE_TYPES["default"].instantiate()
+		var new_note:Note = NOTE_STYLES["default"].instantiate()
 		new_note.time = note_data.time
 		new_note.speed = speed
 		

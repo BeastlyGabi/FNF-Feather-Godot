@@ -74,9 +74,9 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 				if note[3] is bool: epic_note.suffix = "-alt"
 				elif note[3] is String:
 					match note[3]:
-						_: epic_note.type = note[3]
+						_: epic_note.style = note[3]
 			else:
-				epic_note.type = "default"
+				epic_note.style = "default"
 			
 			chart.notes.append(epic_note)
 	

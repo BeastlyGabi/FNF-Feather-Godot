@@ -2,7 +2,7 @@ class_name Note extends Node2D
 
 var time:float = 0.0
 var direction:int = 0
-var type:String = "default"
+var style:String = "default"
 var strum_line:int = 0
 
 var speed:float = 1.0
@@ -45,10 +45,9 @@ const default_colors:Dictionary = {
 }
 
 func _ready() -> void:
-	if is_hold: _load_sustain()
-	
-	if type == "default":
-		var parts:Array = [arrow, hold, end]
+	if style == "default":
+		var parts:Array = [arrow]
+		if _sustain_exists(): parts.append_array([hold, end])
 		if has_node("Splash"): parts.append(get_node("Splash"))
 		
 		for node in parts:
@@ -56,7 +55,7 @@ func _ready() -> void:
 			node.material.set_shader_parameter("color", default_colors["normal"][direction])
 
 func _process(delta:float) -> void:
-	if is_hold and _sustain_loaded:
+	if is_hold and _sustain_exists():
 		var scroll_diff:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
 		var sustain_scale:float = ((length / 2.5) * ((speed / Conductor.pitch_scale) / scale.y))
 		
@@ -79,20 +78,11 @@ func _process(delta:float) -> void:
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)
 
-func _load_sustain() -> void:
-	_sustain_loaded = false
-	var sustain_path:String = "res://assets/images/notetypes/default/"
+func _sustain_exists() -> bool:
+	var has_sustain:bool = has_node("Hold") and has_node("End")
+	if has_sustain:
+		get_node("Hold").visible = true
+		get_node("End").visible = true
+		get_node("Hold").scale.y = -1 if Settings.get_setting("downscroll") and not in_edit else 1
 	
-	hold.texture = load(sustain_path + "note hold.png")
-	end.texture = load(sustain_path + "note tail.png")
-	
-	hold.modulate.a = 0.60
-	hold.texture_mode = Line2D.LINE_TEXTURE_TILE
-	hold.width = 50.0
-	
-	hold.visible = true
-	end.visible = true
-	
-	hold.scale.y = -1 if Settings.get_setting("downscroll") and not in_edit else 1
-	
-	_sustain_loaded = true
+	return has_sustain
