@@ -1,4 +1,3 @@
-# By: Leather128 | Shoutouts to @swordcube and @voiddev
 extends Panel
 
 # VARIABLES #
@@ -10,7 +9,7 @@ var fps: int = 24
 var looped: bool = false
 var optimized: bool = true
 
-func convert_file():
+func convert_xml():
 	if path != "":
 		var path_string:String
 		
@@ -19,12 +18,12 @@ func convert_file():
 		else:
 			path_string = path
 		
-		var texture = load(path_string+".png")
+		var texture = load(path_string + ".png")
 		
 		if texture != null:
 			var frames = SpriteFrames.new()
 			
-			var txt = FileAccess.open(path_string+".txt", FileAccess.READ)
+			var txt = FileAccess.open(path_string + ".txt", FileAccess.READ)
 			
 			sprite_data.frames = frames
 			
@@ -63,13 +62,13 @@ func convert_file():
 					frames.add_frame(animation_name, frame_data)
 			
 			frames.remove_animation("default")
-			ResourceSaver.save(frames, path_string+".res", ResourceSaver.FLAG_COMPRESS)
+			ResourceSaver.save(frames, path_string + ".res", ResourceSaver.FLAG_COMPRESS)
 			
 			for anim in frames.animations:
 				sprite_data.play(anim.name)
 				await get_tree().create_timer((1.0 / frames.get_animation_speed(anim.name)) * frames.get_frame_count(anim.name)).timeout
 		else:
-			print(path_string+" loading failed.")
+			print(path_string + " loading failed.")
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

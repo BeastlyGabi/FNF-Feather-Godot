@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2mco2q2geqm0"]
+[gd_scene load_steps=6 format=3 uid="uid://b2mco2q2geqm0"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
 [ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/gameplay/notes/strums/4K.tscn" id="3_palnv"]
 [ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
+[ext_resource type="PackedScene" uid="uid://6aaoavdwp0ev" path="res://assets/data/characters/bf.tscn" id="5_qyduk"]
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_cnvoi")
@@ -51,3 +52,6 @@ is_cpu = true
 
 [node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(776, 618)
+
+[node name="bf" parent="." instance=ExtResource("5_qyduk")]
+position = Vector2(965, 390)

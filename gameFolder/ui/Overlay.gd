@@ -5,3 +5,5 @@ func _process(_delta:float) -> void:
 	$Label.text = "FPS: " + str(Engine.get_frames_per_second())
 	$Label.text += label_separator + "RAM: " + String.humanize_size(OS.get_static_memory_usage())
 	$Label.text += label_separator + "VRAM: " + String.humanize_size(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED))
+	$Label.text += '\n' + "BEAT: " + str(Conductor.current_beat) + \
+	" / STEP: " + str(Conductor.current_step) + " / SECT: " + str(Conductor.current_sect)

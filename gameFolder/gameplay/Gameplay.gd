@@ -17,7 +17,7 @@ var SONG:Chart
 @onready var strum_lines:CanvasLayer = $Strum_Lines
 @onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
 
-var song_name:String = "bopeebo"
+var song_name:String = "argument"
 
 var notes_list:Array[NoteData] = []
 var events_list:Array[EventData] = []
@@ -130,6 +130,11 @@ func update_score() -> void:
 	score_temp += score_divider + Timings.cur_grade
 	score_text.text = score_temp
 
+func on_beat(beat:int) -> void:
+	if !$bf.is_singing() and !$bf.is_missing():
+		if beat % $bf.dance_interval == 0:
+			$bf.dance(true)
+
 var key_presses:Array[bool] = []
 
 func _input(event:InputEvent) -> void:
@@ -140,8 +145,9 @@ func _input(event:InputEvent) -> void:
 					get_tree().paused = true
 					var options = load("res://gameFolder/menus/Options.tscn")
 					add_child(options.instantiate())
-					
-				KEY_7: Game.switch_scene("backend/tools/XML Converter")
+				
+				KEY_6: Game.switch_scene("backend/tools/XML Converter")
+				KEY_7: Game.switch_scene("backend/tools/TXT Converter")
 		
 		var key:int = StrumLine.get_key_dir(event)
 		if key < 0: return
@@ -192,6 +198,8 @@ func note_hit(note:Note) -> void:
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
 	
+	$bf.play_anim("sing" + StrumLine.directions[note.direction].to_upper(), true)
+	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1
 	
@@ -209,7 +217,7 @@ func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 	note.was_good_hit = true
 	
 	strum_line.play_anim("confirm", note.direction, true)
-	if not note.is_hold:
+	if !note.is_hold:
 		note.queue_free()
 
 # I ran out of function names -BeastlyGabi

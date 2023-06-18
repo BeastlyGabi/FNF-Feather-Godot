@@ -9,10 +9,11 @@ var cur_sect:int:
 
 func _init() -> void:
 	Conductor.reset()
+	
 	Conductor.step_caller.connect(on_step)
 	Conductor.beat_caller.connect(on_beat)
 	Conductor.sect_caller.connect(on_sect)
 
-func on_step(_step:int) -> void: pass
-func on_beat(_beat:int) -> void: pass
-func on_sect(_sect:int) -> void: pass
+func on_step(step:int) -> void: pass
+func on_beat(beat:int) -> void: pass
+func on_sect(sect:int) -> void: pass
