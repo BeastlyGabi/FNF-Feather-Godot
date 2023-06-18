@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2mco2q2geqm0"]
+
+[ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
+[ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/gameplay/notes/strums/4K.tscn" id="3_palnv"]
+[ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
+[ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
+
+[node name="Gameplay" type="Node2D"]
+script = ExtResource("1_cnvoi")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Inst" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="User_Interface" type="CanvasLayer" parent="."]
+
+[node name="Health_Bar" type="TextureProgressBar" parent="User_Interface"]
+offset_left = 304.0
+offset_top = 56.0
+offset_right = 905.0
+offset_bottom = 75.0
+value = 50.0
+fill_mode = 1
+texture_under = ExtResource("3_t42yp")
+texture_progress = ExtResource("3_t42yp")
+tint_under = Color(1, 0, 0, 1)
+tint_progress = Color(0.529412, 1, 0.258824, 1)
+
+[node name="Score_Text" type="Label" parent="User_Interface/Health_Bar"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 602.0
+offset_bottom = 59.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_wgyi5")
+theme_override_font_sizes/font_size = 18
+text = "- Placeholder Text -"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Strum_Lines" type="CanvasLayer" parent="."]
+
+[node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(144, 618)
+is_cpu = true
+
+[node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(776, 618)

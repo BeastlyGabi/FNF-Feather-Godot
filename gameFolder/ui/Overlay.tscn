@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://nlayiijdv1xr"]
+
+[ext_resource type="Script" path="res://gameFolder/ui/Overlay.gd" id="1_yhu8t"]
+
+[node name="Overlay" type="CanvasLayer"]
+layer = 128
+script = ExtResource("1_yhu8t")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "FPS: 0 | RAM: 0 mib | VRAM: 0 mib"

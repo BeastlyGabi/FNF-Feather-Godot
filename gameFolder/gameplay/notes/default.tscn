@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmu6gpnhsant7"]
+
+[ext_resource type="Shader" path="res://assets/data/shaders/ColorRGBMask.gdshader" id="1_j5vg1"]
+[ext_resource type="Script" path="res://gameFolder/gameplay/notes/Note.gd" id="1_m5mka"]
+[ext_resource type="Texture2D" uid="uid://8vru0j2t4y4" path="res://assets/images/notetypes/default/note hold.png" id="3_bigpo"]
+[ext_resource type="Texture2D" uid="uid://bq86h5hsb3u81" path="res://assets/images/notetypes/default/note tail.png" id="3_i70lr"]
+[ext_resource type="Texture2D" uid="uid://w6rv1tp7ol3g" path="res://assets/images/notetypes/default/arrow.png" id="5_pn0lb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7f45"]
+shader = ExtResource("1_j5vg1")
+shader_parameter/color = null
+shader_parameter/enabled = true
+
+[node name="default" type="Node2D"]
+material = SubResource("ShaderMaterial_k7f45")
+script = ExtResource("1_m5mka")
+
+[node name="Hold" type="Line2D" parent="."]
+visible = false
+position = Vector2(0, -6)
+scale = Vector2(0.7, 0.7)
+points = PackedVector2Array(0, 0, 0, 0)
+width = 50.0
+texture = ExtResource("3_bigpo")
+texture_mode = 1
+
+[node name="End" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 56)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_i70lr")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("5_pn0lb")

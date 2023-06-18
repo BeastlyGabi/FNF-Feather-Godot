@@ -1,0 +1,108 @@
+class_name StrumLine extends Node2D
+
+@onready var game = $"../../"
+@onready var receptors:Node2D = $Receptors
+@onready var notes:CanvasGroup = $Notes
+
+const colors:Array[String] = ["purple", "blue", "green", "red"]
+const directions:Array[String] = ["left", "down", "up", "right"]
+
+@export var is_cpu:bool = false
+
+func _ready() -> void:
+	for i in receptors.get_child_count():
+		var receptor:AnimatedSprite2D = receptors.get_child(i)
+		receptor.material = receptors.material.duplicate()
+		receptor.material.set_shader_parameter("color", Note.default_colors["normal"][i % 4])
+
+func _process(delta:float) -> void:
+	for note in notes.get_children():
+		var downscroll_multiplier:int = 1 if Settings.get_setting("downscroll") else -1
+		var distance:float = (Conductor.position - note.time) * (0.45 * 1.5)
+		
+		var receptor:AnimatedSprite2D = receptors.get_child(note.direction)
+		note.position = Vector2(receptor.position.x, receptor.position.y + distance * downscroll_multiplier)
+		if note.copy_rotation:
+			note.arrow.rotation = receptor.rotation
+		
+		var kill_position:float = -25 if is_cpu else -200
+		if -distance <= kill_position:
+			if !is_cpu:
+				if not note.was_good_hit:
+					#game.note_miss(note)
+					if not note.is_hold:
+						note.queue_free()
+					
+					else:
+						note.can_be_hit = false
+						note.modulate.a = 0.50
+			else:
+				game.cpu_note_hit(note, self)
+		
+		# Kill player hotds
+		if note.is_hold and !note.was_good_hit and !note.can_be_hit and !is_cpu and \
+		(
+			downscroll_multiplier > 0 and # Downcroll
+			-distance < (kill_position + note.end.position.y)
+			
+			or downscroll_multiplier < 0 and # Upscroll
+			-distance < (kill_position - note.end.position.y)
+		): note.queue_free()
+		
+		# Swordcube's Hold Note input script, thanks I wouldn't be able to
+		# Figure it out, @BeastlyGabi
+		if note.was_good_hit:
+			if note.is_hold:
+				note.position.y = 25 if downscroll_multiplier else receptor.position.y
+				note.arrow.visible = false
+				note.z_index = -1
+				
+				play_anim("confirm", note.direction, receptor.frame >= 2)
+				
+				note.length -= (delta * 1000.0 * Conductor.pitch_scale)
+				if note.length <= -(Conductor.step_crochet / 1000.0):
+					note.queue_free()
+				
+				if !is_cpu and note.must_press and note.length >= 80.0:
+					if !Input.is_action_pressed("note_" + directions[note.direction]):
+						note.was_good_hit = false
+						note.modulate.a = 0.30
+						game.note_miss(note)
+						play_anim("static", note.direction, true)
+	
+	for i in receptors.get_child_count():
+		var receptor:AnimatedSprite2D = receptors.get_child(i)
+		if is_cpu and receptor.frame >= 2:
+			play_anim("static", i, true)
+
+func _input(event:InputEvent) -> void:
+	if event is InputEventKey and !is_cpu:
+		var key:int = get_key_dir(event)
+		if key < 0: return
+		
+		if event.pressed:
+			if not receptors.get_child(key).animation.ends_with("glow"):
+				play_anim("press", key, true)
+		else:
+			play_anim("static", key, true)
+
+static func get_key_dir(event:InputEventKey) -> int:
+	var key:int = -1
+	for i in directions.size():
+		var action:String = "note_" + directions[i].to_lower()
+		if event.is_action_pressed(action) or event.is_action_released(action):
+			key = i
+			break
+	return key
+
+var receptor_last_anim:String
+func play_anim(anim:String, direction:int, forced:bool = false, speed:float = 1.0, reverse:bool = false) -> void:
+	var receptor:AnimatedSprite2D = receptors.get_child(direction)
+	if forced or receptor_last_anim != anim:
+		if forced:
+			receptor.frame = 0.0
+			receptor.get_node("Anim_Player").seek(0.0)
+		
+		receptor.get_node("Anim_Player").play(anim, -1, speed, reverse)
+		receptor.material.set_shader_parameter("enabled", anim != "static")
+		receptor_last_anim = anim

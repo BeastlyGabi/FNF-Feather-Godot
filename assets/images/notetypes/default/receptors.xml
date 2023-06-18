@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="receptors.png">
+	<!-- Created with Adobe Flash CS6 version 12.0.0.481 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<SubTexture name="up ghost0000" x="472" y="0" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
+	<SubTexture name="up ghost0001" x="472" y="0" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
+	<SubTexture name="up ghost0002" x="371" y="233" width="153" height="150"/>
+	<SubTexture name="up ghost0003" x="371" y="233" width="153" height="150"/>
+	<SubTexture name="up glow0000" x="0" y="0" width="236" height="233"/>
+	<SubTexture name="up glow0001" x="236" y="0" width="236" height="233"/>
+	<SubTexture name="up glow0002" x="0" y="233" width="214" height="212" frameX="-11" frameY="-10" frameWidth="236" frameHeight="233"/>
+	<SubTexture name="up glow0003" x="0" y="233" width="214" height="212" frameX="-11" frameY="-10" frameWidth="236" frameHeight="233"/>
+	<SubTexture name="up static0000" x="214" y="233" width="157" height="154"/>
+</TextureAtlas>
