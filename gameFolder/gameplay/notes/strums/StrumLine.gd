@@ -35,6 +35,7 @@ func _process(delta:float) -> void:
 						note.queue_free()
 					
 					else:
+						note._did_miss = true
 						note.can_be_hit = false
 						note.modulate.a = 0.50
 			else:
