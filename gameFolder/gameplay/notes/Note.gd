@@ -23,6 +23,7 @@ var must_press:bool:
 @onready var hold:Line2D = $Hold
 @onready var end:Sprite2D = $End
 
+var _did_miss:bool = false
 var _sustain_loaded:bool = false
 
 var copy_opacity:bool = true
@@ -54,7 +55,7 @@ func _ready() -> void:
 			node.material = material.duplicate()
 			node.material.set_shader_parameter("color", default_colors["normal"][direction])
 
-func _process(_delta:float) -> void:
+func _process(delta:float) -> void:
 	if is_hold and _sustain_loaded:
 		var scroll_diff:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
 		var sustain_scale:float = ((length / 2.5) * ((speed / Conductor.pitch_scale) / scale.y))
@@ -67,6 +68,11 @@ func _process(_delta:float) -> void:
 		end.position = Vector2(hold.points[last_point].x, end_point - 5.0)
 		end.flip_v = scroll_diff < 0
 		end.modulate.a = hold.modulate.a
+		
+		if was_good_hit:
+			length -= (delta * 1000.0 * Conductor.pitch_scale)
+			if length <= -(Conductor.step_crochet / 1000.0):
+				queue_free()
 	
 	if !in_edit:
 		var hit_area:float = (Timings.worst_timing() / (1.2 * Conductor.pitch_scale))

@@ -17,7 +17,7 @@ var SONG:Chart
 @onready var strum_lines:CanvasLayer = $Strum_Lines
 @onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
 
-var song_name:String = "argument"
+var song_name:String = "bopeebo"
 
 var notes_list:Array[NoteData] = []
 var events_list:Array[EventData] = []
@@ -214,7 +214,8 @@ func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 
 # I ran out of function names -BeastlyGabi
 func note_miss(note:Note, include_anim:bool = true) -> void:
-	do_miss_damage()
+	if note._did_miss: return
+	do_miss_damage(note.is_hold)
 
 func ghost_miss(direction:int, include_anim:bool = true) -> void:
 	do_miss_damage(true)

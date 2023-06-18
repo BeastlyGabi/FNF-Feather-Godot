@@ -29,9 +29,9 @@ func _process(delta:float) -> void:
 		var kill_position:float = -25 if is_cpu else -200
 		if -distance <= kill_position:
 			if !is_cpu:
-				if not note.was_good_hit:
-					#game.note_miss(note)
-					if not note.is_hold:
+				if !note.was_good_hit:
+					game.note_miss(note)
+					if !note.is_hold:
 						note.queue_free()
 					
 					else:
@@ -60,15 +60,15 @@ func _process(delta:float) -> void:
 				
 				play_anim("confirm", note.direction, receptor.frame >= 2)
 				
-				note.length -= (delta * 1000.0 * Conductor.pitch_scale)
-				if note.length <= -(Conductor.step_crochet / 1000.0):
-					note.queue_free()
-				
 				if !is_cpu and note.must_press and note.length >= 80.0:
 					if !Input.is_action_pressed("note_" + directions[note.direction]):
 						note.was_good_hit = false
+						note.can_be_hit = false
 						note.modulate.a = 0.30
+						
 						game.note_miss(note)
+						note._did_miss = true
+						
 						play_anim("static", note.direction, true)
 	
 	for i in receptors.get_child_count():
