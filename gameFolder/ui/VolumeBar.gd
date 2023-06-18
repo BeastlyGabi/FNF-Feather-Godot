@@ -15,7 +15,7 @@ func show_the_thing():
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property($ProgressBar, "modulate:a", 0.0, 0.35).set_delay(0.85)
 
-func _input(event:InputEvent):
+func _input(_event:InputEvent):
 	if Input.is_action_just_pressed("volume_up") or Input.is_action_just_pressed("volume_down"):
 		var is_up:bool = Input.is_action_just_pressed("volume_up")
 		var value:float = 0.1 if is_up else -0.1

@@ -49,7 +49,7 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 		
 		var sect_len:int = section.lengthInSteps if "lengthInSteps" in section else 16
 		cam_thing.time = ((60 / cur_bpm) * 1000.0) / 4.0 * sect_len * json.notes.find(section)
-		1
+		
 		if "mustHitSection" in section and section.mustHitSection:
 			cam_char = "player"
 		

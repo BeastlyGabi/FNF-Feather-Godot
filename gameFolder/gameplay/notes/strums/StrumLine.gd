@@ -90,13 +90,13 @@ func pop_splash(note:Note) -> void:
 	
 	le_splash.get_node("Anim_Player").play("splash")
 	le_splash.get_node("Anim_Player").animation_finished.connect(
-		func(anim:StringName):
+		func(_anim:StringName):
 			le_splash.queue_free()
 	)
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and !is_cpu:
-		var key:int = get_key_dir(event)
+		var key:int = StrumLine.get_key_dir(event)
 		if key < 0: return
 		
 		if event.pressed:
@@ -119,7 +119,7 @@ func play_anim(anim:String, direction:int, forced:bool = false, speed:float = 1.
 	var receptor:AnimatedSprite2D = receptors.get_child(direction)
 	if forced or receptor_last_anim != anim:
 		if forced:
-			receptor.frame = 0.0
+			receptor.frame = 0
 			receptor.get_node("Anim_Player").seek(0.0)
 		
 		receptor.get_node("Anim_Player").play(anim, -1, speed, reverse)

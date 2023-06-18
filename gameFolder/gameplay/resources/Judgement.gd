@@ -16,8 +16,8 @@ func _init(_name:String, _accuracy:float, _splash:bool = false, _image:String = 
 	self.accuracy = _accuracy
 	self.timing = Settings.timings[name]
 
-static func path_to_judge(image:String, skin:String = "normal") -> String:
-	return "res://assets/images/UI/ratings/" + skin + "/" + image + ".png"
+static func path_to_judge(_image:String, _skin:String = "normal") -> String:
+	return "res://assets/images/UI/ratings/" + _skin + "/" + _image + ".png"
 
-static func path_to_combo(image:String, skin:String = "normal") -> String:
-	return "res://assets/images/UI/combo/" + skin + "/" + image + ".png"
+static func path_to_combo(_image:String, _skin:String = "normal") -> String:
+	return "res://assets/images/UI/combo/" + _skin + "/" + _image + ".png"

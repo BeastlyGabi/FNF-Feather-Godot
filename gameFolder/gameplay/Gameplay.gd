@@ -32,9 +32,29 @@ func _init() -> void:
 func _ready() -> void:
 	Timings.reset()
 	
-	inst.stream = load("res://assets/songs/" + song_name + "/audio/Inst.ogg")
-	voices.stream = load("res://assets/songs/" + song_name + "/audio/Voices.ogg")
-	#inst.finished.connect(end_song)
+	var audio_folder:String = "res://assets/songs/" + song_name + "/audio"
+	for file in DirAccess.get_files_at(audio_folder):
+		
+		if file.ends_with(".import"):
+			var file_path:String = audio_folder + "/" + file.replace(".import", "")
+			var stream_with_scene_node:bool = false
+			
+			if file.begins_with("Inst"):
+				stream_with_scene_node = true
+				inst.stream = load(file_path)
+				inst.stream.loop = false
+				#inst.finished.connect(end_song)
+			
+			if file.begins_with("Voices") or file.begins_with("Vocals"):
+				stream_with_scene_node = true
+				voices.stream = load(file_path)
+				voices.stream.loop = false
+			
+			if !stream_with_scene_node:
+				var new_stream:AudioStreamPlayer = AudioStreamPlayer.new()
+				new_stream.stream = load(file_path)
+				new_stream.stream.loop = false
+				sounds.add_child(new_stream)
 	
 	if !Settings.get_setting("downscroll"):
 		health_bar.position.y = Game.SCREEN["height"] - 85
