@@ -17,13 +17,14 @@ func _ready() -> void:
 
 func _process(delta:float) -> void:
 	for note in notes.get_children():
-		var downscroll_multiplier:int = 1 if Settings.get_setting("downscroll") else -1
-		var distance:float = (Conductor.position - note.time) * (0.45 * 1.5)
+		var scroll_diff:int = 1 if Settings.get_setting("downscroll") else -1
+		var distance:float = (Conductor.position - note.time) * (0.45 * note.speed)
 		
 		var receptor:AnimatedSprite2D = receptors.get_child(note.direction)
-		note.position = Vector2(receptor.position.x, receptor.position.y + distance * downscroll_multiplier)
-		if note.copy_rotation:
-			note.arrow.rotation = receptor.rotation
+		note.position = Vector2(receptor.position.x, receptor.position.y + distance * scroll_diff)
+		
+		if note.copy_rotation: note.arrow.rotation = receptor.rotation
+		if note.copy_opacity: note.modulate.a = receptor.modulate.a
 		
 		var kill_position:float = -25 if is_cpu else -200
 		if -distance <= kill_position:
@@ -42,10 +43,10 @@ func _process(delta:float) -> void:
 		# Kill player hotds
 		if note.is_hold and !note.was_good_hit and !note.can_be_hit and !is_cpu and \
 		(
-			downscroll_multiplier > 0 and # Downcroll
+			scroll_diff > 0 and # Downcroll
 			-distance < (kill_position + note.end.position.y)
 			
-			or downscroll_multiplier < 0 and # Upscroll
+			or scroll_diff < 0 and # Upscroll
 			-distance < (kill_position - note.end.position.y)
 		): note.queue_free()
 		
@@ -53,7 +54,7 @@ func _process(delta:float) -> void:
 		# Figure it out, @BeastlyGabi
 		if note.was_good_hit:
 			if note.is_hold:
-				note.position.y = 25 if downscroll_multiplier else receptor.position.y
+				note.position.y = 25 if scroll_diff > -1 else receptor.position.y
 				note.arrow.visible = false
 				note.z_index = -1
 				
@@ -74,6 +75,24 @@ func _process(delta:float) -> void:
 		var receptor:AnimatedSprite2D = receptors.get_child(i)
 		if is_cpu and receptor.frame >= 2:
 			play_anim("static", i, true)
+
+func pop_splash(note:Note) -> void:
+	if Settings.get_setting("note_splashes") == "never" or !note.has_node("Splash"):
+		return
+	
+	var receptor := receptors.get_child(note.direction)
+	var le_splash := note.get_node("Splash").duplicate()
+	le_splash.position = receptor.position
+	le_splash.position.y += 5
+	le_splash.modulate.a = 0.80
+	le_splash.visible = true
+	add_child(le_splash)
+	
+	le_splash.get_node("Anim_Player").play("splash")
+	le_splash.get_node("Anim_Player").animation_finished.connect(
+		func(anim:StringName):
+			le_splash.queue_free()
+	)
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and !is_cpu:

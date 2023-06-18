@@ -1,15 +1,38 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmu6gpnhsant7"]
+[gd_scene load_steps=10 format=3 uid="uid://bmu6gpnhsant7"]
 
 [ext_resource type="Shader" path="res://assets/data/shaders/ColorRGBMask.gdshader" id="1_j5vg1"]
 [ext_resource type="Script" path="res://gameFolder/gameplay/notes/Note.gd" id="1_m5mka"]
 [ext_resource type="Texture2D" uid="uid://8vru0j2t4y4" path="res://assets/images/notetypes/default/note hold.png" id="3_bigpo"]
 [ext_resource type="Texture2D" uid="uid://bq86h5hsb3u81" path="res://assets/images/notetypes/default/note tail.png" id="3_i70lr"]
 [ext_resource type="Texture2D" uid="uid://w6rv1tp7ol3g" path="res://assets/images/notetypes/default/arrow.png" id="5_pn0lb"]
+[ext_resource type="Texture2D" uid="uid://bh152f1lv04u8" path="res://assets/images/notetypes/default/splash.png" id="6_vbc32"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k7f45"]
 shader = ExtResource("1_j5vg1")
 shader_parameter/color = null
 shader_parameter/enabled = true
+
+[sub_resource type="Animation" id="Animation_fknc2"]
+resource_name = "splash"
+length = 0.208338
+step = 0.0666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0416667, 0.0833333, 0.125, 0.166667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5uvit"]
+_data = {
+"splash": SubResource("Animation_fknc2")
+}
 
 [node name="default" type="Node2D"]
 material = SubResource("ShaderMaterial_k7f45")
@@ -33,3 +56,13 @@ texture = ExtResource("3_i70lr")
 [node name="Arrow" type="Sprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("5_pn0lb")
+
+[node name="Splash" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("6_vbc32")
+hframes = 5
+
+[node name="Anim_Player" type="AnimationPlayer" parent="Splash"]
+libraries = {
+"": SubResource("AnimationLibrary_5uvit")
+}

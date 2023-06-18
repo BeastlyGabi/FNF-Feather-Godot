@@ -22,10 +22,11 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	
 	var chart:Chart = Chart.new()
 	chart.name = folder
+	chart.speed = json.speed
+	chart.bpm = json.bpm
+	
 	chart.notes = []
 	chart.events = []
-	chart.bpm = json.bpm
-	chart.speed = json.speed
 	
 	if "player1" in json: chart.characters[0] = json.player1
 	if "player2" in json: chart.characters[1] = json.player2
@@ -33,7 +34,8 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	if "player3" in json and json.player3 != null:
 		chart.characters[2] = json.player3
 	
-	if "gfVersion" in json: chart.characters[3] = json.gfVersion
+	if "gfVersion" in json and json.gfVersion != null:
+		chart.characters[2] = json.gfVersion
 	
 	for section in json.notes:
 		var cam_char:String = "opponent"

@@ -17,7 +17,7 @@ var SONG:Chart
 @onready var strum_lines:CanvasLayer = $Strum_Lines
 @onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
 
-var song_name:String = "bopeebo"
+var song_name:String = "argument"
 
 var notes_list:Array[NoteData] = []
 var events_list:Array[EventData] = []
@@ -35,6 +35,11 @@ func _ready() -> void:
 	inst.stream = load("res://assets/songs/" + song_name + "/audio/Inst.ogg")
 	voices.stream = load("res://assets/songs/" + song_name + "/audio/Voices.ogg")
 	#inst.finished.connect(end_song)
+	
+	if !Settings.get_setting("downscroll"):
+		health_bar.position.y = Game.SCREEN["height"] - 85
+		for strum_line in strum_lines.get_children():
+			strum_line.position.y = 100
 	
 	for i in player_strums.receptors.get_children():
 		key_presses.append(false)
@@ -54,8 +59,8 @@ func _process(_delta:float) -> void:
 	if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 		Conductor.position = inst.get_playback_position() * 1000.0
 	
-	Timings.health = clampi(Timings.health, 0, 100)
-	health_bar.value = clampi(Timings.health, 0, 100)
+	Timings.health = clampf(Timings.health, 0.0, 2.0)
+	health_bar.value = clampf(Timings.health, 0.0, 2.0)
 	
 	if SONG != null and inst.stream != null:
 		note_processing()
@@ -64,14 +69,14 @@ func _process(_delta:float) -> void:
 func note_processing() -> void:
 	while notes_list.size() > 0:
 		var note_data:NoteData = notes_list[0]
-		var speed:float = 2.0
+		var speed:float = SONG.speed
 		
 		if note_data.time - Conductor.position > (3500 * speed):
 			break
 		
 		var new_note:Note = NOTE_TYPES["default"].instantiate()
 		new_note.time = note_data.time
-		new_note.speed =  roundf(speed)
+		new_note.speed = speed
 		
 		new_note.direction = note_data.direction % SONG.key_amount
 		new_note.strum_line = note_data.strum_line
@@ -88,7 +93,7 @@ func event_processing() -> void:
 		if cur_event.time > Conductor.position + cur_event.delay:
 			break
 		
-		print("event requested: " +cur_event.name+" timestep: "+str(cur_event.time))
+		#print("event requested: " +cur_event.name+" timestep: "+str(cur_event.time))
 		events_list.erase(cur_event)
 
 var score_divider:String = " / "
@@ -111,8 +116,12 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
 			match event.keycode:
-				KEY_7:
-					Game.switch_scene("resources/tools/XML Converter")
+				KEY_8:
+					get_tree().paused = true
+					var options = load("res://gameFolder/menus/Options.tscn")
+					add_child(options.instantiate())
+					
+				KEY_7: Game.switch_scene("backend/tools/XML Converter")
 		
 		var key:int = StrumLine.get_key_dir(event)
 		if key < 0: return
@@ -126,22 +135,30 @@ func _input(event:InputEvent) -> void:
 		): notes_to_hit.append(note)
 		
 		notes_to_hit.sort_custom(func(a, b):
-			return b.time if a.time > b.time else a.time
+			return int(a.time - b.time)
 		)
 		
 		if Input.is_action_just_pressed("note_" + player_strums.directions[key]):
 			if notes_to_hit.size() > 0:
-				note_hit(notes_to_hit[0])
-				player_strums.play_anim("confirm", key, true)
+				var cool_note:Note = notes_to_hit[0]
 				
 				if notes_to_hit.size() > 1:
 					for i in notes_to_hit.size():
 						if i == 0: continue
+						var dumb_note:Note = notes_to_hit[i]
 						
-						if notes_to_hit[i].direction == notes_to_hit[0].direction and \
-							absf(notes_to_hit[i].time - notes_to_hit[0].time) <= 5.0:
-							notes_to_hit[i].queue_free()
-							break
+						if dumb_note.direction == cool_note.direction:
+							# Same note twice at 5ms of distance? die
+							if absf(dumb_note.time - cool_note.time) <= 5:
+								dumb_note.queue_free()
+								break
+							# No? then Replace the cool note if its earlier than the dumb one
+							elif dumb_note.time < cool_note.time:
+								cool_note = dumb_note
+								break
+				
+				note_hit(cool_note)
+				player_strums.play_anim("confirm", key, true)
 			
 			else:
 				if not Settings.get_setting("ghost_tapping"):
@@ -152,13 +169,15 @@ func note_hit(note:Note) -> void:
 	note.was_good_hit = true
 	
 	var judge:Judgement = Timings.judge_values(note.time, Conductor.position)
-	damage_mult = 0.0
-	
 	Timings.score += Timings.score_from_judge(judge.name)
-	Timings.health += Timings.health_balance(judge.health)
+	Timings.health += 0.023
 	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1
+	
+	var needs_sick:bool = Settings.get_setting("note_splashes") == "sick only"
+	if needs_sick and judge.name == "sick" or !needs_sick:
+		player_strums.pop_splash(note)
 	
 	Timings.update_accuracy(judge)
 	
@@ -173,8 +192,6 @@ func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 	if not note.is_hold:
 		note.queue_free()
 
-var damage_mult:float = 0.0
-
 # I ran out of function names -BeastlyGabi
 func note_miss(note:Note, include_anim:bool = true) -> void:
 	do_miss_damage()
@@ -182,19 +199,18 @@ func note_miss(note:Note, include_anim:bool = true) -> void:
 func ghost_miss(direction:int, include_anim:bool = true) -> void:
 	do_miss_damage(true)
 
+var damage_mult:float = 0.0
+
 func do_miss_damage(ignore_dmg_mult:bool = false):
 	if damage_mult == 0.0 and !ignore_dmg_mult:
 		damage_mult = 1
 	
 	var mult_thing:float = damage_mult if !ignore_dmg_mult else 0.1
 	Timings.health -= 0.475 * mult_thing
-	
-	if !ignore_dmg_mult:
-		damage_mult += 0.175
-	
+	if !ignore_dmg_mult: damage_mult += 0.175
 	Timings.misses += 1
 	
-	if Timings.combo < 0: Timings.combo == 0
+	if Timings.combo > 0: Timings.combo == 0
 	else: Timings.combo -= 1
 	
 	Timings.update_rank()

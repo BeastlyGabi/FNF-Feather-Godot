@@ -3,6 +3,7 @@ extends Node
 var _game_settings:Dictionary = {
 	"downscroll": true,
 	"ghost_tapping": false,
+	"note_splashes": "sick only",
 	"volume": 1.0,
 }
 

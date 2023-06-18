@@ -3,17 +3,18 @@ extends Node
 ## Here a Script that stores Judgements and Calculats Score and Accuracy ##
 
 var judgements:Array[Judgement] = [
-	# Name, Accuracy, Health, Note Splash, Image (Optional
-	Judgement.new("sick", 100.0, 100, true, "sick"),
-	Judgement.new("good", 75.0, 80, false, "good"),
-	Judgement.new("bad", 35.0, 30, false, "bad"),
-	Judgement.new("shit", 0.0, -20, false, "shit")
+	# Name, Accuracy, Note Splash, Image (Optional
+	Judgement.new("sick", 100.0, true, "sick"),
+	Judgement.new("good", 75.0, false, "good"),
+	Judgement.new("bad", 35.0, false, "bad"),
+	Judgement.new("shit", 0.0, false, "shit")
 ]
 
 var judgements_hit:Dictionary = {}
 
 func reset():
 	notes_hit = 0
+	health = 1.0
 	accuracy = 0.0
 	notes_acc = 0.0
 	cur_clear = "?"
@@ -27,7 +28,7 @@ func reset():
 
 var score:int = 0
 var misses:int = 0
-var health:int = 50
+var health:float = 1.0
 var combo:int = 0
 
 var notes_acc:float = 0.0
@@ -62,16 +63,13 @@ func update_accuracy(judge:Judgement) -> void:
 	update_rank()
 
 func score_from_judge(judge:String) -> int:
-	var score:int = 0
+	var _score:int = 0
 	match judge:
-		"sick": score = 350
-		"good": score = 100
-		"bad": score = 50
-		"shit": score = 0
-	return score
-
-func health_balance(mult:float) -> float:
-	return (mult / 50)
+		"sick": _score = 350
+		"good": _score = 100
+		"bad": _score = 50
+		"shit": _score = 0
+	return _score
 
 var cur_clear:String = "?"
 var cur_grade:String = "N/A"

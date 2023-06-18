@@ -530,7 +530,7 @@ script = ExtResource("1_4pl3r")
 material = SubResource("ShaderMaterial_usaus")
 
 [node name="1" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(1, 8)
+position = Vector2(0, 8)
 rotation = -1.5708
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
@@ -543,7 +543,7 @@ libraries = {
 }
 
 [node name="2" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(115, 0)
+position = Vector2(120, 0)
 rotation = 3.14159
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
@@ -556,7 +556,7 @@ libraries = {
 }
 
 [node name="3" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(220, 0)
+position = Vector2(230, 0)
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
 animation = &"up static"
@@ -567,7 +567,7 @@ libraries = {
 }
 
 [node name="4" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(325, 0)
+position = Vector2(340, 0)
 rotation = 1.57079
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")

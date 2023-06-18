@@ -19,11 +19,13 @@ var was_good_hit:bool = false
 var must_press:bool:
 	get: return strum_line == 1
 
-@onready var arrow:Sprite2D = $Arrow
+@onready var arrow := $Arrow # assuming the type here since you can have AnimatedSprite2D as an arrow
 @onready var hold:Line2D = $Hold
 @onready var end:Sprite2D = $End
 
 var _sustain_loaded:bool = false
+
+var copy_opacity:bool = true
 var copy_rotation:bool = true
 
 const default_colors:Dictionary = {
@@ -54,20 +56,20 @@ func _ready() -> void:
 
 func _process(_delta:float) -> void:
 	if is_hold and _sustain_loaded:
-		var downscroll_multiplier:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
-		var sustain_scale:float = ((length / 2.5 / Conductor.pitch_scale) * ((speed) / scale.y))
+		var scroll_diff:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
+		var sustain_scale:float = ((length / 2.5) * ((speed / Conductor.pitch_scale) / scale.y))
 		
 		hold.points = [Vector2.ZERO, Vector2(0, sustain_scale)]
 		var last_point = hold.points.size() - 1
 		var end_point:float = (hold.points[last_point].y + ((end.texture.get_height() \
-			* end.scale.y) / 2.0)) * downscroll_multiplier
+			* end.scale.y) / 2.0)) * scroll_diff
 		
 		end.position = Vector2(hold.points[last_point].x, end_point - 5.0)
-		end.flip_v = downscroll_multiplier < 0
+		end.flip_v = scroll_diff < 0
 		end.modulate.a = hold.modulate.a
 	
 	if !in_edit:
-		var hit_area:float = Timings.worst_timing() / (1.25 * Conductor.pitch_scale)
+		var hit_area:float = (Timings.worst_timing() / (1.2 * Conductor.pitch_scale))
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)
 

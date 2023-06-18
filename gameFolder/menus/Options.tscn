@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://eenogxjd1nee"]
+
+[ext_resource type="Script" path="res://gameFolder/menus/Options.gd" id="1_v3bqw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvyxe"]
+bg_color = Color(0.341176, 0.341176, 0.541176, 1)
+
+[node name="Options" type="CanvasLayer"]
+script = ExtResource("1_v3bqw")
+
+[node name="Panel" type="Panel" parent="."]
+process_mode = 2
+offset_left = 480.0
+offset_top = 231.0
+offset_right = 801.0
+offset_bottom = 356.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kvyxe")
+
+[node name="OptionButton" type="OptionButton" parent="Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 153.0
+offset_bottom = 55.0
+alignment = 1
+item_count = 3
+popup/item_0/text = "\"Sick\" Only"
+popup/item_0/id = 0
+popup/item_1/text = "Always"
+popup/item_1/id = 1
+popup/item_2/text = "Never"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="Panel/OptionButton"]
+layout_mode = 0
+offset_top = -23.0
+offset_right = 110.0
+offset_bottom = 3.0
+text = "Note Splashes"
+
+[node name="OptionButton2" type="OptionButton" parent="Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 88.0
+offset_right = 153.0
+offset_bottom = 119.0
+alignment = 1
+item_count = 2
+popup/item_0/text = "Up"
+popup/item_0/id = 0
+popup/item_1/text = "Down"
+popup/item_1/id = 1
+
+[node name="Label" type="Label" parent="Panel/OptionButton2"]
+layout_mode = 0
+offset_top = -23.0
+offset_right = 110.0
+offset_bottom = 3.0
+text = "Scroll Direction"
+
+[node name="CheckBox" type="CheckBox" parent="Panel"]
+layout_mode = 0
+offset_left = 174.0
+offset_top = 4.0
+offset_right = 314.0
+offset_bottom = 35.0
+text = "Ghost Tapping"
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 87.0
+offset_right = 312.0
+offset_bottom = 118.0
+text = "Reset Scene"
+
+[connection signal="item_selected" from="Panel/OptionButton" to="." method="_on_note_splash_selection"]
+[connection signal="item_selected" from="Panel/OptionButton2" to="." method="_on_scroll_item_selection"]
+[connection signal="toggled" from="Panel/CheckBox" to="." method="_ghost_tapping_toggle"]
+[connection signal="pressed" from="Panel/Button" to="." method="_on_reset_scene_pressed"]
