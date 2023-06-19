@@ -15,6 +15,15 @@ script = ExtResource("1_cnvoi")
 
 [node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
+[node name="Strum_Lines" type="CanvasLayer" parent="."]
+
+[node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(144, 618)
+is_cpu = true
+
+[node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(776, 618)
+
 [node name="User_Interface" type="CanvasLayer" parent="."]
 
 [node name="Health_Bar" type="TextureProgressBar" parent="User_Interface"]
@@ -43,15 +52,6 @@ theme_override_font_sizes/font_size = 18
 text = "- Placeholder Text -"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Strum_Lines" type="CanvasLayer" parent="."]
-
-[node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(144, 618)
-is_cpu = true
-
-[node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(776, 618)
 
 [node name="bf" parent="." instance=ExtResource("5_qyduk")]
 position = Vector2(965, 390)

@@ -17,3 +17,7 @@ func switch_scene(next_scene:String) -> void:
 	LAST_SCENE = scene_path
 
 func reset_scene() -> void: switch_scene(LAST_SCENE)
+
+func float_to_minute(value:float): return int(value / 60)
+func float_to_seconds(value:float): return fmod(value, 60)
+func format_to_time(value:float): return "%02d:%02d" % [float_to_minute(value), float_to_seconds(value)]

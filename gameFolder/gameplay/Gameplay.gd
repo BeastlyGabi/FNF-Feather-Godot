@@ -88,15 +88,14 @@ func _process(_delta:float) -> void:
 
 func note_processing() -> void:
 	while notes_list.size() > 0:
-		var note_data:NoteData = notes_list[0]
-		var speed:float = SONG.speed
-		
-		if note_data.time - Conductor.position > (3500 * speed):
+		if notes_list[0].time - Conductor.position > (3500 * (SONG.speed / Conductor.pitch_scale)):
 			break
+		
+		var note_data:NoteData = notes_list[0]
 		
 		var new_note:Note = NOTE_STYLES["default"].instantiate()
 		new_note.time = note_data.time
-		new_note.speed = speed
+		new_note.speed = SONG.speed
 		
 		new_note.direction = note_data.direction % SONG.key_amount
 		new_note.strum_line = note_data.strum_line
@@ -113,7 +112,6 @@ func event_processing() -> void:
 		if cur_event.time > Conductor.position + cur_event.delay:
 			break
 		
-		#print("event requested: " +cur_event.name+" timestep: "+str(cur_event.time))
 		events_list.erase(cur_event)
 
 var score_divider:String = " / "
