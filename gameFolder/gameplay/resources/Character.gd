@@ -9,6 +9,8 @@ var hold_timer:float = 0.0
 
 @onready var anim:AnimationPlayer = $Anim_Player
 
+var sing_anims:Array[String] = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
+
 func _ready() -> void:
 	dance(true)
 

@@ -17,10 +17,39 @@ var SONG:Chart
 @onready var strum_lines:CanvasLayer = $Strum_Lines
 @onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
 
-var song_name:String = "argument"
+var song_name:String = "kaio-ken"
 
 var notes_list:Array[NoteData] = []
 var events_list:Array[EventData] = []
+
+###################################################
+### LODING FUNCTIONS YOU M4Y W4NN4 IGNORE THESE ###
+
+func lo4d_strumlines() -> void:
+	if SONG.key_amount != 4:
+		for strum in strum_lines.get_children():
+			var path:String = "res://gameFolder/gameplay/notes/strums/" + str(SONG.key_amount) + "K.tscn"
+			if !ResourceLoader.exists(path):
+				push_error("Strumline with " + str(SONG.key_amount) + " keys doesn't exist, defaulting to 4")
+				SONG.key_amount = 4
+				break
+			
+			var old_name:String = strum.name
+			var old_pos:Vector2 = strum.position
+			
+			strum_lines.remove_child(strum)
+			
+			strum = load(path).instantiate()
+			strum.name = old_name
+			strum.position = old_pos
+			
+			if strum.name == "Player_Strums":
+				strum.is_cpu = false
+				player_strums = strum
+			
+			strum_lines.add_child(strum)
+
+###################################################
 
 func _init() -> void:
 	super._init()
@@ -31,6 +60,8 @@ func _init() -> void:
 
 func _ready() -> void:
 	Timings.reset()
+	
+	lo4d_strumlines()
 	
 	var audio_folder:String = "res://assets/songs/" + song_name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
@@ -97,9 +128,11 @@ func note_processing() -> void:
 		new_note.time = note_data.time
 		new_note.speed = SONG.speed
 		
-		new_note.direction = note_data.direction % SONG.key_amount
+		new_note.direction = int(note_data.direction % SONG.key_amount)
 		new_note.strum_line = note_data.strum_line
 		new_note.length = note_data.length
+		
+		
 		
 		if strum_lines.get_child(new_note.strum_line) != null:
 			strum_lines.get_child(new_note.strum_line).notes.add_child(new_note)
@@ -147,7 +180,7 @@ func _input(event:InputEvent) -> void:
 				KEY_6: Game.switch_scene("backend/tools/XML Converter")
 				KEY_7: Game.switch_scene("backend/tools/TXT Converter")
 		
-		var key:int = StrumLine.get_key_dir(event)
+		var key:int = player_strums.get_key_dir(event)
 		if key < 0: return
 		
 		key_presses[key] = Input.is_action_pressed("note_" + player_strums.directions[key])
@@ -196,7 +229,8 @@ func note_hit(note:Note) -> void:
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
 	
-	$bf.play_anim("sing" + StrumLine.directions[note.direction].to_upper(), true)
+	var index:int = note.direction % SONG.key_amount
+	#$bf.play_anim($bf.sing_anims[index], true)
 	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1
@@ -213,8 +247,6 @@ func note_hit(note:Note) -> void:
 
 func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 	note.was_good_hit = true
-	
-	strum_line.play_anim("confirm", note.direction, true)
 	if !note.is_hold:
 		note.queue_free()
 

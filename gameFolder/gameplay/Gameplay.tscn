@@ -18,11 +18,11 @@ script = ExtResource("1_cnvoi")
 [node name="Strum_Lines" type="CanvasLayer" parent="."]
 
 [node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(144, 618)
-is_cpu = true
+position = Vector2(150, 625)
 
 [node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(776, 618)
+position = Vector2(780, 626)
+is_cpu = false
 
 [node name="User_Interface" type="CanvasLayer" parent="."]
 

@@ -37,6 +37,12 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	if "gfVersion" in json and json.gfVersion != null:
 		chart.characters[2] = json.gfVersion
 	
+	if "mania" in json: # Shaggy Charts
+		# "match" didn't seem to do the trick, huh
+		if json.mania == 1: chart.key_amount = 6
+		if json.mania == 2: chart.key_amount = 7
+		if json.mania == 3: chart.key_amount = 9
+	
 	for section in json.notes:
 		var cam_char:String = "opponent"
 		var cam_thing:EventData = EventData.new()
@@ -67,8 +73,8 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 			epic_note.length = float(note[2])
 			
 			var gotta_hit:bool = section.mustHitSection
-			if note[1] > 3: gotta_hit = !section.mustHitSection
-			epic_note.strum_line = gotta_hit
+			if note[1] > chart.key_amount-1: gotta_hit = !section.mustHitSection
+			epic_note.strum_line = 1 if gotta_hit else 0
 			
 			if note.size() > 3 and note[3] != null:
 				if note[3] is bool: epic_note.suffix = "-alt"

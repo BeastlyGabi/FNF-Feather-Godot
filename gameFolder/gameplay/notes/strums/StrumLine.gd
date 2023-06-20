@@ -4,10 +4,10 @@ class_name StrumLine extends Node2D
 @onready var receptors:Node2D = $Receptors
 @onready var notes:CanvasGroup = $Notes
 
-const colors:Array[String] = ["purple", "blue", "green", "red"]
-const directions:Array[String] = ["left", "down", "up", "right"]
+@export var colors:Array[String] = ["purple", "blue", "green", "red"]
+@export var directions:Array[String] = ["left", "down", "up", "right"]
 
-@export var is_cpu:bool = false
+@export var is_cpu:bool = true
 
 func _ready() -> void:
 	for i in receptors.get_child_count():
@@ -59,7 +59,8 @@ func _process(delta:float) -> void:
 				note.arrow.visible = false
 				note.z_index = -1
 				
-				play_anim("confirm", note.direction, receptor.frame >= 2)
+				if !is_cpu:
+					play_anim("confirm", note.direction, receptor.frame >= 2)
 				
 				if !is_cpu and note.must_press and note.length >= 80.0:
 					if !Input.is_action_pressed("note_" + directions[note.direction]):
@@ -71,11 +72,6 @@ func _process(delta:float) -> void:
 						note._did_miss = true
 						
 						play_anim("static", note.direction, true)
-	
-	for i in receptors.get_child_count():
-		var receptor:AnimatedSprite2D = receptors.get_child(i)
-		if is_cpu and receptor.frame >= 2:
-			play_anim("static", i, true)
 
 func pop_splash(note:Note) -> void:
 	if Settings.get_setting("note_splashes") == "never" or !note.has_node("Splash"):
@@ -102,7 +98,7 @@ func pop_splash(note:Note) -> void:
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and !is_cpu:
-		var key:int = StrumLine.get_key_dir(event)
+		var key:int = get_key_dir(event)
 		if key < 0: return
 		
 		if event.pressed:
@@ -111,7 +107,7 @@ func _input(event:InputEvent) -> void:
 		else:
 			play_anim("static", key, true)
 
-static func get_key_dir(event:InputEventKey) -> int:
+func get_key_dir(event:InputEventKey) -> int:
 	var key:int = -1
 	for i in directions.size():
 		var action:String = "note_" + directions[i].to_lower()
