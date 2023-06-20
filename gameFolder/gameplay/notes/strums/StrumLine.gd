@@ -13,7 +13,7 @@ func _ready() -> void:
 		var receptor:AnimatedSprite2D = receptors.get_child(i)
 		receptor.material = receptors.material.duplicate()
 		receptor.material.set_shader_parameter("color", Note.default_colors["normal"][i % 4])
-	
+		
 		if !is_cpu:
 			key_presses.append(false)
 
@@ -103,12 +103,8 @@ func _input(event:InputEvent) -> void:
 		var key:int = get_key_dir(event)
 		if key < 0: return
 		
-		if event.pressed:
-			if not receptors.get_child(key).animation.ends_with("glow"):
-				play_anim("press", key, true)
-		else:
-			play_anim("static", key, true)
-		
+		var glowing:bool = receptors.get_child(key).animation.ends_with("glow")
+		play_anim("press" if !glowing and event.pressed else "static", key, true)
 		key_shit(key)
 
 var key_presses:Array[bool] = []
@@ -119,7 +115,7 @@ func key_shit(key:int) -> void:
 	var notes_to_hit:Array[Note] = []
 	for note in notes.get_children().filter(func(note:Note):
 		return (note.direction == key and note.can_be_hit and !note.too_late
-		and note.strum_line == game.strum_lines.get_children().find(self) and !note.was_good_hit)
+		and note.parent == self and !note.was_good_hit)
 	): notes_to_hit.append(note)
 	
 	notes_to_hit.sort_custom(func(a, b):

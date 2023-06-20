@@ -10,6 +10,8 @@ var direction:int = 0
 var style:String = "default"
 var strum_line:int = 0
 
+var parent:StrumLine
+
 var speed:float = 1.0
 var length:float = 0.0
 var is_hold:bool:

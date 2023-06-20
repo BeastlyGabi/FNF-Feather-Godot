@@ -130,6 +130,7 @@ func note_processing() -> void:
 		new_note.length = note_data.length
 		
 		if strum_lines.get_child(new_note.strum_line) != null:
+			new_note.parent = strum_lines.get_child(new_note.strum_line)
 			strum_lines.get_child(new_note.strum_line).notes.add_child(new_note)
 		
 		notes_list.erase(note_data)
