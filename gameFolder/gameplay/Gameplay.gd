@@ -14,8 +14,8 @@ var SONG:Chart
 @onready var health_bar:TextureProgressBar = $User_Interface/Health_Bar
 @onready var score_text:Label = $User_Interface/Health_Bar/Score_Text
 
-@onready var strum_lines:CanvasLayer = $Strum_Lines
-@onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
+@onready var strum_lines:CanvasLayer = $User_Interface/Strum_Lines
+@onready var player_strums:StrumLine = $User_Interface/Strum_Lines/Player_Strums
 
 var song_name:String = "kaio-ken"
 
@@ -227,8 +227,8 @@ func note_hit(note:Note) -> void:
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
 	
-	var index:int = note.direction % SONG.key_amount
-	#$bf.play_anim($bf.sing_anims[index], true)
+	var index:int = note.direction % $bf.sing_anims.size()
+	$bf.play_anim($bf.sing_anims[index], true)
 	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1

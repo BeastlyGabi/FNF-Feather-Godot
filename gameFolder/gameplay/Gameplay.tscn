@@ -15,16 +15,16 @@ script = ExtResource("1_cnvoi")
 
 [node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
-[node name="Strum_Lines" type="CanvasLayer" parent="."]
+[node name="User_Interface" type="CanvasLayer" parent="."]
 
-[node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+[node name="Strum_Lines" type="CanvasLayer" parent="User_Interface"]
+
+[node name="Opponent_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(150, 625)
 
-[node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(780, 626)
+[node name="Player_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(798, 625)
 is_cpu = false
-
-[node name="User_Interface" type="CanvasLayer" parent="."]
 
 [node name="Health_Bar" type="TextureProgressBar" parent="User_Interface"]
 offset_left = 304.0

@@ -52,7 +52,7 @@ func _ready() -> void:
 		
 		for node in parts:
 			node.material = material.duplicate()
-			#node.material.set_shader_parameter("color", default_colors["normal"][direction])
+			node.material.set_shader_parameter("color", default_colors["normal"][direction])
 
 func _process(delta:float) -> void:
 	if is_hold and _sustain_exists():

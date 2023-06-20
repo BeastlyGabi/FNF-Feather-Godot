@@ -523,7 +523,7 @@ _data = {
 "static": SubResource("Animation_a5s1h")
 }
 
-[node name="4K" type="Node2D"]
+[node name="4K" type="CanvasGroup"]
 script = ExtResource("1_4pl3r")
 
 [node name="Receptors" type="Node2D" parent="."]
@@ -578,4 +578,4 @@ libraries = {
 "": SubResource("AnimationLibrary_j6jy2")
 }
 
-[node name="Notes" type="CanvasGroup" parent="."]
+[node name="Notes" type="Node2D" parent="."]
