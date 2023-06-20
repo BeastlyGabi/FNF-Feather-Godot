@@ -13,6 +13,9 @@ func _ready() -> void:
 		var receptor:AnimatedSprite2D = receptors.get_child(i)
 		receptor.material = receptors.material.duplicate()
 		receptor.material.set_shader_parameter("color", Note.default_colors["normal"][i % 4])
+	
+		if !is_cpu:
+			key_presses.append(false)
 
 func _process(delta:float) -> void:
 	for note in notes.get_children():
@@ -105,6 +108,49 @@ func _input(event:InputEvent) -> void:
 				play_anim("press", key, true)
 		else:
 			play_anim("static", key, true)
+		
+		key_shit(key)
+
+var key_presses:Array[bool] = []
+
+func key_shit(key:int) -> void:
+	key_presses[key] = Input.is_action_pressed("note_" + controls[key])
+	
+	var notes_to_hit:Array[Note] = []
+	for note in notes.get_children().filter(func(note:Note):
+		return (note.direction == key and note.can_be_hit and !note.too_late
+		and note.strum_line == game.strum_lines.get_children().find(self) and !note.was_good_hit)
+	): notes_to_hit.append(note)
+	
+	notes_to_hit.sort_custom(func(a, b):
+		return int(a.time - b.time)
+	)
+	
+	if Input.is_action_just_pressed("note_" + controls[key]):
+		if notes_to_hit.size() > 0:
+			var cool_note:Note = notes_to_hit[0]
+			
+			if notes_to_hit.size() > 1:
+				for i in notes_to_hit.size():
+					if i == 0: continue
+					var dumb_note:Note = notes_to_hit[i]
+					
+					if dumb_note.direction == cool_note.direction:
+						# Same note twice at 5ms of distance? die
+						if absf(dumb_note.time - cool_note.time) <= 5:
+							dumb_note.queue_free()
+							break
+						# No? then Replace the cool note if its earlier than the dumb one
+						elif dumb_note.time < cool_note.time:
+							cool_note = dumb_note
+							break
+			
+			game.note_hit(cool_note, self)
+			play_anim("confirm", key, true)
+		
+		else:
+			if not Settings.get_setting("ghost_tapping"):
+				game.ghost_miss(key)
 
 func get_key_dir(event:InputEventKey) -> int:
 	var key:int = -1

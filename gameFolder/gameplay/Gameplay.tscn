@@ -21,10 +21,10 @@ script = ExtResource("1_cnvoi")
 
 [node name="Opponent_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(150, 625)
+is_cpu = false
 
 [node name="Player_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(798, 625)
-is_cpu = false
 
 [node name="Health_Bar" type="TextureProgressBar" parent="User_Interface"]
 offset_left = 304.0

@@ -92,9 +92,6 @@ func _ready() -> void:
 		for strum_line in strum_lines.get_children():
 			strum_line.position.y = 100
 	
-	for i in player_strums.receptors.get_children():
-		key_presses.append(false)
-	
 	play_music(0.0)
 	update_score()
 
@@ -175,8 +172,6 @@ func on_beat(beat:int) -> void:
 		if beat % $bf.dance_interval == 0:
 			$bf.dance(true)
 
-var key_presses:Array[bool] = []
-
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
@@ -189,48 +184,9 @@ func _input(event:InputEvent) -> void:
 				KEY_6: Game.switch_scene("backend/tools/XML Converter")
 				KEY_7: Game.switch_scene("backend/tools/TXT Converter")
 		
-		var key:int = player_strums.get_key_dir(event)
-		if key < 0: return
-		
-		key_presses[key] = Input.is_action_pressed("note_" + player_strums.controls[key])
-		
-		var notes_to_hit:Array[Note] = []
-		for note in player_strums.notes.get_children().filter(func(note:Note):
-			return (note.direction == key and note.can_be_hit and !note.too_late
-			and note.must_press and !note.was_good_hit)
-		): notes_to_hit.append(note)
-		
-		notes_to_hit.sort_custom(func(a, b):
-			return int(a.time - b.time)
-		)
-		
-		if Input.is_action_just_pressed("note_" + player_strums.controls[key]):
-			if notes_to_hit.size() > 0:
-				var cool_note:Note = notes_to_hit[0]
-				
-				if notes_to_hit.size() > 1:
-					for i in notes_to_hit.size():
-						if i == 0: continue
-						var dumb_note:Note = notes_to_hit[i]
-						
-						if dumb_note.direction == cool_note.direction:
-							# Same note twice at 5ms of distance? die
-							if absf(dumb_note.time - cool_note.time) <= 5:
-								dumb_note.queue_free()
-								break
-							# No? then Replace the cool note if its earlier than the dumb one
-							elif dumb_note.time < cool_note.time:
-								cool_note = dumb_note
-								break
-				
-				note_hit(cool_note)
-				player_strums.play_anim("confirm", key, true)
-			
-			else:
-				if not Settings.get_setting("ghost_tapping"):
-					ghost_miss(key)
+		# Looking for inputs? i moved the to the StrumLine Script!
 
-func note_hit(note:Note) -> void:
+func note_hit(note:Note, strum:StrumLine) -> void:
 	if note.was_good_hit: return
 	note.was_good_hit = true
 	
@@ -246,7 +202,7 @@ func note_hit(note:Note) -> void:
 	
 	var needs_sick:bool = Settings.get_setting("note_splashes") == "sick only"
 	if needs_sick and judge.name == "sick" or !needs_sick:
-		player_strums.pop_splash(note)
+		strum.pop_splash(note)
 	
 	Timings.update_accuracy(judge)
 	
