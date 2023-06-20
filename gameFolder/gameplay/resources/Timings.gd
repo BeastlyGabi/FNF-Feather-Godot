@@ -89,12 +89,8 @@ func update_rank():
 	
 	cur_clear = ""
 	if misses == 0: # Etterna shit
-		if judgements_hit["sick"] > 0:
-			cur_clear = "SFC"
-		if judgements_hit["good"] > 0:
-			cur_clear = "GFC"
-		if judgements_hit["bad"] > 0 and judgements_hit["shit"] > 0:
-			cur_clear = "FC"
+		if judgements_hit["sick"] > 0: cur_clear = "SFC"
+		if judgements_hit["good"] > 0: cur_clear = "GFC"
+		if judgements_hit["bad"] > 0 or judgements_hit["shit"] > 0: cur_clear = "FC"
 	else:
-		if misses < 10:
-			cur_clear = "SDCB"
+		if misses < 10: cur_clear = "SDCB"

@@ -1,5 +1,10 @@
 class_name Note extends Node2D
 
+enum NoteEvent {STOP, CONTINUE}
+
+const E_STOP = NoteEvent.STOP
+const E_CONTINUE = NoteEvent.CONTINUE
+
 var time:float = 0.0
 var direction:int = 0
 var style:String = "default"
@@ -43,6 +48,11 @@ const default_colors:Dictionary = {
 		Color8(249, 57, 63), # RED
 	]
 }
+
+### for notestyles ###
+func on_hit(): pass
+func on_miss(): pass
+####################################
 
 func _ready() -> void:
 	if style == "default":

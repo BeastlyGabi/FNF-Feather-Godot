@@ -115,9 +115,9 @@ func _process(_delta:float) -> void:
 		event_processing()
 
 func note_processing() -> void:
-	while notes_list.size() > 0:
+	if notes_list.size() > 0:
 		if notes_list[0].time - Conductor.position > (3500 * (SONG.speed / Conductor.pitch_scale)):
-			break
+			return
 		
 		var note_data:Chart.NoteData = notes_list[0]
 		
@@ -135,10 +135,10 @@ func note_processing() -> void:
 		notes_list.erase(note_data)
 
 func event_processing() -> void:
-	while events_list.size() > 0:
+	if events_list.size() > 0:
 		var cur_event:Chart.EventData = events_list[0]
 		if cur_event.time > Conductor.position + cur_event.delay:
-			break
+			return
 		
 		if ResourceLoader.exists("res://gameFolder/gameplay/events/" + cur_event.name + ".tscn"):
 			var event_scene = load("res://gameFolder/gameplay/events/" + cur_event.name + ".tscn")
@@ -190,6 +190,10 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	if note.was_good_hit: return
 	note.was_good_hit = true
 	
+	var hit_event = note.on_hit()
+	if hit_event == Note.E_STOP:
+		return
+	
 	var judge:Judgement = Timings.judge_values(note.time, Conductor.position)
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
@@ -218,6 +222,10 @@ func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 # I ran out of function names -BeastlyGabi
 func note_miss(note:Note, include_anim:bool = true) -> void:
 	if note._did_miss: return
+	var miss_event = note.on_miss()
+	if miss_event == Note.E_STOP:
+		return
+	
 	do_miss_damage(note.is_hold)
 
 func ghost_miss(direction:int, include_anim:bool = true) -> void:
