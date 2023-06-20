@@ -4,8 +4,7 @@ class_name StrumLine extends Node2D
 @onready var receptors:Node2D = $Receptors
 @onready var notes:CanvasGroup = $Notes
 
-@export var colors:Array[String] = ["purple", "blue", "green", "red"]
-@export var directions:Array[String] = ["left", "down", "up", "right"]
+@export var controls:Array[String] = ["left", "down", "up", "right"]
 
 @export var is_cpu:bool = true
 
@@ -63,7 +62,7 @@ func _process(delta:float) -> void:
 					play_anim("confirm", note.direction, receptor.frame >= 2)
 				
 				if !is_cpu and note.must_press and note.length >= 80.0:
-					if !Input.is_action_pressed("note_" + directions[note.direction]):
+					if !Input.is_action_pressed("note_" + controls[note.direction]):
 						note.was_good_hit = false
 						note.can_be_hit = false
 						note.modulate.a = 0.30
@@ -109,8 +108,8 @@ func _input(event:InputEvent) -> void:
 
 func get_key_dir(event:InputEventKey) -> int:
 	var key:int = -1
-	for i in directions.size():
-		var action:String = "note_" + directions[i].to_lower()
+	for i in controls.size():
+		var action:String = "note_" + controls[i].to_lower()
 		if event.is_action_pressed(action) or event.is_action_released(action):
 			key = i
 			break

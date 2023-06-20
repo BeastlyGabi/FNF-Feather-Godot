@@ -526,7 +526,7 @@ _data = {
 [node name="6K" type="Node2D"]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_ijh1j")
-directions = Array[String](["six_left", "six_down", "six_right", "six_left2", "six_up", "six_right2"])
+controls = Array[String](["six_left", "six_down", "six_right", "six_left2", "six_up", "six_right2"])
 
 [node name="Receptors" type="Node2D" parent="."]
 material = SubResource("ShaderMaterial_usaus")

@@ -132,8 +132,6 @@ func note_processing() -> void:
 		new_note.strum_line = note_data.strum_line
 		new_note.length = note_data.length
 		
-		
-		
 		if strum_lines.get_child(new_note.strum_line) != null:
 			strum_lines.get_child(new_note.strum_line).notes.add_child(new_note)
 		
@@ -183,7 +181,7 @@ func _input(event:InputEvent) -> void:
 		var key:int = player_strums.get_key_dir(event)
 		if key < 0: return
 		
-		key_presses[key] = Input.is_action_pressed("note_" + player_strums.directions[key])
+		key_presses[key] = Input.is_action_pressed("note_" + player_strums.controls[key])
 		
 		var notes_to_hit:Array[Note] = []
 		for note in player_strums.notes.get_children().filter(func(note:Note):
@@ -195,7 +193,7 @@ func _input(event:InputEvent) -> void:
 			return int(a.time - b.time)
 		)
 		
-		if Input.is_action_just_pressed("note_" + player_strums.directions[key]):
+		if Input.is_action_just_pressed("note_" + player_strums.controls[key]):
 			if notes_to_hit.size() > 0:
 				var cool_note:Note = notes_to_hit[0]
 				
