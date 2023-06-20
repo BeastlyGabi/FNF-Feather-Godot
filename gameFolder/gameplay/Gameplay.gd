@@ -19,8 +19,8 @@ var SONG:Chart
 
 var song_name:String = "kaio-ken"
 
-var notes_list:Array[NoteData] = []
-var events_list:Array[EventData] = []
+var notes_list:Array[Chart.NoteData] = []
+var events_list:Array[Chart.EventData] = []
 
 ###################################################
 ### LODING FUNCTIONS YOU M4Y W4NN4 IGNORE THESE ###
@@ -122,7 +122,7 @@ func note_processing() -> void:
 		if notes_list[0].time - Conductor.position > (3500 * (SONG.speed / Conductor.pitch_scale)):
 			break
 		
-		var note_data:NoteData = notes_list[0]
+		var note_data:Chart.NoteData = notes_list[0]
 		
 		var new_note:Note = NOTE_STYLES["default"].instantiate()
 		new_note.time = note_data.time
@@ -139,11 +139,22 @@ func note_processing() -> void:
 
 func event_processing() -> void:
 	while events_list.size() > 0:
-		var cur_event:EventData = events_list[0]
+		var cur_event:Chart.EventData = events_list[0]
 		if cur_event.time > Conductor.position + cur_event.delay:
 			break
 		
+		if ResourceLoader.exists("res://gameFolder/gameplay/events/" + cur_event.name + ".tscn"):
+			var event_scene = load("res://gameFolder/gameplay/events/" + cur_event.name + ".tscn")
+			add_child(event_scene.instantiate())
+			event_scene.game = self
+		
+		else:
+			fire_event(cur_event)
+		
 		events_list.erase(cur_event)
+
+func fire_event(event:Chart.EventData) -> void:
+	pass
 
 var score_divider:String = " / "
 func update_score() -> void:

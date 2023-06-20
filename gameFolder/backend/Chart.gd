@@ -1,5 +1,19 @@
 class_name Chart extends Node
 
+class NoteData extends Resource:
+	var time:float = 0.0
+	var direction:int = 0
+	var strum_line:int = 0
+	var style:String = "default"
+	var suffix:String = ""
+	var length:float = 0.0
+
+class EventData extends Resource:
+	var name:String = ""
+	var args:Array[Variant] = []
+	var time:float = 0.0
+	var delay:float = 0.0
+
 var notes:Array[NoteData] = []
 var events:Array[EventData] = []
 
