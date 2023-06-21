@@ -29,7 +29,6 @@ texture = ExtResource("2_pj414")
 
 [node name="Opponent_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(150, 625)
-is_cpu = false
 
 [node name="Player_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(798, 625)

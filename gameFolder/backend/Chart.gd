@@ -21,6 +21,7 @@ var characters:Array[String] = ["bf", "bf", "bf"]
 
 var ui_style:String = "normal"
 
+var note_count:int = 0
 var key_amount:int = 4
 var speed:float = 1.0
 var bpm:float = 100.0
@@ -106,5 +107,6 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 			
 			chart.notes.append(epic_note)
 	
+	chart.note_count = chart.notes.size()
 	Conductor.bpm = chart.bpm
 	return chart
