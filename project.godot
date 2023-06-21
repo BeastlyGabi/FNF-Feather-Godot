@@ -106,4 +106,4 @@ note_six_right2={
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.0980392, 0.0980392, 0.0980392, 1)
+renderer/rendering_method="gl_compatibility"

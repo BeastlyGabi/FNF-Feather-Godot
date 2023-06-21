@@ -227,20 +227,13 @@ func note_miss(note:Note, include_anim:bool = true) -> void:
 	if miss_event == Note.E_STOP:
 		return
 	
-	do_miss_damage(note.is_hold)
+	do_miss_damage()
 
 func ghost_miss(direction:int, include_anim:bool = true) -> void:
-	do_miss_damage(true)
+	do_miss_damage()
 
-var damage_mult:float = 0.0
-
-func do_miss_damage(ignore_dmg_mult:bool = false):
-	if damage_mult == 0.0 and !ignore_dmg_mult:
-		damage_mult = 1
-	
-	var mult_thing:float = damage_mult if !ignore_dmg_mult else 0.1
-	Timings.health -= 0.475 * mult_thing
-	if !ignore_dmg_mult: damage_mult += 0.175
+func do_miss_damage():
+	Timings.health -= 0.47
 	Timings.misses += 1
 	
 	if Timings.combo > 0: Timings.combo == 0
