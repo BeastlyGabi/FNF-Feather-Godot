@@ -23,7 +23,7 @@ var events_list:Array[Chart.EventData] = []
 ###################################################
 ### LODING FUNCTIONS YOU M4Y W4NN4 IGNORE THESE ###
 
-func lo4d_strumlines() -> void:
+func load_strumlines() -> void:
 	if SONG.key_amount != 4:
 		for strum in strum_lines.get_children():
 			var path:String = "res://gameFolder/gameplay/notes/strums/" + str(SONG.key_amount) + "K.tscn"
@@ -59,7 +59,7 @@ func _init() -> void:
 func _ready() -> void:
 	Timings.reset()
 	
-	lo4d_strumlines()
+	load_strumlines()
 	
 	var audio_folder:String = "res://assets/songs/" + SONG.name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
