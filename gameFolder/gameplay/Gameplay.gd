@@ -137,7 +137,7 @@ func process_countdown(reset:bool = false) -> void:
 	count_tweener = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	# THERE'S NO WAY A BEE SHOULD BE ABLE TO FLY (2)
 	count_tweener.tween_property(countdown_spr, "modulate:a", 1.0, 0.05)
-	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, 0.45)
+	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.step_crochet / 1100.0)
 	
 	Sound.play_sound("res://assets/audio/sfx/game/normal/" \
 	+ countdown_config["sounds"][count_position] + ".ogg")
