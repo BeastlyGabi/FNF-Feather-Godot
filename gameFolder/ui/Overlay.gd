@@ -24,6 +24,7 @@ var vram:float:
 	get: return Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)
 
 func do_text_update() -> void:
-	$FPS_Count.text = str(Engine.get_frames_per_second()) 
-	$RAM_Label.text = String.humanize_size(OS.get_static_memory_usage()) + " RAM"
-	$RAM_Label.text += "\n" + String.humanize_size(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)) + " VRAM"
+	$FPS_Count.text = str(Engine.get_frames_per_second())
+	if OS.is_debug_build():
+		$RAM_Label.text = String.humanize_size(OS.get_static_memory_usage()) + " RAM"
+		$RAM_Label.text += "\n" + String.humanize_size(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)) + " VRAM"

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnp1rl11bug1f"]
+
+[ext_resource type="Script" path="res://gameFolder/ui/Alphabet.gd" id="1_0qlr1"]
+
+[node name="Alphabet" type="ReferenceRect"]
+script = ExtResource("1_0qlr1")

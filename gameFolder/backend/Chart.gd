@@ -19,6 +19,8 @@ var events:Array[EventData] = []
 
 var characters:Array[String] = ["bf", "bf", "bf"]
 
+var ui_style:String = "normal"
+
 var key_amount:int = 4
 var speed:float = 1.0
 var bpm:float = 100.0
@@ -56,6 +58,10 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 		if json.mania == 1: chart.key_amount = 6
 		if json.mania == 2: chart.key_amount = 7
 		if json.mania == 3: chart.key_amount = 9
+	
+	if "uiSkin" in json: chart.ui_style = json.uiSkin
+	if "uiStyle" in json: chart.ui_style = json.uiStyle
+	if "assetModifier" in json: chart.ui_style = json.assetModifier
 	
 	for section in json.notes:
 		var cam_char:String = "opponent"

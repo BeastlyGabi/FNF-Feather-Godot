@@ -9,12 +9,17 @@ var LAST_SCENE:String
 
 func _ready() -> void:
 	LAST_SCENE = get_tree().current_scene.scene_file_path
-	switch_scene("gameplay/Gameplay")
+	switch_scene("menus/Freeplay")
 
 func switch_scene(next_scene:String) -> void:
 	var scene_path:String = "res://gameFolder/" + next_scene + ".tscn"
 	get_tree().change_scene_to_file(scene_path)
 	LAST_SCENE = scene_path
+
+var CUR_SONG:Chart
+func bind_song(_song_name:String, _diff:String = "hard") -> void:
+	CUR_SONG = Chart.load_chart(_song_name, _diff)
+	switch_scene("gameplay/Gameplay")
 
 func reset_scene() -> void: switch_scene(LAST_SCENE)
 

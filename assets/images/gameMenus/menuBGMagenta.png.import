@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://w6rv1tp7ol3g"
-path="res://.godot/imported/arrow.png-e31dec306a72b48696e9692a523c15cb.ctex"
+uid="uid://dpjfmtkbcx8hu"
+path="res://.godot/imported/menuBGMagenta.png-d053aa1f2f4996e136aa690e7c4bce74.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/notestyles/default/arrow.png"
-dest_files=["res://.godot/imported/arrow.png-e31dec306a72b48696e9692a523c15cb.ctex"]
+source_file="res://assets/images/gameMenus/menuBGMagenta.png"
+dest_files=["res://.godot/imported/menuBGMagenta.png-d053aa1f2f4996e136aa690e7c4bce74.ctex"]
 
 [params]
 

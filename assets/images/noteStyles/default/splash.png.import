@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8vru0j2t4y4"
-path="res://.godot/imported/note hold.png-b52e96001ebe54bb4c9e41339035ef50.ctex"
+uid="uid://bh152f1lv04u8"
+path="res://.godot/imported/splash.png-5424b00ac8d5eef2ea515e0bd1cc8266.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/notestyles/default/note hold.png"
-dest_files=["res://.godot/imported/note hold.png-b52e96001ebe54bb4c9e41339035ef50.ctex"]
+source_file="res://assets/images/noteStyles/default/splash.png"
+dest_files=["res://.godot/imported/splash.png-5424b00ac8d5eef2ea515e0bd1cc8266.ctex"]
 
 [params]
 

@@ -2,10 +2,10 @@
 
 [ext_resource type="Shader" path="res://assets/data/shaders/ColorRGBMask.gdshader" id="1_j5vg1"]
 [ext_resource type="Script" path="res://gameFolder/gameplay/notes/Note.gd" id="1_m5mka"]
-[ext_resource type="Texture2D" uid="uid://8vru0j2t4y4" path="res://assets/images/notestyles/default/note hold.png" id="3_o23af"]
-[ext_resource type="Texture2D" uid="uid://bq86h5hsb3u81" path="res://assets/images/notestyles/default/note tail.png" id="4_yrcsn"]
-[ext_resource type="Texture2D" uid="uid://w6rv1tp7ol3g" path="res://assets/images/notestyles/default/arrow.png" id="5_fwyxi"]
-[ext_resource type="Texture2D" uid="uid://bh152f1lv04u8" path="res://assets/images/notestyles/default/splash.png" id="6_02a7n"]
+[ext_resource type="Texture2D" uid="uid://8vru0j2t4y4" path="res://assets/images/noteStyles/default/note hold.png" id="3_byoxl"]
+[ext_resource type="Texture2D" uid="uid://bq86h5hsb3u81" path="res://assets/images/noteStyles/default/note tail.png" id="4_yv6n6"]
+[ext_resource type="Texture2D" uid="uid://w6rv1tp7ol3g" path="res://assets/images/noteStyles/default/arrow.png" id="5_cfqfh"]
+[ext_resource type="Texture2D" uid="uid://bh152f1lv04u8" path="res://assets/images/noteStyles/default/splash.png" id="6_3k0vy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k7f45"]
 shader = ExtResource("1_j5vg1")
@@ -86,21 +86,21 @@ modulate = Color(1, 1, 1, 0.627451)
 scale = Vector2(0.7, 0.7)
 points = PackedVector2Array(0, 0, 0, 0)
 width = 50.0
-texture = ExtResource("3_o23af")
+texture = ExtResource("3_byoxl")
 texture_mode = 1
 
 [node name="End" type="Sprite2D" parent="."]
 visible = false
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("4_yrcsn")
+texture = ExtResource("4_yv6n6")
 
 [node name="Arrow" type="Sprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("5_fwyxi")
+texture = ExtResource("5_cfqfh")
 
 [node name="Splash" type="Sprite2D" parent="."]
 visible = false
-texture = ExtResource("6_02a7n")
+texture = ExtResource("6_3k0vy")
 offset = Vector2(0, 6)
 hframes = 5
 vframes = 2

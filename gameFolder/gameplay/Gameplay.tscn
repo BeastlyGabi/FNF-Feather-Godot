@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://b2mco2q2geqm0"]
+[gd_scene load_steps=7 format=3 uid="uid://b2mco2q2geqm0"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
+[ext_resource type="Texture2D" uid="uid://cf6uuv6wfw6po" path="res://assets/images/UI/countdown/normal/prepare.png" id="2_pj414"]
 [ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/gameplay/notes/strums/4K.tscn" id="3_palnv"]
 [ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
@@ -15,6 +16,13 @@ script = ExtResource("1_cnvoi")
 
 [node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
+[node name="Templates" type="Node" parent="."]
+
+[node name="Countdown_Sprite" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(668, 332)
+texture = ExtResource("2_pj414")
+
 [node name="User_Interface" type="CanvasLayer" parent="."]
 
 [node name="Strum_Lines" type="CanvasLayer" parent="User_Interface"]
@@ -25,6 +33,7 @@ is_cpu = false
 
 [node name="Player_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(798, 625)
+is_cpu = false
 
 [node name="Health_Bar" type="TextureProgressBar" parent="User_Interface"]
 offset_left = 304.0

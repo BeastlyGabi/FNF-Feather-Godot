@@ -17,8 +17,6 @@ var SONG:Chart
 @onready var strum_lines:CanvasLayer = $User_Interface/Strum_Lines
 @onready var player_strums:StrumLine = $User_Interface/Strum_Lines/Player_Strums
 
-var song_name:String = "kaio-ken"
-
 var notes_list:Array[Chart.NoteData] = []
 var events_list:Array[Chart.EventData] = []
 
@@ -53,17 +51,17 @@ func lo4d_strumlines() -> void:
 
 func _init() -> void:
 	super._init()
-	SONG = Chart.load_chart(song_name, "hard")
-	if SONG != null:
-		notes_list = SONG.notes.duplicate()
-		events_list = SONG.events.duplicate()
+	SONG = Game.CUR_SONG if Game.CUR_SONG != null else Chart.load_chart("test", "normal")
+	
+	notes_list = SONG.notes.duplicate()
+	events_list = SONG.events.duplicate()
 
 func _ready() -> void:
 	Timings.reset()
 	
 	lo4d_strumlines()
 	
-	var audio_folder:String = "res://assets/songs/" + song_name + "/audio"
+	var audio_folder:String = "res://assets/songs/" + SONG.name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
 		
 		if file.ends_with(".import"):
@@ -92,9 +90,72 @@ func _ready() -> void:
 		for strum_line in strum_lines.get_children():
 			strum_line.position.y = 100
 	
-	play_music(0.0)
 	update_score()
+	begin_countdown()
 
+func start_cutscene() -> void:
+	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn"):
+		var cutscene_bs:PackedScene = load("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn")
+		
+		cutscene_bs.game = self
+		cutscene_bs.call("song_beginning", [])
+		add_child(cutscene_bs.instantiate())
+	
+	else:
+		begin_countdown()
+
+var count_position:int = 0
+var count_tweener:Tween
+var count_timer:Timer
+
+func begin_countdown() -> void:
+	Conductor.position = -(Conductor.crochet * 1.2)
+	count_timer = Timer.new()
+	add_child(count_timer)
+	
+	await get_tree().create_timer(0.35).timeout
+	process_countdown(true)
+
+var countdown_config:Dictionary = {
+	"sprites": ["prepare", "ready", "set", "go"],
+	"sounds": ["intro3", "intro2", "intro1", "introGo"]
+}
+
+func process_countdown(reset:bool = false) -> void:
+	if reset:
+		count_position = 0
+	
+	var countdown_spr:Sprite2D = $Templates/Countdown_Sprite.duplicate()
+	countdown_spr.texture = load("res://assets/images/UI/countdown/normal/" \
+	+ countdown_config["sprites"][count_position] + ".png")
+	
+	countdown_spr.visible = true
+	countdown_spr.modulate.a = 0.0
+	add_child(countdown_spr)
+	
+	if count_tweener != null: count_tweener.stop()
+	count_tweener = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	# THERE'S NO WAY A BEE SHOULD BE ABLE TO FLY (2)
+	count_tweener.tween_property(countdown_spr, "modulate:a", 1.0, 0.05)
+	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, 0.45)
+	
+	Sound.play_sound("res://assets/audio/sfx/game/normal/" \
+	+ countdown_config["sounds"][count_position] + ".ogg")
+	
+	count_position += 1
+	
+	count_timer.start(Conductor.step_crochet / 1000.0)
+	await count_timer.timeout
+	if count_position < 4:
+		process_countdown()
+		return
+	else:
+		# ITS WINGS ARE TOO SMALL TO GET ITS FAT BODY OFF THE GROUND. (3)
+		count_timer.queue_free()
+	
+	start_song()
+
+var starting_song:bool = true
 func play_music(start_time:float = 0.0) -> void:
 	for sound in sounds.get_children():
 		sound.play(start_time)
@@ -103,9 +164,16 @@ func stop_music() -> void:
 	for sound in sounds.get_children():
 		sound.stop()
 
-func _process(_delta:float) -> void:
-	if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
-		Conductor.position = inst.get_playback_position() * 1000.0
+func start_song() -> void:
+	starting_song = false
+	play_music(0.0)
+
+func _process(delta:float) -> void:
+	if starting_song:
+		Conductor.position += delta * 1000.0
+	else:
+		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
+			Conductor.position = inst.get_playback_position() * 1000.0
 	
 	Timings.health = clampf(Timings.health, 0.0, 2.0)
 	health_bar.value = clampf(Timings.health, 0.0, 2.0)
@@ -177,6 +245,7 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
 			match event.keycode:
+				KEY_ESCAPE: Game.switch_scene("menus/Freeplay")
 				KEY_8:
 					get_tree().paused = true
 					var options = load("res://gameFolder/menus/Options.tscn")
@@ -201,6 +270,7 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	
 	var index:int = note.direction % $bf.sing_anims.size()
 	$bf.play_anim($bf.sing_anims[index], true)
+	$bf.hold_timer = 0.0
 	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1
