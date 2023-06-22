@@ -6,16 +6,26 @@ var NOTE_STYLES:Dictionary = {
 
 var SONG:Chart
 
+@onready var camera:Camera2D = $Camera2D
+
 @onready var sounds:Node = $Sounds
 @onready var inst:AudioStreamPlayer = $Sounds/Inst
 @onready var voices:AudioStreamPlayer = $Sounds/Voices
 
-@onready var ui:CanvasLayer = $User_Interface
-@onready var health_bar:TextureProgressBar = $User_Interface/Health_Bar
-@onready var score_text:Label = $User_Interface/Health_Bar/Score_Text
+@onready var ui:CanvasLayer = $UI
+@onready var health_bar:TextureProgressBar = $UI/Health_Bar
+@onready var score_text:Label = $UI/Health_Bar/Score_Text
 
-@onready var strum_lines:CanvasLayer = $User_Interface/Strum_Lines
-@onready var player_strums:StrumLine = $User_Interface/Strum_Lines/Player_Strums
+@onready var icon_P1 := $UI/Health_Bar/Player_icon
+@onready var icon_P2 := $UI/Health_Bar/Opponent_icon
+
+@onready var time_bar:ProgressBar = $UI/Time_Rect/Time_Bar
+@onready var time_text:Label = $UI/Time_Rect/Time_Bar/Time_Text
+
+@onready var strum_lines:CanvasLayer = $UI/Strum_Lines
+@onready var player_strums:StrumLine = $UI/Strum_Lines/Player_Strums
+
+@onready var player:Character = $Player
 
 var notes_list:Array[Chart.NoteData] = []
 var events_list:Array[Chart.EventData] = []
@@ -35,7 +45,7 @@ func load_strumlines() -> void:
 			var old_name:String = strum.name
 			var old_pos:Vector2 = strum.position
 			
-			strum_lines.remove_child(strum)
+			strum.queue_free()
 			
 			strum = load(path).instantiate()
 			strum.name = old_name
@@ -60,6 +70,9 @@ func _ready() -> void:
 	Timings.reset()
 	
 	load_strumlines()
+	
+	#camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
+	#amera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.pitch_scale
 	
 	var audio_folder:String = "res://assets/songs/" + SONG.name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
@@ -131,7 +144,7 @@ func process_countdown(reset:bool = false) -> void:
 	
 	countdown_spr.visible = true
 	countdown_spr.modulate.a = 0.0
-	add_child(countdown_spr)
+	ui.add_child(countdown_spr)
 	
 	if count_tweener != null: count_tweener.stop()
 	count_tweener = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
@@ -168,6 +181,7 @@ func start_song() -> void:
 	starting_song = false
 	play_music(0.0)
 
+var delta_update:float = 0.0
 func _process(delta:float) -> void:
 	if starting_song:
 		Conductor.position += delta * 1000.0
@@ -175,8 +189,28 @@ func _process(delta:float) -> void:
 		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 			Conductor.position = inst.get_playback_position() * 1000.0
 	
+	time_bar.value = inst.get_playback_position()
+	time_text.text = Game.META_DATA.display_name + " | " + \
+	Game.format_to_time(inst.get_playback_position())
+	
 	Timings.health = clampf(Timings.health, 0.0, 2.0)
-	health_bar.value = clampf(Timings.health, 0.0, 2.0)
+	update_healthbar()
+	
+	### CAMERA ZOOMING ###
+	#stage.camera_zoom
+	#stage.hud_zoom
+	
+	var cam_lerp:float = lerpf(camera.zoom.x, 1.05, 0.01)
+	var hud_lerp:float = lerpf(ui.scale.x, 1.0, 0.03)
+	
+	camera.zoom = Vector2(cam_lerp, cam_lerp)
+	ui.scale = Vector2(hud_lerp, hud_lerp)
+	hud_bump_reposition()
+	
+	for i in [icon_P1, icon_P2]:
+		var i_lerp:float = lerpf(i.scale.x, 0.8, 0.15)
+		i.scale.x = i_lerp
+		i.scale.y = i_lerp
 	
 	if SONG != null and inst.stream != null:
 		note_processing()
@@ -209,18 +243,26 @@ func event_processing() -> void:
 		if cur_event.time > Conductor.position + cur_event.delay:
 			return
 		
-		if ResourceLoader.exists("res://gameFolder/gameplay/events/" + cur_event.name + ".tscn"):
-			var event_scene = load("res://gameFolder/gameplay/events/" + cur_event.name + ".tscn")
-			add_child(event_scene.instantiate())
-			event_scene.game = self
-		
-		else:
-			fire_event(cur_event)
-		
+		fire_event(cur_event)
 		events_list.erase(cur_event)
 
 func fire_event(event:Chart.EventData) -> void:
-	pass
+	match event.name:
+		"Simple Camera Movement":
+			var char:Character = player
+			var stage_offset:Vector2 = Vector2.ZERO
+			#match event.args[0]:
+			#	"player": char = player
+			#	"spectator": char = spectator
+			#	_: char = opponent
+			
+			var offset:Vector2 = Vector2(char.camera_offset.x + stage_offset.x, char.camera_offset.y + stage_offset.y)
+			camera.position = Vector2(char.position.x + offset.x, char.position.y + offset.y)
+		_:
+			if ResourceLoader.exists("res://gameFolder/gameplay/events/" + event.name + ".tscn"):
+				var event_scene = load("res://gameFolder/gameplay/events/" + event.name + ".tscn")
+				add_child(event_scene.instantiate())
+				event_scene.game = self
 
 var score_divider:String = " / "
 func update_score() -> void:
@@ -234,12 +276,45 @@ func update_score() -> void:
 		score_temp += " (" + Timings.cur_clear + ")"
 	
 	score_temp += score_divider + Timings.cur_grade
-	score_text.text = score_temp
+	score_text.text = score_temp + "\n"
+
+func update_healthbar() -> void:
+	var health_bar_width:float = health_bar.texture_progress.get_size().x
+	health_bar.value = clampi(Timings.health * 50.0, 0, 100)
+	
+	icon_P1.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P1.texture.get_width())
+	icon_P2.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P2.texture.get_width()) - 65
+
+	icon_P1.frame = 1 if health_bar.value < 20 else 0
+	icon_P2.frame = 1 if health_bar.value > 80 else 0
+
+var cam_zoom:Dictionary = {
+	"zoom_interval": 4,
+	"hud_interval": 4,
+	"bump_strength": 0.050,
+	"hud_bump_strength": 0.035
+}
 
 func on_beat(beat:int) -> void:
-	if !$bf.is_singing() and !$bf.is_missing():
-		if beat % $bf.dance_interval == 0:
-			$bf.dance(true)
+	if !player.is_singing() and !player.is_missing():
+		if beat % player.dance_interval == 0:
+			player.dance(true)
+	
+	for i in [icon_P1, icon_P2]:
+		i.scale = Vector2(i.scale.x + 0.25, i.scale.y + 0.25)
+	
+	# camera beat stuffs
+	if beat % cam_zoom["zoom_interval"] == 0:
+		camera.zoom += Vector2(cam_zoom["bump_strength"], cam_zoom["bump_strength"])
+	
+	if beat % cam_zoom["hud_interval"] == 0:
+		ui.scale += Vector2(cam_zoom["hud_bump_strength"], cam_zoom["hud_bump_strength"])
+		hud_bump_reposition()
+
+# @swordcube
+func hud_bump_reposition():
+	ui.offset.x = (ui.scale.x - 1.0) * -(Game.SCREEN["width"] * 0.5)
+	ui.offset.y = (ui.scale.y - 1.0) * -(Game.SCREEN["height"] * 0.5)
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
@@ -264,13 +339,16 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	if hit_event == Note.E_STOP:
 		return
 	
+	voices.volume_db = linear_to_db(1.0)
+	
 	var judge:Judgement = Timings.judge_values(note.time, Conductor.position)
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
 	
-	var index:int = note.direction % $bf.sing_anims.size()
-	$bf.play_anim($bf.sing_anims[index], true)
-	$bf.hold_timer = 0.0
+	var char:Character = player # if note.must_press else opponent
+	var index:int = note.direction % char.sing_anims.size()
+	char.play_anim(char.sing_anims[index], true)
+	char.hold_timer = 0.0
 	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1
@@ -287,6 +365,13 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 
 func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 	note.was_good_hit = true
+	voices.volume_db = linear_to_db(1.0)
+	
+	var char:Character = player # if note.must_press else opponent
+	var index:int = note.direction % char.sing_anims.size()
+	char.play_anim(char.sing_anims[index], true)
+	char.hold_timer = 0.0
+	
 	if !note.is_hold:
 		note.queue_free()
 
@@ -298,9 +383,11 @@ func note_miss(note:Note, include_anim:bool = true) -> void:
 		return
 	
 	do_miss_damage()
+	voices.volume_db = linear_to_db(0.0)
 
 func ghost_miss(direction:int, include_anim:bool = true) -> void:
 	do_miss_damage()
+	voices.volume_db = linear_to_db(0.0)
 
 func do_miss_damage():
 	Timings.health -= 0.47

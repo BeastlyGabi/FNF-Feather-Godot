@@ -14,6 +14,10 @@ class EventData extends Resource:
 	var time:float = 0.0
 	var delay:float = 0.0
 
+class SongMetaData extends Resource:
+	var display_name:String
+	var chart_offset:float = 0.0
+
 var notes:Array[NoteData] = []
 var events:Array[EventData] = []
 

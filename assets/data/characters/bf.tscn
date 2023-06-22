@@ -222,7 +222,6 @@ position = Vector2(208, 210)
 sprite_frames = ExtResource("1_g5bot")
 animation = &"BF idle dance"
 script = ExtResource("2_2dxfn")
-dance_interval = 1
 
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 libraries = {

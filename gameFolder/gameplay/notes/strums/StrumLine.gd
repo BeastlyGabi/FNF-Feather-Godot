@@ -64,6 +64,14 @@ func _process(delta:float) -> void:
 				if !is_cpu:
 					play_anim("confirm", note.direction, receptor.frame >= 2)
 				
+				var char:Character = game.player # if note.must_press else game.opponent
+				var index:int = note.direction % char.sing_anims.size()
+				char.play_anim(char.sing_anims[index], true)
+				char.hold_timer = 0.0
+				
+				if game.voices != null and game.voices.stream != null:
+					game.voices.volume_db = linear_to_db(1.0)
+				
 				if !is_cpu and note.must_press and note.length >= 80.0:
 					if !Input.is_action_pressed("note_" + controls[note.direction]):
 						note.was_good_hit = false

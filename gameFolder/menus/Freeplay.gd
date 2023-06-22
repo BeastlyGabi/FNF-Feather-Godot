@@ -21,6 +21,11 @@ func _process(_delta:float) -> void:
 		update_selection(-1 if is_up else 1)
 	
 	if Input.is_action_just_pressed("ui_accept"):
+		var meta_data:Chart.SongMetaData = Chart.SongMetaData.new()
+		meta_data.display_name = songs[cur_selection].name
+		meta_data.chart_offset = 0.0
+		Game.META_DATA = meta_data
+		
 		Game.bind_song(songs[cur_selection].folder)
 
 var color_tween:Tween
@@ -39,7 +44,7 @@ func update_selection(new_selection:int = 0) -> void:
 	if color_tween != null:
 		color_tween.stop()
 	
-	# ACCORDING TO ALL KNOWN LAWS OF AVIATION (10
+	# ACCORDING TO ALL KNOWN LAWS OF AVIATION (1)
 	
 	color_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
 	color_tween.tween_property($Background, "modulate", songs[cur_selection].color, 0.50)

@@ -17,6 +17,7 @@ func switch_scene(next_scene:String) -> void:
 	LAST_SCENE = scene_path
 
 var CUR_SONG:Chart
+var META_DATA:Chart.SongMetaData
 func bind_song(_song_name:String, _diff:String = "hard") -> void:
 	CUR_SONG = Chart.load_chart(_song_name, _diff)
 	switch_scene("gameplay/Gameplay")

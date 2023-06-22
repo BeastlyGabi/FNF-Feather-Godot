@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b2mco2q2geqm0"]
+[gd_scene load_steps=11 format=3 uid="uid://b2mco2q2geqm0"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
 [ext_resource type="Texture2D" uid="uid://cf6uuv6wfw6po" path="res://assets/images/UI/countdown/normal/prepare.png" id="2_pj414"]
@@ -6,6 +6,14 @@
 [ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
 [ext_resource type="PackedScene" uid="uid://6aaoavdwp0ev" path="res://assets/data/characters/bf.tscn" id="5_qyduk"]
+[ext_resource type="Texture2D" uid="uid://bp8qovcc6smvx" path="res://assets/images/icons/bitch.png" id="6_drvqg"]
+[ext_resource type="Texture2D" uid="uid://o8qprwcno2a2" path="res://assets/images/icons/dad.png" id="6_e37qf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0sug1"]
+bg_color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dea2t"]
+bg_color = Color(1, 0.819608, 0.368627, 1)
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_cnvoi")
@@ -16,6 +24,9 @@ script = ExtResource("1_cnvoi")
 
 [node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+
 [node name="Templates" type="Node" parent="."]
 
 [node name="Countdown_Sprite" type="Sprite2D" parent="Templates"]
@@ -23,43 +34,87 @@ visible = false
 position = Vector2(668, 332)
 texture = ExtResource("2_pj414")
 
-[node name="User_Interface" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Strum_Lines" type="CanvasLayer" parent="User_Interface"]
+[node name="Strum_Lines" type="CanvasLayer" parent="UI"]
 
-[node name="Opponent_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
+[node name="Opponent_Strums" parent="UI/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(150, 625)
 
-[node name="Player_Strums" parent="User_Interface/Strum_Lines" instance=ExtResource("3_palnv")]
+[node name="Player_Strums" parent="UI/Strum_Lines" instance=ExtResource("3_palnv")]
 position = Vector2(798, 625)
 is_cpu = false
 
-[node name="Health_Bar" type="TextureProgressBar" parent="User_Interface"]
-offset_left = 304.0
-offset_top = 56.0
-offset_right = 905.0
-offset_bottom = 75.0
-max_value = 2.0
-step = 0.05
-value = 1.0
+[node name="Health_Bar" type="TextureProgressBar" parent="UI"]
+offset_left = 312.0
+offset_top = 72.0
+offset_right = 913.0
+offset_bottom = 91.0
+value = 50.0
+rounded = true
 fill_mode = 1
 texture_under = ExtResource("3_t42yp")
 texture_progress = ExtResource("3_t42yp")
 tint_under = Color(1, 0, 0, 1)
 tint_progress = Color(0.529412, 1, 0.258824, 1)
 
-[node name="Score_Text" type="Label" parent="User_Interface/Health_Bar"]
+[node name="Player_icon" type="Sprite2D" parent="UI/Health_Bar"]
+position = Vector2(347, 5)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_drvqg")
+flip_h = true
+hframes = 2
+
+[node name="Opponent_icon" type="Sprite2D" parent="UI/Health_Bar"]
+position = Vector2(280, 4)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_e37qf")
+hframes = 2
+
+[node name="Score_Text" type="Label" parent="UI/Health_Bar"]
 layout_mode = 0
-offset_top = 40.0
+offset_top = 32.0
 offset_right = 602.0
-offset_bottom = 59.0
+offset_bottom = 51.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("4_wgyi5")
 theme_override_font_sizes/font_size = 18
-text = "- Placeholder Text -"
+text = "Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="bf" parent="." instance=ExtResource("5_qyduk")]
+[node name="Time_Rect" type="ColorRect" parent="UI"]
+offset_left = 533.0
+offset_top = 7.0
+offset_right = 706.0
+offset_bottom = 26.0
+color = Color(0, 0, 0, 1)
+
+[node name="Time_Bar" type="ProgressBar" parent="UI/Time_Rect"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 169.0
+offset_bottom = 15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_0sug1")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dea2t")
+value = 50.0
+show_percentage = false
+
+[node name="Time_Text" type="Label" parent="UI/Time_Rect/Time_Bar"]
+modulate = Color(1, 1, 1, 0.705882)
+layout_mode = 0
+offset_top = -6.0
+offset_right = 165.0
+offset_bottom = 15.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_wgyi5")
+theme_override_font_sizes/font_size = 20
+text = "SONG | TIME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("5_qyduk")]
 position = Vector2(965, 390)
