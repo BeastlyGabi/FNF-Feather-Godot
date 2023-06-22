@@ -118,3 +118,7 @@ vertical_alignment = 1
 
 [node name="Player" parent="." instance=ExtResource("5_qyduk")]
 position = Vector2(965, 390)
+is_player = true
+
+[node name="Opponent" parent="." instance=ExtResource("5_qyduk")]
+position = Vector2(316, 390)

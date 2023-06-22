@@ -11,9 +11,19 @@ var hold_timer:float = 0.0
 @onready var anim:AnimationPlayer = $Anim_Player
 
 var sing_anims:Array[String] = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
+var _swapped_horizontals:bool = false
 
 func _ready() -> void:
 	dance(true)
+	
+	if !is_player:
+		_swapped_horizontals = true
+		scale.x *= -1
+		
+		for _i in sing_anims.size():
+			var i:String = sing_anims[_i]
+			if i == "singLEFT": sing_anims[_i] = "singRIGHT"
+			if i == "singRIGHT": sing_anims[_i] = "singLEFT"
 
 func _process(delta:float) -> void:
 	if anim != null:

@@ -26,6 +26,7 @@ var SONG:Chart
 @onready var player_strums:StrumLine = $UI/Strum_Lines/Player_Strums
 
 @onready var player:Character = $Player
+@onready var opponent:Character = $Opponent
 
 var notes_list:Array[Chart.NoteData] = []
 var events_list:Array[Chart.EventData] = []
@@ -251,10 +252,10 @@ func fire_event(event:Chart.EventData) -> void:
 		"Simple Camera Movement":
 			var char:Character = player
 			var stage_offset:Vector2 = Vector2.ZERO
-			#match event.args[0]:
-			#	"player": char = player
-			#	"spectator": char = spectator
-			#	_: char = opponent
+			match event.args[0]:
+				"player": char = player
+				#"spectator": char = spectator
+				_: char = opponent
 			
 			var offset:Vector2 = Vector2(char.camera_offset.x + stage_offset.x, char.camera_offset.y + stage_offset.y)
 			camera.position = Vector2(char.position.x + offset.x, char.position.y + offset.y)
@@ -272,10 +273,10 @@ func update_score() -> void:
 	score_temp += score_divider + "ACCURACY: " + "%.2f" % (Timings.accuracy * 100 / 100) + "%"
 	score_temp += score_divider + "MISSES: " + str(Timings.misses)
 	
+	score_temp += score_divider + Timings.cur_grade
 	if Timings.cur_clear != "":
 		score_temp += " (" + Timings.cur_clear + ")"
 	
-	score_temp += score_divider + Timings.cur_grade
 	score_text.text = score_temp + "\n"
 
 func update_healthbar() -> void:
@@ -321,13 +322,12 @@ func _input(event:InputEvent) -> void:
 		if event.pressed:
 			match event.keycode:
 				KEY_ESCAPE: Game.switch_scene("menus/Freeplay")
+				KEY_6: Game.switch_scene("backend/tools/XML Converter")
+				KEY_7: Game.switch_scene("backend/tools/TXT Converter")
 				KEY_8:
 					get_tree().paused = true
 					var options = load("res://gameFolder/menus/Options.tscn")
 					add_child(options.instantiate())
-				
-				KEY_6: Game.switch_scene("backend/tools/XML Converter")
-				KEY_7: Game.switch_scene("backend/tools/TXT Converter")
 		
 		# Looking for inputs? i moved the to the StrumLine Script!
 
@@ -345,7 +345,7 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
 	
-	var char:Character = player # if note.must_press else opponent
+	var char:Character = player if note.must_press else opponent
 	var index:int = note.direction % char.sing_anims.size()
 	char.play_anim(char.sing_anims[index], true)
 	char.hold_timer = 0.0
@@ -367,7 +367,7 @@ func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
 	note.was_good_hit = true
 	voices.volume_db = linear_to_db(1.0)
 	
-	var char:Character = player # if note.must_press else opponent
+	var char:Character = player if note.must_press else opponent
 	var index:int = note.direction % char.sing_anims.size()
 	char.play_anim(char.sing_anims[index], true)
 	char.hold_timer = 0.0

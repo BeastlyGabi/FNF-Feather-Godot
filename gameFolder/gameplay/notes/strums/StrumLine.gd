@@ -64,7 +64,7 @@ func _process(delta:float) -> void:
 				if !is_cpu:
 					play_anim("confirm", note.direction, receptor.frame >= 2)
 				
-				var char:Character = game.player # if note.must_press else game.opponent
+				var char:Character = game.player if note.must_press else game.opponent
 				var index:int = note.direction % char.sing_anims.size()
 				char.play_anim(char.sing_anims[index], true)
 				char.hold_timer = 0.0

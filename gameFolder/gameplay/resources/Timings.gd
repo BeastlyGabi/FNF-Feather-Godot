@@ -3,7 +3,7 @@ extends Node
 ## Here a Script that stores Judgements and Calculats Score and Accuracy ##
 
 var judgements:Array[Judgement] = [
-	# Name, Accuracy, Note Splash, Image (Optional
+	# Name, Accuracy, Note Splash, Image (Optional)
 	Judgement.new("sick", 100.0, true, "sick"),
 	Judgement.new("good", 75.0, false, "good"),
 	Judgement.new("bad", 35.0, false, "bad"),
@@ -91,6 +91,7 @@ func update_rank():
 	if misses == 0: # Etterna shit
 		if judgements_hit["sick"] > 0: cur_clear = "SFC"
 		if judgements_hit["good"] > 0: cur_clear = "GFC"
-		if judgements_hit["bad"] > 0 or judgements_hit["shit"] > 0: cur_clear = "FC"
+		if judgements_hit["bad"] > 0 or judgements_hit["shit"] > 0:
+			cur_clear = "FC"
 	else:
 		if misses < 10: cur_clear = "SDCB"

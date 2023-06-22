@@ -58,11 +58,7 @@ func on_miss(): pass
 
 func _ready() -> void:
 	if style == "default":
-		var parts:Array = [arrow]
-		if _sustain_exists(): parts.append_array([hold, end])
-		if has_node("Splash"): parts.append(get_node("Splash"))
-		
-		for node in parts:
+		for node in _existing_nodes():
 			node.material = material.duplicate()
 			node.material.set_shader_parameter("color", default_colors["normal"][direction])
 
@@ -98,3 +94,9 @@ func _sustain_exists() -> bool:
 		get_node("Hold").scale.y = -1 if Settings.get_setting("downscroll") and not in_edit else 1
 	
 	return has_sustain
+
+func _existing_nodes() -> Array:
+	var parts:Array = [arrow]
+	if _sustain_exists(): parts.append_array([hold, end])
+	if has_node("Splash"): parts.append(get_node("Splash"))
+	return parts

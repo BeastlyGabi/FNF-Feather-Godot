@@ -69,10 +69,8 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	if "assetModifier" in json: chart.ui_style = json.assetModifier
 	
 	for section in json.notes:
-		var cam_char:String = "opponent"
 		var cam_thing:EventData = EventData.new()
 		cam_thing.name = "Simple Camera Movement"
-		cam_thing.args.resize(1) # making sure it has a single argument
 		
 		# I gotta take changes into account, god.
 		var bpm_condition:bool = "changeBPM" in section and "bpm" in section and section.changeBPM
@@ -81,6 +79,7 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 		var sect_len:int = section.lengthInSteps if "lengthInSteps" in section else 16
 		cam_thing.time = ((60 / cur_bpm) * 1000.0) / 4.0 * sect_len * json.notes.find(section)
 		
+		var cam_char:String = "opponent"
 		if "mustHitSection" in section and section.mustHitSection:
 			cam_char = "player"
 		
