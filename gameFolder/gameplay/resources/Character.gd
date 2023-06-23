@@ -33,7 +33,7 @@ func _process(delta:float) -> void:
 			hold_timer = 0.0
 		
 		if !is_player:
-			if hold_timer >= Conductor.step_crochet * (sing_duration / Engine.time_scale) * 0.001:
+			if hold_timer >= Conductor.step_crochet * (sing_duration * Engine.time_scale) * 0.001:
 				dance()
 				hold_timer = 0.0
 
