@@ -5,14 +5,19 @@ signal beat_caller(beat:int)
 signal sect_caller(sect:int)
 
 var position:float = 0.0
-var pitch_scale:float = 1.0
+var playback_rate:float = 1.0:
+	set(v):
+		playback_rate = v
+		Engine.time_scale = v
+		AudioServer.playback_speed_scale = v
+
 var step_crochet:float = 0.0
 var crochet:float = 0.0
 
 var bpm:float = 100.0:
 	set(b):
-		step_crochet = ((60 / b) * 1000.0)
-		crochet = step_crochet * 4
+		step_crochet = ((60 / b) * 1000.0) * playback_rate
+		crochet = (step_crochet * 4) * playback_rate
 		bpm = b
 
 var current_step:int = 0

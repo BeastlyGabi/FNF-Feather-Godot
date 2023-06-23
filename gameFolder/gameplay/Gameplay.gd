@@ -15,6 +15,7 @@ var SONG:Chart
 @onready var ui:CanvasLayer = $UI
 @onready var health_bar:TextureProgressBar = $UI/Health_Bar
 @onready var score_text:Label = $UI/Health_Bar/Score_Text
+@onready var combo_group:Node2D = $UI/Combo_Group
 
 @onready var icon_P1 := $UI/Health_Bar/Player_icon
 @onready var icon_P2 := $UI/Health_Bar/Opponent_icon
@@ -28,11 +29,15 @@ var SONG:Chart
 @onready var player:Character = $Player
 @onready var opponent:Character = $Opponent
 
+@onready var stage:Stage = $Stage
+
 var notes_list:Array[Chart.NoteData] = []
 var events_list:Array[Chart.EventData] = []
 
 ###################################################
 ### LODING FUNCTIONS YOU M4Y W4NN4 IGNORE THESE ###
+
+func setup_stage() -> void: pass
 
 func load_strumlines() -> void:
 	if SONG.key_amount != 4:
@@ -58,6 +63,34 @@ func load_strumlines() -> void:
 			
 			strum_lines.add_child(strum)
 
+func _load_char(_new_char:String) -> Character:
+	var base_path:String = "res://gameFolder/gameplay/characters/"
+	var _char:Character = load(base_path + _new_char + ".tscn").instantiate()
+	_char.name = _new_char
+	return _char
+
+func setup_characters() -> void:
+	#var number:int = 0
+	#for char in [player, opponent]:
+	#	var to_load:String = "bf"
+	#	if ResourceLoader.exists("res://gameFolder/gameplay/characters/" + SONG.characters[number] + ".tscn"):
+	#		to_load = SONG.characters[number]
+	#	
+	#	char = _load_char(to_load)
+	#	char.is_player = char == player
+	#	add_child(char)
+	
+	player.position = stage.player_position
+	opponent.position = stage.opponent_position
+	
+	# kinda eh sysm probably gonna redo later
+	var opponent_strums:StrumLine = $UI/Strum_Lines/Opponent_Strums
+	for shit in [opponent_strums.dancers, opponent_strums.singers]:
+		shit.append(opponent)
+	
+	for piss in [player_strums.dancers, player_strums.singers]:
+		piss.append(player)
+
 ###################################################
 
 func _init() -> void:
@@ -70,10 +103,14 @@ func _init() -> void:
 func _ready() -> void:
 	Timings.reset()
 	
+	setup_stage()
 	load_strumlines()
+	setup_characters()
+	fire_event("Simple Camera Movement", ["opponent"])
 	
-	#camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
-	#amera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.pitch_scale
+	if stage != null:
+		camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
+		camera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.playback_rate
 	
 	var audio_folder:String = "res://assets/songs/" + SONG.name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
@@ -106,6 +143,9 @@ func _ready() -> void:
 	
 	update_score()
 	begin_countdown()
+
+func _exit_tree():
+	Conductor.playback_rate = 1.0
 
 func start_cutscene() -> void:
 	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn"):
@@ -219,7 +259,7 @@ func _process(delta:float) -> void:
 
 func note_processing() -> void:
 	if notes_list.size() > 0:
-		if notes_list[0].time - Conductor.position > (3500 * (SONG.speed / Conductor.pitch_scale)):
+		if notes_list[0].time - Conductor.position > (3500 * (SONG.speed / Conductor.playback_rate)):
 			return
 		
 		var note_data:Chart.NoteData = notes_list[0]
@@ -229,12 +269,12 @@ func note_processing() -> void:
 		new_note.speed = SONG.speed
 		
 		new_note.direction = int(note_data.direction % SONG.key_amount)
-		new_note.strum_line = note_data.strum_line
+		new_note.lane = note_data.lane
 		new_note.length = note_data.length
 		
-		if strum_lines.get_child(new_note.strum_line) != null:
-			new_note.parent = strum_lines.get_child(new_note.strum_line)
-			strum_lines.get_child(new_note.strum_line).notes.add_child(new_note)
+		if strum_lines.get_child(new_note.lane) != null:
+			new_note.parent = strum_lines.get_child(new_note.lane)
+			strum_lines.get_child(new_note.lane).notes.add_child(new_note)
 		
 		notes_list.erase(note_data)
 
@@ -244,24 +284,33 @@ func event_processing() -> void:
 		if cur_event.time > Conductor.position + cur_event.delay:
 			return
 		
-		fire_event(cur_event)
+		fire_event(cur_event.name, cur_event.args)
 		events_list.erase(cur_event)
 
-func fire_event(event:Chart.EventData) -> void:
-	match event.name:
+func fire_event(name:String, args:Array[Variant]) -> void:
+	match name:
 		"Simple Camera Movement":
 			var char:Character = player
 			var stage_offset:Vector2 = Vector2.ZERO
-			match event.args[0]:
-				"player": char = player
-				#"spectator": char = spectator
-				_: char = opponent
+			match args[0]:
+				"player":
+					char = player
+					if stage != null:
+						stage_offset = stage.player_camera
+				#"spectator":
+				#	char = spectator
+				#	if stage != null:
+				#		stage_offset = stage.spectator_camera
+				_:
+					char = opponent
+					if stage != null:
+						stage_offset = stage.opponent_camera
 			
 			var offset:Vector2 = Vector2(char.camera_offset.x + stage_offset.x, char.camera_offset.y + stage_offset.y)
 			camera.position = Vector2(char.position.x + offset.x, char.position.y + offset.y)
 		_:
-			if ResourceLoader.exists("res://gameFolder/gameplay/events/" + event.name + ".tscn"):
-				var event_scene = load("res://gameFolder/gameplay/events/" + event.name + ".tscn")
+			if ResourceLoader.exists("res://gameFolder/gameplay/events/" + name + ".tscn"):
+				var event_scene = load("res://gameFolder/gameplay/events/" + name + ".tscn")
 				add_child(event_scene.instantiate())
 				event_scene.game = self
 
@@ -273,7 +322,8 @@ func update_score() -> void:
 	score_temp += score_divider + "ACCURACY: " + "%.2f" % (Timings.accuracy * 100 / 100) + "%"
 	score_temp += score_divider + "MISSES: " + str(Timings.misses)
 	
-	score_temp += score_divider + Timings.cur_grade
+	score_temp += score_divider + Timings.cur_grade.name
+	
 	if Timings.cur_clear != "":
 		score_temp += " (" + Timings.cur_clear + ")"
 	
@@ -297,9 +347,11 @@ var cam_zoom:Dictionary = {
 }
 
 func on_beat(beat:int) -> void:
-	if !player.is_singing() and !player.is_missing():
-		if beat % player.dance_interval == 0:
-			player.dance(true)
+	for strum in strum_lines.get_children():
+		for char in strum.dancers:
+			if !char.is_singing() and !char.is_missing():
+				if beat % char.dance_interval == 0:
+					char.dance()
 	
 	for i in [icon_P1, icon_P2]:
 		i.scale = Vector2(i.scale.x + 0.25, i.scale.y + 0.25)
@@ -328,6 +380,10 @@ func _input(event:InputEvent) -> void:
 					get_tree().paused = true
 					var options = load("res://gameFolder/menus/Options.tscn")
 					add_child(options.instantiate())
+				KEY_Q:
+					Conductor.playback_rate -= 0.01
+				KEY_E:
+					Conductor.playback_rate += 0.01
 		
 		# Looking for inputs? i moved the to the StrumLine Script!
 
@@ -345,10 +401,10 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	Timings.score += Timings.score_from_judge(judge.name)
 	Timings.health += 0.023
 	
-	var char:Character = player if note.must_press else opponent
-	var index:int = note.direction % char.sing_anims.size()
-	char.play_anim(char.sing_anims[index], true)
-	char.hold_timer = 0.0
+	for char in strum.singers:
+		var index:int = note.direction % char.sing_anims.size()
+		char.play_anim(char.sing_anims[index], true)
+		char.hold_timer = 0.0
 	
 	if Timings.combo < 0: Timings.combo = 0
 	Timings.combo += 1
@@ -357,20 +413,23 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	if needs_sick and judge.name == "sick" or !needs_sick:
 		strum.pop_splash(note)
 	
+	display_judgement(judge.name)
+	display_combo()
+	
 	Timings.update_accuracy(judge)
 	
 	update_score()
 	if not note.is_hold:
 		note.queue_free()
 
-func cpu_note_hit(note:Note, strum_line:StrumLine) -> void:
+func cpu_note_hit(note:Note, strum:StrumLine) -> void:
 	note.was_good_hit = true
 	voices.volume_db = linear_to_db(1.0)
 	
-	var char:Character = player if note.must_press else opponent
-	var index:int = note.direction % char.sing_anims.size()
-	char.play_anim(char.sing_anims[index], true)
-	char.hold_timer = 0.0
+	for char in strum.singers:
+		var index:int = note.direction % char.sing_anims.size()
+		char.play_anim(char.sing_anims[index], true)
+		char.hold_timer = 0.0
 	
 	if !note.is_hold:
 		note.queue_free()
@@ -393,8 +452,32 @@ func do_miss_damage():
 	Timings.health -= 0.47
 	Timings.misses += 1
 	
-	if Timings.combo > 0: Timings.combo == 0
-	else: Timings.combo -= 1
+	#if Timings.combo > 0:
+	Timings.combo = 0
+	#else: Timings.combo -= 1
 	
 	Timings.update_rank()
 	update_score()
+
+func display_judgement(_name:String) -> void:
+	var new_judgement:Sprite2D = $Templates/Judgement_Sprite.duplicate()
+	new_judgement.texture = load("res://assets/images/UI/ratings/normal/" + _name + ".png")
+	new_judgement.visible = true
+	combo_group.add_child(new_judgement)
+	
+	get_tree().create_tween().set_ease(Tween.EASE_IN_OUT) \
+	.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.step_crochet / 1000.0)
+
+func display_combo() -> void:
+	var combo:String = str(Timings.combo).pad_zeros(3)
+	var numbers:PackedStringArray = combo.split("")
+	
+	for i in numbers.size():
+		var new_combo:Sprite2D = $Templates/Number_Sprite.duplicate()
+		new_combo.texture = load("res://assets/images/UI/combo/normal/num" + numbers[i] + ".png")
+		new_combo.position.x += 50 * i
+		new_combo.visible = true
+		combo_group.add_child(new_combo)
+		
+		get_tree().create_tween().set_ease(Tween.EASE_IN_OUT) \
+		.tween_property(new_combo, "modulate:a", 0.0, 2.0 * Conductor.step_crochet / 1000.0 )

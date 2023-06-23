@@ -5,8 +5,12 @@ class_name StrumLine extends CanvasGroup
 @onready var notes:Node2D = $Notes
 
 @export var controls:Array[String] = ["left", "down", "up", "right"]
-
 @export var is_cpu:bool = true
+
+## Characters that bop their heads ##
+@export var dancers:Array[Character] = []
+## Characters that sing when a note is hit ##
+@export var singers:Array[Character] = []
 
 func _ready() -> void:
 	for i in receptors.get_child_count():
@@ -19,6 +23,10 @@ func _ready() -> void:
 
 func _process(delta:float) -> void:
 	for note in notes.get_children():
+		if note == null:
+			note.queue_free()
+			return
+		
 		var scroll_diff:int = 1 if Settings.get_setting("downscroll") else -1
 		var distance:float = (Conductor.position - note.time) * (0.45 * note.speed)
 		
@@ -64,10 +72,10 @@ func _process(delta:float) -> void:
 				if !is_cpu:
 					play_anim("confirm", note.direction, receptor.frame >= 2)
 				
-				var char:Character = game.player if note.must_press else game.opponent
-				var index:int = note.direction % char.sing_anims.size()
-				char.play_anim(char.sing_anims[index], true)
-				char.hold_timer = 0.0
+				for char in singers:
+					var index:int = note.direction % char.sing_anims.size()
+					char.play_anim(char.sing_anims[index], true)
+					char.hold_timer = 0.0
 				
 				if game.voices != null and game.voices.stream != null:
 					game.voices.volume_db = linear_to_db(1.0)
@@ -127,7 +135,7 @@ func key_shit(key:int) -> void:
 	): notes_to_hit.append(note)
 	
 	notes_to_hit.sort_custom(func(a, b):
-		return int(a.time - b.time)
+		return b.time if b.time > a.time else a.time
 	)
 	
 	if Input.is_action_just_pressed("note_" + controls[key]):

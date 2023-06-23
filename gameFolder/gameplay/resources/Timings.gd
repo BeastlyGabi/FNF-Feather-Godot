@@ -18,7 +18,7 @@ func reset():
 	accuracy = 0.0
 	notes_acc = 0.0
 	cur_clear = "?"
-	cur_grade = "N/A"
+	cur_grade = Grade.empty()
 	misses = 0
 	combo = 0
 	
@@ -45,7 +45,7 @@ func worst_timing() -> float:
 
 func judge_values(value_a:float, value_b:float) -> Judgement:
 	var judgement:Judgement = judgements[3]
-	var note_ms:float = absf(value_a - value_b) * Conductor.pitch_scale
+	var note_ms:float = absf(value_a - value_b)
 	
 	for i in judgements.size():
 		if note_ms > judgements[i].timing:
@@ -71,21 +71,34 @@ func score_from_judge(judge:String) -> int:
 		"shit": _score = 0
 	return _score
 
-var cur_clear:String = "?"
-var cur_grade:String = "N/A"
+class Grade extends Resource:
+	var name:String = "S"
+	var accuracy:float = 100.0
+	var color:Color = Color.CYAN
+	
+	func _init(_name:String = "N/A", _acc:float = -1.0, _color:Color = Color.WHITE) -> void:
+		name = _name
+		accuracy = _acc
+		color = _color
+	
+	static func empty() -> Grade:
+		return Grade.new("N/A")
 
-var grades:Dictionary = {
-	"S": 100.0, "A+": 95.0, "A": 90.0, "B": 85.0, "B-": 80.0, "C": 70.0,
-	"SX": 69.0, "D+": 68.0, "D": 50.0, "D-": 15.0, "F": 0
-}
+var cur_clear:String = "?"
+var cur_grade:Grade = Grade.empty()
+
+var grades:Array[Grade] = [
+	Grade.new("S", 100.0, Color.CYAN), Grade.new("A+", 95.0, Color.GREEN_YELLOW), Grade.new("A", 90.0, Color.GREEN), Grade.new("B", 85.0, Color.YELLOW),
+	Grade.new("B-", 80.0, Color.LIGHT_SKY_BLUE), Grade.new("C", 70.0, Color.FIREBRICK), Grade.new("SX", 69.0, Color.VIOLET), Grade.new("D+", 68.0, Color.LAVENDER),
+	Grade.new("D", 50.0, Color.SLATE_GRAY), Grade.new("D-", 15.0, Color.RED), Grade.new("F", 0, Color.GHOST_WHITE)
+]
 
 func update_rank():
 	# loop through the rankings map
-	var biggest:float = 0.0
-	for grade in grades.keys():
-		if grades[grade] <= accuracy and grades[grade] >= biggest:
+	for grade in grades:
+		if grade.accuracy <= accuracy:
 			cur_grade = grade
-			biggest = accuracy
+			break
 	
 	cur_clear = ""
 	if misses == 0: # Etterna shit

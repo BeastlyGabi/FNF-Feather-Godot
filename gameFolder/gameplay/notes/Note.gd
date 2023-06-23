@@ -8,7 +8,7 @@ const E_CONTINUE = NoteEvent.CONTINUE
 var time:float = 0.0
 var direction:int = 0
 var style:String = "default"
-var strum_line:int = 0
+var lane:int = 0
 
 var parent:StrumLine
 
@@ -24,7 +24,7 @@ var can_be_hit:bool = false
 var was_good_hit:bool = false
 
 var must_press:bool:
-	get: return strum_line == 1
+	get: return lane == 1
 
 @onready var arrow := $Arrow # assuming the type here since you can have AnimatedSprite2D as an arrow
 @onready var hold:Line2D = $Hold
@@ -65,7 +65,7 @@ func _ready() -> void:
 func _process(delta:float) -> void:
 	if is_hold and _sustain_exists():
 		var scroll_diff:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
-		var sustain_scale:float = ((length / 2.5) * ((speed / Conductor.pitch_scale) / scale.y))
+		var sustain_scale:float = ((length / 2.5) * ((speed / Conductor.playback_rate) / scale.y))
 		
 		hold.points = [Vector2.ZERO, Vector2(0, sustain_scale)]
 		var last_point = hold.points.size() - 1
@@ -77,12 +77,12 @@ func _process(delta:float) -> void:
 		end.modulate.a = hold.modulate.a
 		
 		if was_good_hit:
-			length -= (delta * 1000.0 * Conductor.pitch_scale)
+			length -= (delta * 1000.0 * Conductor.playback_rate)
 			if length <= -(Conductor.step_crochet / 1000.0):
 				queue_free()
 	
 	if !in_edit:
-		var hit_area:float = (Timings.worst_timing() / (1.2 * Conductor.pitch_scale))
+		var hit_area:float = (Timings.worst_timing() / (1.2 * Conductor.playback_rate))
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)
 

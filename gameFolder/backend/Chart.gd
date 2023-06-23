@@ -3,7 +3,7 @@ class_name Chart extends Node
 class NoteData extends Resource:
 	var time:float = 0.0
 	var direction:int = 0
-	var strum_line:int = 0
+	var lane:int = 0
 	var style:String = "default"
 	var suffix:String = ""
 	var length:float = 0.0
@@ -98,7 +98,7 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 			
 			var gotta_hit:bool = section.mustHitSection
 			if note[1] > chart.key_amount-1: gotta_hit = !section.mustHitSection
-			epic_note.strum_line = 1 if gotta_hit else 0
+			epic_note.lane = 1 if gotta_hit else 0
 			
 			if note.size() > 3 and note[3] != null:
 				if note[3] is bool: epic_note.suffix = "-alt"
