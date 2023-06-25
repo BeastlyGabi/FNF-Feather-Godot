@@ -26,6 +26,7 @@ var menu_offset:Vector2 = Vector2(35, 0.28)
 
 var offset:Vector2 = Vector2(0, 0)
 var letters_pushed:Array[AnimatedSprite2D] = []
+var rect_size:Vector2 = Vector2.ZERO
 
 func _process(delta:float) -> void:
 	if is_menu_item:
@@ -65,10 +66,14 @@ func load_text() -> void:
 		the_letter.visible = valid_anim
 		the_letter.position = offset
 		
+		rect_size.x += the_letter.sprite_frames.get_frame_texture(the_letter.animation, 0).get_width()
 		letters_pushed.append(the_letter)
 	
 	for letter in letters_pushed:
 		add_child(letter)
+	
+	var last = _get_prev()
+	rect_size.y = last.sprite_frames.get_frame_texture(last.animation, 0).get_height()
 
 func _anim_from_letter(txt:String) -> String:
 	match txt:

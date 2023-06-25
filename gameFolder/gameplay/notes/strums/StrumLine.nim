@@ -31,7 +31,7 @@ func _process(delta:float) -> void:
 		var distance:float = (Conductor.position - note.time) * (0.45 * note.speed)
 		
 		var receptor:AnimatedSprite2D = receptors.get_child(note.direction)
-		note.position = Vector2(receptor.position.x, receptor.position.y + distance * scroll_diff)
+		note.position = Vector2(receptor.position.x - 5, receptor.position.y + distance * scroll_diff)
 		
 		if note.copy_rotation: note.arrow.rotation = receptor.rotation
 		if note.copy_opacity: note.modulate.a = receptor.modulate.a

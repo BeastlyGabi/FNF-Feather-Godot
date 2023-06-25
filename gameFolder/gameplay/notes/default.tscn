@@ -81,7 +81,6 @@ material = SubResource("ShaderMaterial_k7f45")
 script = ExtResource("1_m5mka")
 
 [node name="Hold" type="Line2D" parent="."]
-visible = false
 modulate = Color(1, 1, 1, 0.627451)
 scale = Vector2(0.7, 0.7)
 points = PackedVector2Array(0, 0, 0, 0)
@@ -90,7 +89,6 @@ texture = ExtResource("3_byoxl")
 texture_mode = 1
 
 [node name="End" type="Sprite2D" parent="."]
-visible = false
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_yv6n6")
 
@@ -101,10 +99,9 @@ texture = ExtResource("5_cfqfh")
 [node name="Splash" type="Sprite2D" parent="."]
 visible = false
 texture = ExtResource("6_3k0vy")
-offset = Vector2(0, 6)
+offset = Vector2(0, 8)
 hframes = 5
 vframes = 2
-frame = 5
 
 [node name="Anim_Player" type="AnimationPlayer" parent="Splash"]
 libraries = {

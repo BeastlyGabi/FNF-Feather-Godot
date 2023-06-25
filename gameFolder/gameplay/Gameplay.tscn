@@ -83,6 +83,7 @@ texture_under = ExtResource("3_t42yp")
 texture_progress = ExtResource("3_t42yp")
 tint_under = Color(1, 0, 0, 1)
 tint_progress = Color(0.529412, 1, 0.258824, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="Player_icon" type="Sprite2D" parent="UI/Health_Bar"]
 position = Vector2(347, 5)
@@ -99,9 +100,9 @@ hframes = 2
 
 [node name="Score_Text" type="Label" parent="UI/Health_Bar"]
 layout_mode = 0
-offset_top = 32.0
+offset_top = 40.0
 offset_right = 602.0
-offset_bottom = 51.0
+offset_bottom = 59.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_wgyi5")
@@ -109,6 +110,7 @@ theme_override_font_sizes/font_size = 18
 text = "Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Time_Rect" type="ColorRect" parent="UI"]
 offset_left = 533.0
@@ -116,6 +118,7 @@ offset_top = 7.0
 offset_right = 706.0
 offset_bottom = 26.0
 color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="Time_Bar" type="ProgressBar" parent="UI/Time_Rect"]
 layout_mode = 0
@@ -127,6 +130,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_0sug1")
 theme_override_styles/fill = SubResource("StyleBoxFlat_dea2t")
 value = 50.0
 show_percentage = false
+metadata/_edit_use_anchors_ = true
 
 [node name="Time_Text" type="Label" parent="UI/Time_Rect/Time_Bar"]
 modulate = Color(1, 1, 1, 0.705882)
@@ -141,3 +145,4 @@ theme_override_font_sizes/font_size = 20
 text = "SONG | TIME"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

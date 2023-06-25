@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b4xxxge1g4rvv"]
+[gd_scene load_steps=11 format=3 uid="uid://b4xxxge1g4rvv"]
 
 [ext_resource type="Texture2D" uid="uid://bo3o2cu7v0vcj" path="res://assets/images/gameMenus/menuDesat.png" id="1_gkdc5"]
 [ext_resource type="Script" path="res://gameFolder/menus/Freeplay.gd" id="1_ody2j"]
 [ext_resource type="Script" path="res://gameFolder/menus/data/Song.gd" id="2_6j3qw"]
 [ext_resource type="PackedScene" uid="uid://bnp1rl11bug1f" path="res://gameFolder/ui/Alphabet.tscn" id="3_y41ba"]
+[ext_resource type="Script" path="res://gameFolder/ui/FollowerSprite2D.gd" id="5_bjkt6"]
 
 [sub_resource type="Resource" id="Resource_ag4o6"]
 script = ExtResource("2_6j3qw")
@@ -33,9 +34,16 @@ folder = "argument"
 icon = "face"
 color = Color(1, 1, 1, 1)
 
+[sub_resource type="Resource" id="Resource_2d1lp"]
+script = ExtResource("2_6j3qw")
+name = "Ugh"
+folder = "ugh"
+icon = "face"
+color = Color(1, 1, 1, 1)
+
 [node name="Freeplay" type="Node2D"]
 script = ExtResource("1_ody2j")
-songs = Array[ExtResource("2_6j3qw")]([SubResource("Resource_ag4o6"), SubResource("Resource_aucl2"), SubResource("Resource_5gmm0"), SubResource("Resource_ot61k")])
+songs = Array[ExtResource("2_6j3qw")]([SubResource("Resource_ag4o6"), SubResource("Resource_aucl2"), SubResource("Resource_5gmm0"), SubResource("Resource_ot61k"), SubResource("Resource_2d1lp")])
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(640.358, 363.5)
@@ -44,9 +52,17 @@ texture = ExtResource("1_gkdc5")
 
 [node name="Songs_Node" type="Node" parent="."]
 
-[node name="Template_Letter" parent="." instance=ExtResource("3_y41ba")]
+[node name="Icons_Node" type="Node" parent="."]
+
+[node name="Templates" type="Node" parent="."]
+
+[node name="Template_Letter" parent="Templates" instance=ExtResource("3_y41ba")]
 visible = false
 offset_left = 377.0
 offset_top = 373.0
 offset_right = 377.0
 offset_bottom = 373.0
+
+[node name="Template_Icon" type="Sprite2D" parent="Templates"]
+visible = false
+script = ExtResource("5_bjkt6")

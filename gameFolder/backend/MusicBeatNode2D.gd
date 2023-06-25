@@ -14,6 +14,11 @@ func _init() -> void:
 	Conductor.beat_caller.connect(on_beat)
 	Conductor.sect_caller.connect(on_sect)
 
+func _exit_tree() -> void:
+	Conductor.step_caller.disconnect(on_step)
+	Conductor.beat_caller.disconnect(on_beat)
+	Conductor.sect_caller.disconnect(on_sect)
+
 func on_step(step:int) -> void: pass
 func on_beat(beat:int) -> void: pass
 func on_sect(sect:int) -> void: pass

@@ -1,17 +1,26 @@
 extends Node2D
 
 var cur_selection:int = 0
+
 @onready var songs_node:Node = $Songs_Node
+@onready var icons_node:Node = $Icons_Node
 @export var songs:Array[Song] = []
 
 func _ready() -> void:
 	for i in songs.size():
-		var new_song:Alphabet = $Template_Letter.duplicate()
+		var new_song:Alphabet = $Templates/Template_Letter.duplicate()
 		new_song.visible = true
 		new_song.is_menu_item = true
 		new_song.text = songs[i].name
 		new_song.id = i
 		songs_node.add_child(new_song)
+		
+		var new_icon:FollowerSprite2D = $Templates/Template_Icon.duplicate()
+		new_icon.texture = load("res://assets/images/icons/" + songs[i].icon + ".png")
+		new_icon.hframes = 2
+		new_icon.parent = new_song
+		new_icon.visible = true
+		icons_node.add_child(new_icon)
 	
 	update_selection()
 
@@ -28,6 +37,15 @@ func _process(_delta:float) -> void:
 		
 		Game.bind_song(songs[cur_selection].folder)
 
+func _input(event:InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed:
+			match event.keycode:
+				KEY_7:
+					var mods_menu:PackedScene = load("res://gameFolder/menus/Mods.tscn")
+					get_tree().paused = true
+					add_child(mods_menu.instantiate())
+
 var color_tween:Tween
 func update_selection(new_selection:int = 0) -> void:
 	cur_selection = wrapi(cur_selection + new_selection, 0, songs_node.get_child_count())
@@ -40,6 +58,10 @@ func update_selection(new_selection:int = 0) -> void:
 		item.id = i - cur_selection
 		item.modulate.a = 1.0 if item.id == 0 else 0.6
 		i += 1
+	
+	for icon in icons_node.get_children():
+		var selected_icon := icons_node.get_child(cur_selection) 
+		icon.modulate.a = 1.0 if selected_icon == icon else 0.6
 	
 	if color_tween != null:
 		color_tween.stop()

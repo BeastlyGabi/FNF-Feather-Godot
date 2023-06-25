@@ -64,6 +64,9 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 		if json.mania == 2: chart.key_amount = 7
 		if json.mania == 3: chart.key_amount = 9
 	
+	if "keyAmount" in json and json.keyAmount != null:
+		chart.key_amount = json.keyAmount
+	
 	if "uiSkin" in json: chart.ui_style = json.uiSkin
 	if "uiStyle" in json: chart.ui_style = json.uiStyle
 	if "assetModifier" in json: chart.ui_style = json.assetModifier

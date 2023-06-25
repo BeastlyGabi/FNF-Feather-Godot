@@ -55,6 +55,5 @@ func _process(_delta:float) -> void:
 
 func reset():
 	position = 0.0
-	
 	current_step = 0; current_beat = 0; current_sect = 0
 	prev_step = -1; prev_beat = -1; prev_sect = -1

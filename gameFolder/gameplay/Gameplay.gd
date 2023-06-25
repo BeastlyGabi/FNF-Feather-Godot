@@ -35,7 +35,7 @@ var notes_list:Array[Chart.NoteData] = []
 var events_list:Array[Chart.EventData] = []
 
 ###################################################
-### LODING FUNCTIONS YOU M4Y W4NN4 IGNORE THESE ###
+### LOADING FUNCTIONS YOU MAY WANNA IGNORE THESE ###
 
 func setup_stage() -> void: pass
 
@@ -44,7 +44,7 @@ func load_strumlines() -> void:
 		for strum in strum_lines.get_children():
 			var path:String = "res://gameFolder/gameplay/notes/strums/" + str(SONG.key_amount) + "K.tscn"
 			if !ResourceLoader.exists(path):
-				push_error("Strumline with " + str(SONG.key_amount) + " keys doesn't exist, defaulting to 4")
+				print_debug("Strumline with " + str(SONG.key_amount) + " keys doesn't exist, defaulting to 4")
 				SONG.key_amount = 4
 				break
 			
@@ -123,7 +123,7 @@ func _ready() -> void:
 				stream_with_scene_node = true
 				inst.stream = load(file_path)
 				inst.stream.loop = false
-				#inst.finished.connect(end_song)
+				inst.finished.connect(end_song)
 			
 			if file.begins_with("Voices") or file.begins_with("Vocals"):
 				stream_with_scene_node = true
@@ -146,17 +146,21 @@ func _ready() -> void:
 
 func _exit_tree():
 	Conductor.playback_rate = 1.0
+	super._exit_tree()
 
 func start_cutscene() -> void:
 	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn"):
 		var cutscene_bs:PackedScene = load("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn")
 		
 		cutscene_bs.game = self
-		cutscene_bs.call("song_beginning", [])
+		cutscene_bs.call("song_beginning" if !ending_song else "song_ending", [])
 		add_child(cutscene_bs.instantiate())
 	
 	else:
-		begin_countdown()
+		if ending_song:
+			end_song(true)
+		else:
+			begin_countdown()
 
 var count_position:int = 0
 var count_tweener:Tween
@@ -210,6 +214,8 @@ func process_countdown(reset:bool = false) -> void:
 	start_song()
 
 var starting_song:bool = true
+var ending_song:bool = false
+
 func play_music(start_time:float = 0.0) -> void:
 	for sound in sounds.get_children():
 		sound.play(start_time)
@@ -222,7 +228,11 @@ func start_song() -> void:
 	starting_song = false
 	play_music(0.0)
 
-var delta_update:float = 0.0
+func end_song(_skip_cutscene:bool = false) -> void:
+	if !ending_song: ending_song = true
+	if !_skip_cutscene: start_cutscene()
+	stop_music()
+
 func _process(delta:float) -> void:
 	if starting_song:
 		Conductor.position += delta * 1000.0
@@ -238,11 +248,8 @@ func _process(delta:float) -> void:
 	update_healthbar()
 	
 	### CAMERA ZOOMING ###
-	#stage.camera_zoom
-	#stage.hud_zoom
-	
-	var cam_lerp:float = lerpf(camera.zoom.x, 1.05, 0.01)
-	var hud_lerp:float = lerpf(ui.scale.x, 1.0, 0.03)
+	var cam_lerp:float = lerpf(camera.zoom.x, stage.camera_zoom, 0.01)
+	var hud_lerp:float = lerpf(ui.scale.x, stage.hud_zoom, 0.03)
 	
 	camera.zoom = Vector2(cam_lerp, cam_lerp)
 	ui.scale = Vector2(hud_lerp, hud_lerp)
@@ -374,8 +381,6 @@ func _input(event:InputEvent) -> void:
 		if event.pressed:
 			match event.keycode:
 				KEY_ESCAPE: Game.switch_scene("menus/Freeplay")
-				KEY_6: Game.switch_scene("backend/tools/XML Converter")
-				KEY_7: Game.switch_scene("backend/tools/TXT Converter")
 				KEY_8:
 					get_tree().paused = true
 					var options = load("res://gameFolder/menus/Options.tscn")
@@ -452,9 +457,8 @@ func do_miss_damage():
 	Timings.health -= 0.47
 	Timings.misses += 1
 	
-	#if Timings.combo > 0:
-	Timings.combo = 0
-	#else: Timings.combo -= 1
+	if Timings.combo > 0: Timings.combo = 0
+	else: Timings.combo -= 1
 	
 	Timings.update_rank()
 	update_score()

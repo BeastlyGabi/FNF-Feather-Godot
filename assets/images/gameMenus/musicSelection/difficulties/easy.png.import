@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dos8yc2vaq8kr"
-path="res://.godot/imported/icon-bianca.png-23c2f9833163373c60dbc39a88ad1b2f.ctex"
+uid="uid://d120n8df3hsf"
+path="res://.godot/imported/easy.png-25042c402518025f4fc5fe27043f397d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icon-bianca.png"
-dest_files=["res://.godot/imported/icon-bianca.png-23c2f9833163373c60dbc39a88ad1b2f.ctex"]
+source_file="res://assets/images/gameMenus/musicSelection/difficulties/easy.png"
+dest_files=["res://.godot/imported/easy.png-25042c402518025f4fc5fe27043f397d.ctex"]
 
 [params]
 
