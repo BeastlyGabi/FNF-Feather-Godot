@@ -61,7 +61,9 @@ func load_text() -> void:
 		var animation:String = _anim_from_letter(txt)
 		var valid_anim:bool = the_letter.sprite_frames.has_animation(animation)
 		
-		if valid_anim: the_letter.play(animation)
+		if valid_anim:
+			the_letter.offset = _offset_from_letter(txt)
+			the_letter.play(animation)
 		
 		the_letter.visible = valid_anim
 		the_letter.position = offset
@@ -83,6 +85,11 @@ func _anim_from_letter(txt:String) -> String:
 			else:
 				if txt.to_lower() != txt: return txt.to_lower() + " uppercase"
 				else: return txt.to_lower() + " lowercase"
+
+func _offset_from_letter(txt:String) -> Vector2:
+	match txt:
+		'.': return Vector2(-15, 25)
+		_: return Vector2(0, 0)
 
 func _get_prev() -> AnimatedSprite2D:
 	if letters_pushed.size() > 0:

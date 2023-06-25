@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b4xxxge1g4rvv"]
+[gd_scene load_steps=28 format=3 uid="uid://b4xxxge1g4rvv"]
 
 [ext_resource type="Texture2D" uid="uid://bo3o2cu7v0vcj" path="res://assets/images/gameMenus/menuDesat.png" id="1_gkdc5"]
 [ext_resource type="Script" path="res://gameFolder/menus/Freeplay.gd" id="1_ody2j"]
@@ -6,44 +6,163 @@
 [ext_resource type="PackedScene" uid="uid://bnp1rl11bug1f" path="res://gameFolder/ui/Alphabet.tscn" id="3_y41ba"]
 [ext_resource type="Script" path="res://gameFolder/ui/FollowerSprite2D.gd" id="5_bjkt6"]
 
-[sub_resource type="Resource" id="Resource_ag4o6"]
+[sub_resource type="Resource" id="Resource_gddi0"]
 script = ExtResource("2_6j3qw")
-name = "Test"
-folder = "test"
-icon = "face"
-color = Color(0.6, 1, 1, 1)
+name = "Tutorial"
+folder = "tutorial"
+icon = "gf"
+color = Color(0.647059, 0, 0.301961, 1)
 
-[sub_resource type="Resource" id="Resource_aucl2"]
+[sub_resource type="Resource" id="Resource_4xd55"]
 script = ExtResource("2_6j3qw")
-name = "Kaio Ken"
-folder = "kaio-ken"
-icon = "face"
-color = Color(1, 1, 1, 1)
+name = "Bopeebo"
+folder = "bopeebo"
+icon = "dad"
+color = Color(0.572549, 0.443137, 0.992157, 1)
 
-[sub_resource type="Resource" id="Resource_5gmm0"]
+[sub_resource type="Resource" id="Resource_g5wch"]
 script = ExtResource("2_6j3qw")
 name = "Fresh"
 folder = "fresh"
-icon = "face"
-color = Color(0.796078, 0.490196, 1, 1)
+icon = "dad"
+color = Color(0.572549, 0.443137, 0.992157, 1)
 
-[sub_resource type="Resource" id="Resource_ot61k"]
+[sub_resource type="Resource" id="Resource_nnjwq"]
 script = ExtResource("2_6j3qw")
-name = "Argument"
-folder = "argument"
-icon = "face"
-color = Color(1, 1, 1, 1)
+name = "Dad Battle"
+folder = "dadbattle"
+icon = "dad"
+color = Color(0.572549, 0.443137, 0.992157, 1)
 
-[sub_resource type="Resource" id="Resource_2d1lp"]
+[sub_resource type="Resource" id="Resource_1547m"]
+script = ExtResource("2_6j3qw")
+name = "Spookeez"
+folder = "spookeez"
+icon = "spooky"
+color = Color(0.133333, 0.2, 0.266667, 1)
+
+[sub_resource type="Resource" id="Resource_v0jei"]
+script = ExtResource("2_6j3qw")
+name = "South"
+folder = "south"
+icon = "spooky"
+color = Color(0.133333, 0.2, 0.266667, 1)
+
+[sub_resource type="Resource" id="Resource_snv6i"]
+script = ExtResource("2_6j3qw")
+name = "Monster"
+folder = "monster"
+icon = "monster"
+color = Color(0.133333, 0.2, 0.266667, 1)
+
+[sub_resource type="Resource" id="Resource_6k2cx"]
+script = ExtResource("2_6j3qw")
+name = "Pico"
+folder = "pico"
+icon = "pico"
+color = Color(0.580392, 0.0862745, 0.32549, 1)
+
+[sub_resource type="Resource" id="Resource_h63tx"]
+script = ExtResource("2_6j3qw")
+name = "Philly Nice"
+folder = "philly"
+icon = "pico"
+color = Color(0.580392, 0.0862745, 0.32549, 1)
+
+[sub_resource type="Resource" id="Resource_vfb44"]
+script = ExtResource("2_6j3qw")
+name = "Blammed"
+folder = "blammed"
+icon = "pico"
+color = Color(0.580392, 0.0862745, 0.32549, 1)
+
+[sub_resource type="Resource" id="Resource_wsmco"]
+script = ExtResource("2_6j3qw")
+name = "Satin Panties"
+folder = "satin-panties"
+icon = "mom"
+color = Color(0.988235, 0.588235, 0.843137, 1)
+
+[sub_resource type="Resource" id="Resource_s4102"]
+script = ExtResource("2_6j3qw")
+name = "High"
+folder = "high"
+icon = "mom"
+color = Color(0.988235, 0.588235, 0.843137, 1)
+
+[sub_resource type="Resource" id="Resource_nl3w5"]
+script = ExtResource("2_6j3qw")
+name = "M.I.L.F"
+folder = "milf"
+icon = "mom"
+color = Color(0.988235, 0.588235, 0.843137, 1)
+
+[sub_resource type="Resource" id="Resource_mvuo8"]
+script = ExtResource("2_6j3qw")
+name = "Cocoa"
+folder = "cocoa"
+icon = "parents"
+color = Color(0.627451, 0.819608, 1, 1)
+
+[sub_resource type="Resource" id="Resource_1iu5r"]
+script = ExtResource("2_6j3qw")
+name = "Eggnog"
+folder = "eggnog"
+icon = "parents"
+color = Color(0.627451, 0.819608, 1, 1)
+
+[sub_resource type="Resource" id="Resource_3gf6w"]
+script = ExtResource("2_6j3qw")
+name = "Winter Horrorland"
+folder = "winter-horrorland"
+icon = "monster"
+color = Color(0.627451, 0.819608, 1, 1)
+
+[sub_resource type="Resource" id="Resource_l4ibq"]
+script = ExtResource("2_6j3qw")
+name = "Senpai"
+folder = "senpai"
+icon = "senpai"
+color = Color(1, 0.470588, 0.74902, 1)
+
+[sub_resource type="Resource" id="Resource_j0t8n"]
+script = ExtResource("2_6j3qw")
+name = "Roses"
+folder = "roses"
+icon = "senpai"
+color = Color(1, 0.470588, 0.74902, 1)
+
+[sub_resource type="Resource" id="Resource_fmx2e"]
+script = ExtResource("2_6j3qw")
+name = "Thorns"
+folder = "thorns"
+icon = "spirit"
+color = Color(1, 0.470588, 0.74902, 1)
+
+[sub_resource type="Resource" id="Resource_ucwk4"]
 script = ExtResource("2_6j3qw")
 name = "Ugh"
 folder = "ugh"
-icon = "face"
-color = Color(1, 1, 1, 1)
+icon = "tankman"
+color = Color(0.964706, 0.713726, 0.0156863, 1)
+
+[sub_resource type="Resource" id="Resource_w5o6s"]
+script = ExtResource("2_6j3qw")
+name = "Guns"
+folder = "guns"
+icon = "tankman"
+color = Color(0.964706, 0.713726, 0.0156863, 1)
+
+[sub_resource type="Resource" id="Resource_arsmi"]
+script = ExtResource("2_6j3qw")
+name = "Stress"
+folder = "stress"
+icon = "tankman"
+color = Color(0.964706, 0.713726, 0.0156863, 1)
 
 [node name="Freeplay" type="Node2D"]
 script = ExtResource("1_ody2j")
-songs = Array[ExtResource("2_6j3qw")]([SubResource("Resource_ag4o6"), SubResource("Resource_aucl2"), SubResource("Resource_5gmm0"), SubResource("Resource_ot61k"), SubResource("Resource_2d1lp")])
+songs = Array[ExtResource("2_6j3qw")]([SubResource("Resource_gddi0"), SubResource("Resource_4xd55"), SubResource("Resource_g5wch"), SubResource("Resource_nnjwq"), SubResource("Resource_1547m"), SubResource("Resource_v0jei"), SubResource("Resource_snv6i"), SubResource("Resource_6k2cx"), SubResource("Resource_h63tx"), SubResource("Resource_vfb44"), SubResource("Resource_wsmco"), SubResource("Resource_s4102"), SubResource("Resource_nl3w5"), SubResource("Resource_mvuo8"), SubResource("Resource_1iu5r"), SubResource("Resource_3gf6w"), SubResource("Resource_l4ibq"), SubResource("Resource_j0t8n"), SubResource("Resource_fmx2e"), SubResource("Resource_ucwk4"), SubResource("Resource_w5o6s"), SubResource("Resource_arsmi")])
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(640.358, 363.5)

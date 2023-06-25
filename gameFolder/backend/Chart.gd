@@ -69,6 +69,8 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	
 	if "uiSkin" in json: chart.ui_style = json.uiSkin
 	if "uiStyle" in json: chart.ui_style = json.uiStyle
+	if "songStyle" in json: chart.ui_style = json.songStyle
+	if "noteStyle" in json: chart.ui_style = json.noteStyle
 	if "assetModifier" in json: chart.ui_style = json.assetModifier
 	
 	for section in json.notes:

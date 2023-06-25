@@ -84,6 +84,9 @@ func setup_characters() -> void:
 	player.position = stage.player_position
 	opponent.position = stage.opponent_position
 	
+	icon_P1.texture = load("res://assets/images/icons/" + player.health_icon + ".png")
+	icon_P2.texture = load("res://assets/images/icons/" + opponent.health_icon + ".png")
+	
 	# kinda eh sysm probably gonna redo later
 	var opponent_strums:StrumLine = $UI/Strum_Lines/Opponent_Strums
 	for shit in [opponent_strums.dancers, opponent_strums.singers]:

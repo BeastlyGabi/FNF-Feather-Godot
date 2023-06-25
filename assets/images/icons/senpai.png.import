@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8m0i813tc5to"
-path="res://.godot/imported/senpai-pixel.png-2e79f151f96147de944adcec6f037873.ctex"
+path="res://.godot/imported/senpai.png-ba61081831ab9b354872de29f859a187.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/icons/senpai-pixel.png"
-dest_files=["res://.godot/imported/senpai-pixel.png-2e79f151f96147de944adcec6f037873.ctex"]
+source_file="res://assets/images/icons/senpai.png"
+dest_files=["res://.godot/imported/senpai.png-ba61081831ab9b354872de29f859a187.ctex"]
 
 [params]
 
