@@ -5,6 +5,7 @@ var NOTE_STYLES:Dictionary = {
 }
 
 var SONG:Chart
+var STYLE:UIStyle
 
 @onready var camera:Camera2D = $Camera2D
 
@@ -97,6 +98,12 @@ func _init() -> void:
 	super._init()
 	SONG = Game.CUR_SONG if Game.CUR_SONG != null else Chart.load_chart("test", "normal")
 	
+	var style_folder:String = "res://gameFolder/ui/styles/" + SONG.ui_style + ".tscn"
+	if not ResourceLoader.exists(style_folder):
+		style_folder = "res://gameFolder/ui/styles/normal.tscn"
+	STYLE = load(style_folder).instantiate()
+	add_child(STYLE)
+	
 	notes_list = SONG.notes.duplicate()
 	events_list = SONG.events.duplicate()
 
@@ -183,9 +190,9 @@ func process_countdown(reset:bool = false) -> void:
 	if reset:
 		count_position = 0
 	
-	var countdown_spr:Sprite2D = $Templates/Countdown_Sprite.duplicate()
-	countdown_spr.texture = load("res://assets/images/UI/countdown/normal/" \
-	+ countdown_config["sprites"][count_position] + ".png")
+	var countdown_spr:Sprite2D = STYLE.get_template("Countdown_Sprite").duplicate()
+	countdown_spr.texture = load(STYLE.get_asset("images/UI/countdown", \
+	countdown_config["sprites"][count_position] + ".png"))
 	
 	countdown_spr.visible = true
 	countdown_spr.modulate.a = 0.0
@@ -197,8 +204,8 @@ func process_countdown(reset:bool = false) -> void:
 	count_tweener.tween_property(countdown_spr, "modulate:a", 1.0, 0.05)
 	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.step_crochet / 1100.0)
 	
-	Sound.play_sound("res://assets/audio/sfx/game/normal/" \
-	+ countdown_config["sounds"][count_position] + ".ogg")
+	Sound.play_sound(STYLE.get_asset("audio/sfx/game", \
+	countdown_config["sounds"][count_position] + ".ogg"))
 	
 	count_position += 1
 	
@@ -464,8 +471,8 @@ func do_miss_damage():
 	update_score()
 
 func display_judgement(_name:String) -> void:
-	var new_judgement:Sprite2D = $Templates/Judgement_Sprite.duplicate()
-	new_judgement.texture = load("res://assets/images/UI/ratings/normal/" + _name + ".png")
+	var new_judgement:Sprite2D = STYLE.get_template("Judgement_Sprite").duplicate()
+	new_judgement.texture = load(STYLE.get_asset("images/UI/ratings", _name + ".png"))
 	new_judgement.visible = true
 	combo_group.add_child(new_judgement)
 	
@@ -477,8 +484,8 @@ func display_combo() -> void:
 	var numbers:PackedStringArray = combo.split("")
 	
 	for i in numbers.size():
-		var new_combo:Sprite2D = $Templates/Number_Sprite.duplicate()
-		new_combo.texture = load("res://assets/images/UI/combo/normal/num" + numbers[i] + ".png")
+		var new_combo:Sprite2D = STYLE.get_template("Number_Sprite").duplicate()
+		new_combo.texture = load(STYLE.get_asset("images/UI/combo", "num" + numbers[i] + ".png"))
 		new_combo.position.x += 50 * i
 		new_combo.visible = true
 		combo_group.add_child(new_combo)

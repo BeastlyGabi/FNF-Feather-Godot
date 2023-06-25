@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://o2q8bpfu7puy"]
+
+[ext_resource type="Script" path="res://gameFolder/ui/styles/UIStyle.gd" id="1_uxryy"]
+[ext_resource type="Texture2D" uid="uid://cf6uuv6wfw6po" path="res://assets/images/UI/countdown/normal/prepare.png" id="2_d5wb1"]
+[ext_resource type="Texture2D" uid="uid://bqp8rfk4fvg5x" path="res://assets/images/UI/ratings/normal/sick.png" id="3_0sn40"]
+[ext_resource type="Texture2D" uid="uid://yhdkmlhdmu1m" path="res://assets/images/UI/combo/normal/num1.png" id="4_un30t"]
+
+[node name="normal" type="Node2D"]
+script = ExtResource("1_uxryy")
+
+[node name="Templates" type="Node" parent="."]
+
+[node name="Countdown_Sprite" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(668, 332)
+texture = ExtResource("2_d5wb1")
+
+[node name="Judgement_Sprite" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(440, 176)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_0sn40")
+
+[node name="Number_Sprite" type="Sprite2D" parent="Templates"]
+visible = false
+position = Vector2(768, 173)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("4_un30t")
