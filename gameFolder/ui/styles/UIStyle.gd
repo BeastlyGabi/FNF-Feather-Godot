@@ -2,6 +2,11 @@ class_name UIStyle extends Node2D
 
 @export var note_style:String = "default"
 @export var strum_style:String = "default"
+@export var countdown_config:Dictionary = {
+	"sprites": ["prepare", "ready", "set", "go"],
+	"sounds": ["intro3", "intro2", "intro1", "introGo"]
+}
+
 var fallback_style:String = "normal"
 
 func get_asset(folder:String, asset:String) -> String:

@@ -9,6 +9,10 @@
 script = ExtResource("1_6omiu")
 note_style = "pixel"
 strum_style = "pixel"
+countdown_config = {
+"sounds": ["intro3", "intro2", "intro1", "introGo"],
+"sprites": ["prepare", "ready", "set", "date"]
+}
 
 [node name="Templates" type="Node" parent="."]
 

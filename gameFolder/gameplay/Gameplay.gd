@@ -184,18 +184,13 @@ func begin_countdown() -> void:
 	await get_tree().create_timer(0.35).timeout
 	process_countdown(true)
 
-var countdown_config:Dictionary = {
-	"sprites": ["prepare", "ready", "set", "go"],
-	"sounds": ["intro3", "intro2", "intro1", "introGo"]
-}
-
 func process_countdown(reset:bool = false) -> void:
 	if reset:
 		count_position = 0
 	
 	var countdown_spr:Sprite2D = STYLE.get_template("Countdown_Sprite").duplicate()
 	countdown_spr.texture = load(STYLE.get_asset("images/UI/countdown", \
-	countdown_config["sprites"][count_position] + ".png"))
+	STYLE.countdown_config["sprites"][count_position] + ".png"))
 	
 	countdown_spr.visible = true
 	countdown_spr.modulate.a = 0.0
@@ -208,7 +203,7 @@ func process_countdown(reset:bool = false) -> void:
 	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.step_crochet / 1100.0)
 	
 	Sound.play_sound(STYLE.get_asset("audio/sfx/game", \
-	countdown_config["sounds"][count_position] + ".ogg"))
+	STYLE.countdown_config["sounds"][count_position] + ".ogg"))
 	
 	count_position += 1
 	
