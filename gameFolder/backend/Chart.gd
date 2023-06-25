@@ -100,7 +100,7 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 			epic_note.length = float(note[2])
 			
 			var gotta_hit:bool = section.mustHitSection
-			if note[1] > chart.key_amount-1: gotta_hit = !section.mustHitSection
+			if note[1] > chart.key_amount-1: gotta_hit = not section.mustHitSection
 			epic_note.lane = 1 if gotta_hit else 0
 			
 			if note.size() > 3 and note[3] != null:

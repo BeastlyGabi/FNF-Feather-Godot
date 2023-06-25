@@ -81,7 +81,7 @@ func _process(delta:float) -> void:
 			if length <= -(Conductor.step_crochet / 1000.0):
 				queue_free()
 	
-	if !in_edit:
+	if not in_edit:
 		var hit_area:float = (Timings.worst_timing() / (1.2 * Conductor.playback_rate))
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)

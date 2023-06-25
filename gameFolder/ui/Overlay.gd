@@ -7,7 +7,7 @@ func _ready() -> void:
 	do_text_update()
 
 func _process(delta:float) -> void:
-	if !process_every_frame:
+	if not process_every_frame:
 		delta_timeout += delta * 1000.0
 		if delta_timeout < 1000.0: return
 	

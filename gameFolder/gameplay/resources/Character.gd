@@ -16,7 +16,7 @@ var _swapped_horizontals:bool = false
 func _ready() -> void:
 	dance(true)
 	
-	if !is_player:
+	if not is_player:
 		_swapped_horizontals = true
 		scale.x *= -1
 		
@@ -32,7 +32,7 @@ func _process(delta:float) -> void:
 		elif is_player:
 			hold_timer = 0.0
 		
-		if !is_player:
+		if not is_player:
 			if hold_timer >= Conductor.step_crochet * (sing_duration * Engine.time_scale) * 0.001:
 				dance()
 				hold_timer = 0.0
@@ -41,7 +41,7 @@ var danced:bool = false
 func dance(forced:bool = false) -> void:
 	var anim_name:String = "idle"
 	if quick_dancer():
-		danced = !danced
+		danced = not danced
 		anim_name = "dance" + "Right" if danced else "Left"
 	
 	play_anim(anim_name, forced)

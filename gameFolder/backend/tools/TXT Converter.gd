@@ -9,7 +9,7 @@ var fps: int = 24
 var looped: bool = false
 var optimized: bool = true
 
-func convert_xml():
+func convert_xml() -> void:
 	if path != "":
 		var path_string:String
 		
@@ -54,7 +54,7 @@ func convert_xml():
 					frame_data.region = frame_rect
 					frame_data.filter_clip = true
 					
-					if !frames.has_animation(animation_name):
+					if not frames.has_animation(animation_name):
 						frames.add_animation(animation_name)
 						frames.set_animation_loop(animation_name, false)
 						frames.set_animation_speed(animation_name, 24)
@@ -70,23 +70,23 @@ func convert_xml():
 		else:
 			print(path_string + " loading failed.")
 
-func _ready():
+func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
-func _process(_delta):
+func _process(_delta:float) -> void:
 	if Input.is_action_just_pressed("ui_cancel") and not fps_box.has_focus():
 		Game.switch_scene("menus/Freeplay")
 
 # funny signal shits
-func set_path(new_path: String):
+func set_path(new_path:String) -> void:
 	path = new_path
 	print(new_path)
 
-func set_fps(new_fps: String):
+func set_fps(new_fps:String) -> void:
 	fps = new_fps.to_int()
 
-func set_looped(new_looped: bool):
+func set_looped(new_looped:bool) -> void:
 	looped = new_looped
 
-func set_optimized(new_optimized: bool):
+func set_optimized(new_optimized:bool) -> void:
 	optimized = new_optimized

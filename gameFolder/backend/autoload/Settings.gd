@@ -14,5 +14,5 @@ func get_setting(setting:String) -> Variant:
 	return _game_settings[setting]
 
 func set_setting(setting:String, new_value:Variant) -> void:
-	if _game_settings.has(setting) and get_setting(setting) != new_value:
+	if _game_settings.has(setting) and not get_setting(setting) == new_value:
 		_game_settings[setting] = new_value

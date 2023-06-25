@@ -43,7 +43,7 @@ func load_strumlines() -> void:
 	if SONG.key_amount != 4:
 		for strum in strum_lines.get_children():
 			var path:String = "res://gameFolder/gameplay/notes/strums/" + str(SONG.key_amount) + "K.tscn"
-			if !ResourceLoader.exists(path):
+			if not ResourceLoader.exists(path):
 				print_debug("Strumline with " + str(SONG.key_amount) + " keys doesn't exist, defaulting to 4")
 				SONG.key_amount = 4
 				break
@@ -130,13 +130,13 @@ func _ready() -> void:
 				voices.stream = load(file_path)
 				voices.stream.loop = false
 			
-			if !stream_with_scene_node:
+			if not stream_with_scene_node:
 				var new_stream:AudioStreamPlayer = AudioStreamPlayer.new()
 				new_stream.stream = load(file_path)
 				new_stream.stream.loop = false
 				sounds.add_child(new_stream)
 	
-	if !Settings.get_setting("downscroll"):
+	if not Settings.get_setting("downscroll"):
 		health_bar.position.y = Game.SCREEN["height"] - 85
 		for strum_line in strum_lines.get_children():
 			strum_line.position.y = 100
@@ -153,7 +153,7 @@ func start_cutscene() -> void:
 		var cutscene_bs:PackedScene = load("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn")
 		
 		cutscene_bs.game = self
-		cutscene_bs.call("song_beginning" if !ending_song else "song_ending", [])
+		cutscene_bs.call("song_beginning" if not ending_song else "song_ending", [])
 		add_child(cutscene_bs.instantiate())
 	
 	else:
@@ -229,8 +229,8 @@ func start_song() -> void:
 	play_music(0.0)
 
 func end_song(_skip_cutscene:bool = false) -> void:
-	if !ending_song: ending_song = true
-	if !_skip_cutscene: start_cutscene()
+	if not ending_song: ending_song = true
+	if not _skip_cutscene: start_cutscene()
 	stop_music()
 
 func _process(delta:float) -> void:
@@ -356,7 +356,7 @@ var cam_zoom:Dictionary = {
 func on_beat(beat:int) -> void:
 	for strum in strum_lines.get_children():
 		for char in strum.dancers:
-			if !char.is_singing() and !char.is_missing():
+			if not char.is_singing() and not char.is_missing():
 				if beat % char.dance_interval == 0:
 					char.dance()
 	
@@ -415,7 +415,7 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	Timings.combo += 1
 	
 	var needs_sick:bool = Settings.get_setting("note_splashes") == "sick only"
-	if needs_sick and judge.name == "sick" or !needs_sick:
+	if needs_sick and judge.name == "sick" or not needs_sick:
 		strum.pop_splash(note)
 	
 	display_judgement(judge.name)
@@ -436,7 +436,7 @@ func cpu_note_hit(note:Note, strum:StrumLine) -> void:
 		char.play_anim(char.sing_anims[index], true)
 		char.hold_timer = 0.0
 	
-	if !note.is_hold:
+	if not note.is_hold:
 		note.queue_free()
 
 # I ran out of function names -BeastlyGabi

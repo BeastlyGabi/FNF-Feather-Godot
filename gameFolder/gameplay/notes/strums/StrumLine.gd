@@ -18,7 +18,7 @@ func _ready() -> void:
 		receptor.material = receptors.material.duplicate()
 		receptor.material.set_shader_parameter("color", Note.default_colors["normal"][i % 4])
 		
-		if !is_cpu:
+		if not is_cpu:
 			key_presses.append(false)
 
 func _process(delta:float) -> void:
@@ -38,10 +38,10 @@ func _process(delta:float) -> void:
 		
 		var kill_position:float = -25 if is_cpu else -200
 		if -distance <= kill_position:
-			if !is_cpu:
-				if !note.was_good_hit:
+			if not is_cpu:
+				if not note.was_good_hit:
 					game.note_miss(note)
-					if !note.is_hold:
+					if not note.is_hold:
 						note.queue_free()
 					
 					else:
@@ -52,7 +52,7 @@ func _process(delta:float) -> void:
 				game.cpu_note_hit(note, self)
 		
 		# Kill player hotds
-		if note.is_hold and !note.was_good_hit and !note.can_be_hit and !is_cpu and \
+		if note.is_hold and not note.was_good_hit and not note.can_be_hit and not is_cpu and \
 		(
 			scroll_diff > 0 and # Downcroll
 			-distance < (kill_position + note.end.position.y)
@@ -68,7 +68,7 @@ func _process(delta:float) -> void:
 			note.arrow.visible = false
 			note.z_index = -1
 			
-			if !is_cpu:
+			if not is_cpu:
 				play_anim("confirm", note.direction, receptor.frame >= 2)
 			
 			for char in singers:
@@ -79,8 +79,8 @@ func _process(delta:float) -> void:
 			if game.voices != null and game.voices.stream != null:
 				game.voices.volume_db = linear_to_db(1.0)
 			
-			if !is_cpu and note.must_press and note.length >= 80.0:
-				if !Input.is_action_pressed("note_" + controls[note.direction]):
+			if not is_cpu and note.must_press and note.length >= 80.0:
+				if not Input.is_action_pressed("note_" + controls[note.direction]):
 					note.was_good_hit = false
 					note.can_be_hit = false
 					note.modulate.a = 0.30
@@ -91,7 +91,7 @@ func _process(delta:float) -> void:
 					play_anim("static", note.direction, true)
 
 func pop_splash(note:Note) -> void:
-	if Settings.get_setting("note_splashes") == "never" or !note.has_node("Splash"):
+	if Settings.get_setting("note_splashes") == "never" or not note.has_node("Splash"):
 		return
 	
 	var receptor := receptors.get_child(note.direction)
@@ -114,12 +114,12 @@ func pop_splash(note:Note) -> void:
 	)
 
 func _input(event:InputEvent) -> void:
-	if event is InputEventKey and !is_cpu:
+	if event is InputEventKey and not is_cpu:
 		var key:int = get_key_dir(event)
 		if key < 0: return
 		
 		var glowing:bool = receptors.get_child(key).animation.ends_with("glow")
-		play_anim("press" if !glowing and event.pressed else "static", key, true)
+		play_anim("press" if not glowing and event.pressed else "static", key, true)
 		key_shit(key)
 
 var key_presses:Array[bool] = []
@@ -129,8 +129,8 @@ func key_shit(key:int) -> void:
 	
 	var notes_to_hit:Array[Note] = []
 	for note in notes.get_children().filter(func(note:Note):
-		return (note.direction == key and note.can_be_hit and !note.too_late
-		and note.parent == self and !note.was_good_hit)
+		return (note.direction == key and note.can_be_hit and not note.too_late
+		and note.parent == self and not note.was_good_hit)
 	): notes_to_hit.append(note)
 	
 	notes_to_hit.sort_custom(func(a, b):

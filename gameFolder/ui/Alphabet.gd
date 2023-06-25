@@ -36,8 +36,8 @@ func _process(delta:float) -> void:
 			lerpf(position.y, (remap_y * vert_spacing) + (Game.SCREEN["width"] * menu_offset.y), (delta /  list_speed))
 		)
 		
-		if !disable_X: position.x = scroll.x
-		if !disable_Y: position.y = scroll.y
+		if not disable_X: position.x = scroll.x
+		if not disable_Y: position.y = scroll.y
 
 var text_spaces:int = 0
 func load_text() -> void:
