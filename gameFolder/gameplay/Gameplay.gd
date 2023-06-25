@@ -21,9 +21,6 @@ var STYLE:UIStyle
 @onready var icon_P1 := $UI/Health_Bar/Player_icon
 @onready var icon_P2 := $UI/Health_Bar/Opponent_icon
 
-@onready var time_bar:ProgressBar = $UI/Time_Rect/Time_Bar
-@onready var time_text:Label = $UI/Time_Rect/Time_Bar/Time_Text
-
 @onready var strum_lines:CanvasLayer = $UI/Strum_Lines
 @onready var player_strums:StrumLine = $UI/Strum_Lines/Player_Strums
 
@@ -244,10 +241,6 @@ func _process(delta:float) -> void:
 	else:
 		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 			Conductor.position = inst.get_playback_position() * 1000.0
-	
-	time_bar.value = inst.get_playback_position()
-	time_text.text = Game.META_DATA.display_name + " | " + \
-	Game.format_to_time(inst.get_playback_position())
 	
 	Timings.health = clampf(Timings.health, 0.0, 2.0)
 	update_healthbar()

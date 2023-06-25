@@ -5,9 +5,11 @@ var SCREEN:Dictionary = {
 	"height": ProjectSettings.get_setting("display/window/size/viewport_height"),
 }
 
+var VERSION:Versioning
 var LAST_SCENE:String
 
 func _ready() -> void:
+	VERSION = Versioning.new(0, 0, 1)
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	switch_scene("menus/Freeplay")
 

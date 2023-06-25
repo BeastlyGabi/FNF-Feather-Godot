@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b2mco2q2geqm0"]
+[gd_scene load_steps=8 format=3 uid="uid://b2mco2q2geqm0"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
 [ext_resource type="PackedScene" uid="uid://d3271ykj5ctot" path="res://gameFolder/gameplay/stages/Stage.tscn" id="3_d4j25"]
@@ -7,12 +7,6 @@
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
 [ext_resource type="PackedScene" uid="uid://6aaoavdwp0ev" path="res://gameFolder/gameplay/characters/bf.tscn" id="5_qyduk"]
 [ext_resource type="Texture2D" uid="uid://ctwobjckai73u" path="res://assets/images/icons/face.png" id="6_hgky4"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0sug1"]
-bg_color = Color(0.227451, 0.227451, 0.227451, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dea2t"]
-bg_color = Color(1, 0.819608, 0.368627, 1)
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_cnvoi")
@@ -27,7 +21,7 @@ script = ExtResource("1_cnvoi")
 position_smoothing_enabled = true
 
 [node name="Stage" parent="." instance=ExtResource("3_d4j25")]
-position = Vector2(149, -18)
+position = Vector2(109, -18)
 
 [node name="Player" parent="." instance=ExtResource("5_qyduk")]
 position = Vector2(965, 390)
@@ -43,16 +37,16 @@ position = Vector2(204, 390)
 [node name="Strum_Lines" type="CanvasLayer" parent="UI"]
 
 [node name="Opponent_Strums" parent="UI/Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(150, 625)
+position = Vector2(150, 617)
 
 [node name="Player_Strums" parent="UI/Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(798, 625)
+position = Vector2(798, 617)
 is_cpu = false
 
 [node name="Health_Bar" type="TextureProgressBar" parent="UI"]
-offset_left = 312.0
+offset_left = 311.0
 offset_top = 72.0
-offset_right = 913.0
+offset_right = 912.0
 offset_bottom = 91.0
 value = 50.0
 rounded = true
@@ -86,41 +80,6 @@ theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_wgyi5")
 theme_override_font_sizes/font_size = 18
 text = "Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Time_Rect" type="ColorRect" parent="UI"]
-offset_left = 533.0
-offset_top = 7.0
-offset_right = 706.0
-offset_bottom = 26.0
-color = Color(0, 0, 0, 1)
-metadata/_edit_use_anchors_ = true
-
-[node name="Time_Bar" type="ProgressBar" parent="UI/Time_Rect"]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 169.0
-offset_bottom = 15.0
-theme_override_styles/background = SubResource("StyleBoxFlat_0sug1")
-theme_override_styles/fill = SubResource("StyleBoxFlat_dea2t")
-value = 50.0
-show_percentage = false
-metadata/_edit_use_anchors_ = true
-
-[node name="Time_Text" type="Label" parent="UI/Time_Rect/Time_Bar"]
-modulate = Color(1, 1, 1, 0.705882)
-layout_mode = 0
-offset_top = -6.0
-offset_right = 165.0
-offset_bottom = 15.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_fonts/font = ExtResource("4_wgyi5")
-theme_override_font_sizes/font_size = 20
-text = "SONG | TIME"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
