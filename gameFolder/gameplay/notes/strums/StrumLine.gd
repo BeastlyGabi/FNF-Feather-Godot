@@ -4,13 +4,13 @@ class_name StrumLine extends CanvasGroup
 @onready var receptors:Node2D = $Receptors
 @onready var notes:Node2D = $Notes
 
-@export var controls:Array[String] = ["left", "down", "up", "right"]
+@export var controls:Array[String] = ["note_left", "note_down", "note_up", "note_right"]
 @export var is_cpu:bool = true
 
 ## Characters that bop their heads ##
-@export var dancers:Array[Character] = []
+var dancers:Array[Character] = []
 ## Characters that sing when a note is hit ##
-@export var singers:Array[Character] = []
+var singers:Array[Character] = []
 
 func _ready() -> void:
 	for i in receptors.get_child_count():
@@ -80,7 +80,7 @@ func _process(delta:float) -> void:
 				game.voices.volume_db = linear_to_db(1.0)
 			
 			if not is_cpu and note.must_press and note.length >= 80.0:
-				if not Input.is_action_pressed("note_" + controls[note.direction]):
+				if not Input.is_action_pressed(controls[note.direction]):
 					note.was_good_hit = false
 					note.can_be_hit = false
 					note.modulate.a = 0.30
@@ -125,7 +125,7 @@ func _input(event:InputEvent) -> void:
 var key_presses:Array[bool] = []
 
 func key_shit(key:int) -> void:
-	key_presses[key] = Input.is_action_pressed("note_" + controls[key])
+	key_presses[key] = Input.is_action_pressed(controls[key])
 	
 	var notes_to_hit:Array[Note] = []
 	for note in notes.get_children().filter(func(note:Note):
@@ -137,7 +137,7 @@ func key_shit(key:int) -> void:
 		return b.time if b.time > a.time else a.time
 	)
 	
-	if Input.is_action_just_pressed("note_" + controls[key]):
+	if Input.is_action_just_pressed(controls[key]):
 		if notes_to_hit.size() > 0:
 			var cool_note:Note = notes_to_hit[0]
 			
@@ -166,7 +166,7 @@ func key_shit(key:int) -> void:
 func get_key_dir(event:InputEventKey) -> int:
 	var key:int = -1
 	for i in controls.size():
-		var action:String = "note_" + controls[i].to_lower()
+		var action:String = controls[i].to_lower()
 		if event.is_action_pressed(action) or event.is_action_released(action):
 			key = i
 			break
