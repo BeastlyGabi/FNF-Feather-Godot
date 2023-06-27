@@ -322,9 +322,13 @@ func fire_event(name:String, args:Array[Variant]) -> void:
 var score_divider:String = " / "
 func update_score() -> void:
 	var score_temp:String = ""
+	var format:String = "%.2f"
+	var true_accuracy:float = Timings.accuracy * 100 / 100
+	if true_accuracy >= 100 or true_accuracy <= 0:
+		format = "%.0f"
 	
 	score_temp += "SCORE: " + str(Timings.score)
-	score_temp += score_divider + "ACCURACY: " + "%.2f" % (Timings.accuracy * 100 / 100) + "%"
+	score_temp += score_divider + "ACCURACY: " + format % true_accuracy + "%"
 	score_temp += score_divider + "MISSES: " + str(Timings.misses)
 	
 	score_temp += score_divider + Timings.cur_grade.name
