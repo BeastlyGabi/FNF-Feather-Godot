@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Friday Night Funkin': Feather"
-run/main_scene="res://gameFolder/backend/autoload/Game.tscn"
+run/main_scene="res://gameFolder/Game.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 boot_splash/show_image=false
 boot_splash/fullsize=false
@@ -20,7 +20,7 @@ config/icon="res://art/icon.png"
 
 [autoload]
 
-Game="*res://gameFolder/backend/autoload/Game.tscn"
+Game="*res://gameFolder/Game.tscn"
 Settings="*res://gameFolder/backend/autoload/Settings.gd"
 Conductor="*res://gameFolder/backend/autoload/Conductor.gd"
 Timings="*res://gameFolder/gameplay/resources/Timings.gd"

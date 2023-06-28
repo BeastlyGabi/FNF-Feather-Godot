@@ -35,6 +35,15 @@ func _process(_delta:float) -> void:
 		meta_data.chart_offset = 0.0
 		Game.META_DATA = meta_data
 		
+		Sound.play_sound("res://assets/audio/sfx/confirmMenu.ogg")
+		for letter in songs_node.get_children():
+			if letter.id != 0:
+				get_tree().create_tween().tween_property(letter, "position:x", 5000, 0.85)
+			else:
+				Game.flicker_object(letter)
+		
+		Game.flicker_object(icons_node.get_child(cur_selection))
+		await get_tree().create_timer(1.0).timeout
 		Game.bind_song(songs[cur_selection].folder)
 
 func _input(event:InputEvent) -> void:
