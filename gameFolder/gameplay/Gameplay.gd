@@ -425,6 +425,10 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 	if needs_sick and judge.name == "sick" or not needs_sick:
 		strum.pop_splash(note)
 	
+	if combo_group.get_child_count() > 0:
+		for sprite in combo_group.get_children():
+			sprite.queue_free()
+	
 	display_judgement(judge.name)
 	display_combo()
 	
@@ -470,14 +474,22 @@ func do_miss_damage():
 	Timings.update_rank()
 	update_score()
 
+var judgement_tween:Tween
 func display_judgement(_name:String) -> void:
 	var new_judgement:Sprite2D = STYLE.get_template("Judgement_Sprite").duplicate()
 	new_judgement.texture = load(STYLE.get_asset("images/UI/ratings", _name + ".png"))
 	new_judgement.visible = true
 	combo_group.add_child(new_judgement)
 	
-	get_tree().create_tween().set_ease(Tween.EASE_IN_OUT) \
-	.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.step_crochet / 1000.0)
+	if judgement_tween != null:
+		judgement_tween.stop()
+	
+	var scale_og:Vector2 = new_judgement.scale
+	new_judgement.scale *= 1.25
+	
+	judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
+	judgement_tween.tween_property(new_judgement, "scale", scale_og, 0.08)
+	judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.55 * Conductor.step_crochet / 1000.0)
 
 func display_combo() -> void:
 	var combo:String = str(Timings.combo).pad_zeros(3)
@@ -491,4 +503,5 @@ func display_combo() -> void:
 		combo_group.add_child(new_combo)
 		
 		get_tree().create_tween().set_ease(Tween.EASE_IN_OUT) \
-		.tween_property(new_combo, "modulate:a", 0.0, 2.0 * Conductor.step_crochet / 1000.0 )
+		.tween_property(new_combo, "modulate:a", 0.0, 2.0 * Conductor.step_crochet / 1000.0) \
+		.set_delay(0.35)

@@ -17,12 +17,12 @@ texture = ExtResource("2_d5wb1")
 
 [node name="Judgement_Sprite" type="Sprite2D" parent="Templates"]
 visible = false
-position = Vector2(440, 176)
+position = Vector2(664, 320)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("3_0sn40")
 
 [node name="Number_Sprite" type="Sprite2D" parent="Templates"]
 visible = false
-position = Vector2(768, 173)
+position = Vector2(585, 410)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_un30t")
