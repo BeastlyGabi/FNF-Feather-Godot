@@ -153,7 +153,6 @@ func _ready() -> void:
 
 func _exit_tree():
 	Conductor.playback_rate = 1.0
-	super._exit_tree()
 
 func start_cutscene() -> void:
 	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn"):
@@ -211,6 +210,7 @@ func process_countdown(reset:bool = false) -> void:
 		return
 	else:
 		# ITS WINGS ARE TOO SMALL TO GET ITS FAT BODY OFF THE GROUND. (3)
+		if countdown_spr != null: countdown_spr.queue_free()
 		count_timer.queue_free()
 	
 	start_song()
@@ -237,13 +237,12 @@ func end_song(_skip_cutscene:bool = false) -> void:
 
 func _process(delta:float) -> void:
 	if starting_song:
-		Conductor.position += delta * 1000.0
+		Conductor.position += (delta * 1000.0) / Engine.time_scale
 	else:
 		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 			Conductor.position = inst.get_playback_position() * 1000.0
 	
 	Timings.health = clampf(Timings.health, 0.0, 2.0)
-	update_healthbar()
 	
 	### CAMERA ZOOMING ###
 	var cam_lerp:float = lerpf(camera.zoom.x, stage.camera_zoom, 0.01)
@@ -264,7 +263,7 @@ func _process(delta:float) -> void:
 
 func note_processing() -> void:
 	if notes_list.size() > 0:
-		if notes_list[0].time - Conductor.position > (3500 * (SONG.speed / Conductor.playback_rate)):
+		if notes_list[0].time - Conductor.position > (3500.0 * (SONG.speed / Conductor.playback_rate)):
 			return
 		
 		var note_data:Chart.NoteData = notes_list[0]
@@ -340,7 +339,7 @@ func update_score() -> void:
 
 func update_healthbar() -> void:
 	var health_bar_width:float = health_bar.texture_progress.get_size().x
-	health_bar.value = clampi(Timings.health * 50.0, 0, 100)
+	health_bar.value = clampi(Timings.health * 45.0, 0, 100)
 	
 	icon_P1.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P1.texture.get_width())
 	icon_P2.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P2.texture.get_width()) - 65
@@ -355,7 +354,9 @@ var cam_zoom:Dictionary = {
 	"hud_bump_strength": 0.035
 }
 
-func on_beat(beat:int) -> void:
+func on_step() -> void: pass
+
+func on_beat() -> void:
 	for strum in strum_lines.get_children():
 		for char in strum.dancers:
 			if not char.is_singing() and not char.is_missing():
@@ -372,6 +373,10 @@ func on_beat(beat:int) -> void:
 	if beat % cam_zoom["hud_interval"] == 0:
 		ui.scale += Vector2(cam_zoom["hud_bump_strength"], cam_zoom["hud_bump_strength"])
 		hud_bump_reposition()
+
+func on_sect() -> void: pass
+func on_tick() -> void:
+	update_healthbar()
 
 # @swordcube
 func hud_bump_reposition():

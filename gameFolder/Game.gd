@@ -41,6 +41,20 @@ func float_to_minute(value:float) -> int: return int(value / 60)
 func float_to_seconds(value:float) -> float: return fmod(value, 60)
 func format_to_time(value:float) -> String: return "%02d:%02d" % [float_to_minute(value), float_to_seconds(value)]
 
+# @voiddev
+var last_log:String
+func safe_call(node:Node, fn:String, args:Array = []) -> void:
+	if node.has_method(fn):
+		node.callv(fn, args)
+	else:
+		var to_print:String = "\"%s\" has no function \"%s\"" %[get_tree().current_scene.name, fn]
+		if last_log != to_print:
+			print_debug(to_print)
+			last_log = to_print
+
+var current_scene:
+	get: return get_tree().current_scene
+
 var flicker_timer:SceneTreeTimer
 func flicker_object(obj:Variant, duration:float = 0.06, interval:int = 8, end_call = null, end_visibility:bool = false) -> void:
 	if obj == null: return
