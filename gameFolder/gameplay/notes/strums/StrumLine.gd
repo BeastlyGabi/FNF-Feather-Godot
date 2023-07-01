@@ -13,6 +13,8 @@ var dancers:Array[Character] = []
 var singers:Array[Character] = []
 
 func _ready() -> void:
+	set_process_input(true)
+	
 	for i in receptors.get_child_count():
 		var receptor:AnimatedSprite2D = receptors.get_child(i)
 		receptor.material = receptors.material.duplicate()
