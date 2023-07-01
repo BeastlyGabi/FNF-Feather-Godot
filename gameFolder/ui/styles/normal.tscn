@@ -17,7 +17,7 @@ texture = ExtResource("2_d5wb1")
 
 [node name="Judgement_Sprite" type="Sprite2D" parent="Templates"]
 visible = false
-position = Vector2(664, 320)
+position = Vector2(640, 320)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("3_0sn40")
 

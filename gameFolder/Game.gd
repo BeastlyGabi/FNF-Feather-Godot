@@ -78,3 +78,9 @@ func flicker_object(obj:Variant, duration:float = 0.06, interval:int = 8, end_ca
 	
 	await flicker_timer.timeout
 	obj.modulate.a = 1.0
+
+func get_screen_center(base:Vector2) -> Vector2:
+	return Vector2(
+		(Game.SCREEN["width"] - base.x) / 2.0,
+		(Game.SCREEN["height"] - base.y) / 2.0
+	)

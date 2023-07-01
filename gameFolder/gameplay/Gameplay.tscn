@@ -21,7 +21,6 @@ script = ExtResource("1_cnvoi")
 position_smoothing_enabled = true
 
 [node name="Stage" parent="." instance=ExtResource("3_d4j25")]
-position = Vector2(109, -18)
 
 [node name="Player" parent="." instance=ExtResource("5_qyduk")]
 position = Vector2(965, 390)
@@ -31,17 +30,6 @@ is_player = true
 position = Vector2(204, 390)
 
 [node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Combo_Group" type="Node2D" parent="UI"]
-
-[node name="Strum_Lines" type="CanvasLayer" parent="UI"]
-
-[node name="Opponent_Strums" parent="UI/Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(150, 617)
-
-[node name="Player_Strums" parent="UI/Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(798, 617)
-is_cpu = false
 
 [node name="Health_Bar" type="TextureProgressBar" parent="UI"]
 offset_left = 311.0
@@ -83,3 +71,14 @@ text = "Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh / Nuh: Uh"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="Combo_Group" type="Node2D" parent="UI"]
+
+[node name="Strum_Lines" type="CanvasLayer" parent="."]
+
+[node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(150, 617)
+
+[node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
+position = Vector2(798, 617)
+is_cpu = false

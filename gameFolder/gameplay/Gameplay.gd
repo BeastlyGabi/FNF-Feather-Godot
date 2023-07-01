@@ -21,8 +21,8 @@ var STYLE:UIStyle
 @onready var icon_P1 := $UI/Health_Bar/Player_icon
 @onready var icon_P2 := $UI/Health_Bar/Opponent_icon
 
-@onready var strum_lines:CanvasLayer = $UI/Strum_Lines
-@onready var player_strums:StrumLine = $UI/Strum_Lines/Player_Strums
+@onready var strum_lines:CanvasLayer = $Strum_Lines
+@onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
 
 @onready var player:Character = $Player
 @onready var opponent:Character = $Opponent
@@ -85,7 +85,7 @@ func setup_characters() -> void:
 	icon_P2.texture = load("res://assets/images/icons/" + opponent.health_icon + ".png")
 	
 	# kinda eh sysm probably gonna redo later
-	var opponent_strums:StrumLine = $UI/Strum_Lines/Opponent_Strums
+	var opponent_strums:StrumLine = $Strum_Lines/Opponent_Strums
 	for shit in [opponent_strums.dancers, opponent_strums.singers]:
 		shit.append(opponent)
 	
@@ -475,6 +475,7 @@ func do_miss_damage():
 	update_score()
 
 var judgement_tween:Tween
+
 func display_judgement(_name:String) -> void:
 	var new_judgement:Sprite2D = STYLE.get_template("Judgement_Sprite").duplicate()
 	new_judgement.texture = load(STYLE.get_asset("images/UI/ratings", _name + ".png"))
@@ -484,12 +485,18 @@ func display_judgement(_name:String) -> void:
 	if judgement_tween != null:
 		judgement_tween.stop()
 	
-	var scale_og:Vector2 = new_judgement.scale
-	new_judgement.scale *= 1.25
+	if new_judgement.is_inside_tree():
+		var scale_og:Vector2 = new_judgement.scale
+		new_judgement.scale *= 1.25
+		
+		judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
+		judgement_tween.tween_property(new_judgement, "scale", scale_og, 0.08)
+		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.step_crochet / 1000.0) \
+		.set_delay(0.15)
 	
-	judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
-	judgement_tween.tween_property(new_judgement, "scale", scale_og, 0.08)
-	judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.55 * Conductor.step_crochet / 1000.0)
+	last_judge = new_judgement
+
+var last_judge:Sprite2D
 
 func display_combo() -> void:
 	var combo:String = str(Timings.combo).pad_zeros(3)
@@ -498,10 +505,13 @@ func display_combo() -> void:
 	for i in numbers.size():
 		var new_combo:Sprite2D = STYLE.get_template("Number_Sprite").duplicate()
 		new_combo.texture = load(STYLE.get_asset("images/UI/combo", "num" + numbers[i] + ".png"))
-		new_combo.position.x += 50 * i
 		new_combo.visible = true
 		combo_group.add_child(new_combo)
 		
-		get_tree().create_tween().set_ease(Tween.EASE_IN_OUT) \
-		.tween_property(new_combo, "modulate:a", 0.0, 2.0 * Conductor.step_crochet / 1000.0) \
-		.set_delay(0.35)
+		new_combo.position.x = Game.get_screen_center(new_combo.get_rect().size).x - 15
+		new_combo.position.x += 50 * i
+		
+		if new_combo.is_inside_tree():
+			get_tree().create_tween().set_ease(Tween.EASE_OUT) \
+			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.step_crochet / 1000.0) \
+			.set_delay(0.55)

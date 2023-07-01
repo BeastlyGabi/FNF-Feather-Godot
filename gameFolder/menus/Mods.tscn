@@ -5,7 +5,7 @@
 
 [node name="Mods" type="CanvasLayer"]
 process_mode = 2
-layer = 128
+layer = 2
 script = ExtResource("1_gh5tr")
 
 [node name="Background" type="ColorRect" parent="."]

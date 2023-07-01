@@ -1,6 +1,6 @@
 class_name StrumLine extends CanvasGroup
 
-@onready var game = $"../../../"
+@onready var game = $"../../"
 @onready var receptors:Node2D = $Receptors
 @onready var notes:Node2D = $Notes
 
