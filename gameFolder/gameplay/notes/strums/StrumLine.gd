@@ -49,7 +49,7 @@ func _process(delta:float) -> void:
 						note.can_be_hit = false
 						note.modulate.a = 0.50
 			else:
-				game.cpu_note_hit(note, self)
+				game.note_hit(note, self)
 		
 		# Kill player hotds
 		if note.is_hold and not note.was_good_hit and not note.can_be_hit and not is_cpu and \

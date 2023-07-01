@@ -1,9 +1,6 @@
 class_name Note extends Node2D
 
-enum NoteEvent {STOP, CONTINUE}
-
-const E_STOP = NoteEvent.STOP
-const E_CONTINUE = NoteEvent.CONTINUE
+var event:NodeEvent = NodeEvent.new()
 
 var time:float = 0.0
 var direction:int = 0
@@ -52,11 +49,20 @@ const default_colors:Dictionary = {
 }
 
 ### for notestyles ###
-func on_hit(): pass
-func on_miss(): pass
+func on_hit(is_cpu:bool = false): pass
+func on_miss(is_cpu:bool = false): pass
 ####################################
 
+# default ones
+var events:Dictionary = {
+	"splash": true, "display_judgement": true, "display_combo": true,
+	"increase_score": true, "increase_combo": true
+}
+
 func _ready() -> void:
+	# set up default events lol!!!!
+	for i in events: event.data[i] = events[i]
+	
 	if style == "default":
 		for node in _existing_nodes():
 			node.material = material.duplicate()

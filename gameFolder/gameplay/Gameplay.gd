@@ -400,52 +400,47 @@ func _input(event:InputEvent) -> void:
 		# Looking for inputs? i moved the to the StrumLine Script!
 
 func note_hit(note:Note, strum:StrumLine) -> void:
-	if note.was_good_hit: return
+	note.on_hit()
+	if note.was_good_hit or note.event.get_event("cancelled"): return
 	note.was_good_hit = true
 	
-	var hit_event = note.on_hit()
-	if hit_event == Note.E_STOP:
-		return
-	
-	voices.volume_db = linear_to_db(1.0)
-	
-	var judge:Judgement = Timings.judge_values(note.time, Conductor.position)
-	Timings.score += Timings.score_from_judge(judge.name)
-	Timings.health += 0.023
-	
-	for char in strum.singers:
-		var index:int = note.direction % char.sing_anims.size()
-		char.play_anim(char.sing_anims[index], true)
-		char.hold_timer = 0.0
-	
-	if Timings.combo < 0: Timings.combo = 0
-	Timings.combo += 1
-	
-	var needs_sick:bool = Settings.get_setting("note_splashes") == "sick only"
-	if needs_sick and judge.name == "sick" or not needs_sick:
-		strum.pop_splash(note)
-	
-	if combo_group.get_child_count() > 0:
-		for sprite in combo_group.get_children():
-			sprite.queue_free()
-	
-	display_judgement(judge.name)
-	display_combo()
-	
-	Timings.update_accuracy(judge)
-	
-	update_score()
-	if not note.is_hold:
-		note.queue_free()
-
-func cpu_note_hit(note:Note, strum:StrumLine) -> void:
-	note.was_good_hit = true
 	voices.volume_db = linear_to_db(1.0)
 	
 	for char in strum.singers:
 		var index:int = note.direction % char.sing_anims.size()
 		char.play_anim(char.sing_anims[index], true)
 		char.hold_timer = 0.0
+	
+	if not strum.is_cpu:
+		var judge:Judgement = Timings.judge_values(note.time, Conductor.position)
+		
+		if note.event.get_event("increase_score"):
+			Timings.score += Timings.score_from_judge(judge.name)
+		
+		if note.event.get_event("increase_combo"):
+			if Timings.combo < 0: Timings.combo = 0
+			Timings.combo += 1
+		
+		Timings.health += 0.023
+		
+		# event test, yes it did work
+		# if randi_range(0, 100) < 50:
+		#	note.event.set_event("splash", false)
+		
+		if note.event.get_event("splash"):
+			var needs_sick:bool = Settings.get_setting("note_splashes") == "sick only"
+			if needs_sick and judge.name == "sick" or not needs_sick:
+				strum.pop_splash(note)
+		
+		if combo_group.get_child_count() > 0:
+			for sprite in combo_group.get_children():
+				sprite.queue_free()
+		
+		if note.event.get_event("display_judgement"): display_judgement(judge.name)
+		if note.event.get_event("display_combo"): display_combo()
+		
+		Timings.update_accuracy(judge)
+		update_score()
 	
 	if not note.is_hold:
 		note.queue_free()
@@ -453,8 +448,8 @@ func cpu_note_hit(note:Note, strum:StrumLine) -> void:
 # I ran out of function names -BeastlyGabi
 func note_miss(note:Note, include_anim:bool = true) -> void:
 	if note._did_miss: return
-	var miss_event = note.on_miss()
-	if miss_event == Note.E_STOP:
+	note.on_miss()
+	if note.event.get_event("cancelled"):
 		return
 	
 	do_miss_damage()
