@@ -24,8 +24,9 @@ var STYLE:UIStyle
 @onready var strum_lines:CanvasLayer = $Strum_Lines
 @onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
 
-@onready var player:Character = $Player
-@onready var opponent:Character = $Opponent
+var player:Character
+var opponent:Character
+var spectator:Character
 
 @onready var stage:Stage = $Stage
 
@@ -36,47 +37,28 @@ var events_list:Array[Chart.EventData] = []
 ### LOADING FUNCTIONS YOU MAY WANNA IGNORE THESE ###
 
 func setup_stage() -> void: pass
+func setup_strums() -> void: pass
 
-func load_strumlines() -> void:
-	if SONG.key_amount != 4:
-		for strum in strum_lines.get_children():
-			var path:String = "res://gameFolder/gameplay/notes/strums/" + str(SONG.key_amount) + "K.tscn"
-			if not ResourceLoader.exists(path):
-				print_debug("Strumline with " + str(SONG.key_amount) + " keys doesn't exist, defaulting to 4")
-				SONG.key_amount = 4
-				break
-			
-			var old_name:String = strum.name
-			var old_pos:Vector2 = strum.position
-			
-			strum.queue_free()
-			
-			strum = load(path).instantiate()
-			strum.name = old_name
-			strum.position = old_pos
-			
-			if strum.name == "Player_Strums":
-				strum.is_cpu = false
-				player_strums = strum
-			
-			strum_lines.add_child(strum)
-
-func _load_char(_new_char:String) -> Character:
+func _load_char(_new_char:String, player:bool = false) -> Character:
 	var base_path:String = "res://gameFolder/gameplay/characters/"
+	if not ResourceLoader.exists(base_path + _new_char + ".tscn"):
+		_new_char = "bf"
+	
 	var _char:Character = load(base_path + _new_char + ".tscn").instantiate()
 	_char.name = _new_char
+	_char.is_player = player
 	return _char
 
 func setup_characters() -> void:
-	#var number:int = 0
-	#for char in [player, opponent]:
-	#	var to_load:String = "bf"
-	#	if ResourceLoader.exists("res://gameFolder/gameplay/characters/" + SONG.characters[number] + ".tscn"):
-	#		to_load = SONG.characters[number]
-	#	
-	#	char = _load_char(to_load)
-	#	char.is_player = char == player
-	#	add_child(char)
+	player = _load_char(SONG.characters[0], true)
+	opponent = _load_char(SONG.characters[1])
+	
+	if not stage.hide_spectator:
+		spectator = _load_char(SONG.characters[2])
+		add_child(spectator)
+	
+	add_child(opponent)
+	add_child(player)
 	
 	player.position = stage.player_position
 	opponent.position = stage.opponent_position
@@ -86,11 +68,8 @@ func setup_characters() -> void:
 	
 	# kinda eh sysm probably gonna redo later
 	var opponent_strums:StrumLine = $Strum_Lines/Opponent_Strums
-	for shit in [opponent_strums.dancers, opponent_strums.singers]:
-		shit.append(opponent)
-	
-	for piss in [player_strums.dancers, player_strums.singers]:
-		piss.append(player)
+	for shit in [opponent_strums.singers]: shit.append(opponent)
+	for piss in [player_strums.singers]: piss.append(player)
 
 ###################################################
 
@@ -111,7 +90,7 @@ func _ready() -> void:
 	Timings.reset()
 	
 	setup_stage()
-	load_strumlines()
+	setup_strums()
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
 	
@@ -173,16 +152,15 @@ var count_tweener:Tween
 var count_timer:Timer
 
 func begin_countdown() -> void:
-	Conductor.position = -(Conductor.crochet * 1.2)
-	count_timer = Timer.new()
-	add_child(count_timer)
-	
+	Conductor.position = -Conductor.crochet * 5
 	await get_tree().create_timer(0.35).timeout
 	process_countdown(true)
 
 func process_countdown(reset:bool = false) -> void:
 	if reset:
 		count_position = 0
+		count_timer = Timer.new()
+		add_child(count_timer)
 	
 	var countdown_spr:Sprite2D = STYLE.get_template("Countdown_Sprite").duplicate()
 	countdown_spr.texture = load(STYLE.get_asset("images/UI/countdown", \
@@ -196,14 +174,14 @@ func process_countdown(reset:bool = false) -> void:
 	count_tweener = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	# THERE'S NO WAY A BEE SHOULD BE ABLE TO FLY (2)
 	count_tweener.tween_property(countdown_spr, "modulate:a", 1.0, 0.05)
-	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.step_crochet / 1100.0)
+	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.crochet / 1100.0)
 	
-	Sound.play_sound(STYLE.get_asset("audio/sfx/game", \
+	Sound.play_sound(STYLE.get_asset("sounds/sfx/game", \
 	STYLE.countdown_config["sounds"][count_position] + ".ogg"))
 	
 	count_position += 1
 	
-	count_timer.start(Conductor.step_crochet / 1000.0)
+	count_timer.start(Conductor.crochet / 1000.0)
 	await count_timer.timeout
 	if count_position < 4:
 		process_countdown()
@@ -213,7 +191,8 @@ func process_countdown(reset:bool = false) -> void:
 		if countdown_spr != null: countdown_spr.queue_free()
 		count_timer.queue_free()
 	
-	start_song()
+	if starting_song:
+		start_song()
 
 var starting_song:bool = true
 var ending_song:bool = false
@@ -237,7 +216,7 @@ func end_song(_skip_cutscene:bool = false) -> void:
 
 func _process(delta:float) -> void:
 	if starting_song:
-		Conductor.position += (delta * 1000.0) / Engine.time_scale
+		Conductor.position += delta * 1000.0 * Engine.time_scale
 	else:
 		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 			Conductor.position = inst.get_playback_position() * 1000.0
@@ -301,10 +280,10 @@ func fire_event(name:String, args:Array[Variant]) -> void:
 					char = player
 					if stage != null:
 						stage_offset = stage.player_camera
-				#"spectator":
-				#	char = spectator
-				#	if stage != null:
-				#		stage_offset = stage.spectator_camera
+				"spectator":
+					char = spectator
+					if stage != null:
+						stage_offset = stage.spectator_camera
 				_:
 					char = opponent
 					if stage != null:
@@ -357,11 +336,10 @@ var cam_zoom:Dictionary = {
 func on_step() -> void: pass
 
 func on_beat() -> void:
-	for strum in strum_lines.get_children():
-		for char in strum.dancers:
-			if not char.is_singing() and not char.is_missing():
-				if beat % char.dance_interval == 0:
-					char.dance()
+	for char in self.get_children():
+		if char is Character and not char.is_singing() and not char.is_missing():
+			if beat % char.dance_interval == 0:
+				char.dance()
 	
 	for i in [icon_P1, icon_P2]:
 		i.scale = Vector2(i.scale.x + 0.25, i.scale.y + 0.25)
@@ -423,14 +401,8 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		
 		Timings.health += 0.023
 		
-		# event test, yes it did work
-		# if randi_range(0, 100) < 50:
-		#	note.event.set_event("splash", false)
-		
-		if note.event.get_event("splash"):
-			var needs_sick:bool = Settings.get_setting("note_splashes") == "sick only"
-			if needs_sick and judge.name == "sick" or not needs_sick:
-				strum.pop_splash(note)
+		if judge.name == "sick" and note.event.get_event("splash"):
+			strum.pop_splash(note)
 		
 		if combo_group.get_child_count() > 0:
 			for sprite in combo_group.get_children():
@@ -477,6 +449,9 @@ func display_judgement(_name:String) -> void:
 	new_judgement.visible = true
 	combo_group.add_child(new_judgement)
 	
+	new_judgement.position.x = Game.get_screen_center(new_judgement.get_rect().position).x
+	new_judgement.position.x -= new_judgement.texture.get_width() / 5.0
+	
 	if judgement_tween != null:
 		judgement_tween.stop()
 	
@@ -486,7 +461,7 @@ func display_judgement(_name:String) -> void:
 		
 		judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 		judgement_tween.tween_property(new_judgement, "scale", scale_og, 0.08)
-		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.step_crochet / 1000.0) \
+		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.crochet / 1000.0) \
 		.set_delay(0.15)
 	
 	last_judge = new_judgement
@@ -503,10 +478,10 @@ func display_combo() -> void:
 		new_combo.visible = true
 		combo_group.add_child(new_combo)
 		
-		new_combo.position.x = Game.get_screen_center(new_combo.get_rect().size).x - 15
+		new_combo.position.x = Game.get_screen_center(new_combo.get_rect().position).x - 75
 		new_combo.position.x += 50 * i
 		
 		if new_combo.is_inside_tree():
 			get_tree().create_tween().set_ease(Tween.EASE_OUT) \
-			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.step_crochet / 1000.0) \
+			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.crochet / 1000.0) \
 			.set_delay(0.55)

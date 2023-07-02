@@ -1,5 +1,8 @@
 class_name Stage extends Node2D
 
+@export_category("Properties")
+@export var hide_spectator:bool = false
+
 @export_category("Camera")
 @export var camera_speed:float = 1.0
 @export var camera_zoom:float = 1.05

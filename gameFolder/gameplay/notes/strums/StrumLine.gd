@@ -7,8 +7,6 @@ class_name StrumLine extends CanvasGroup
 @export var controls:Array[String] = ["note_left", "note_down", "note_up", "note_right"]
 @export var is_cpu:bool = true
 
-## Characters that bop their heads ##
-var dancers:Array[Character] = []
 ## Characters that sing when a note is hit ##
 var singers:Array[Character] = []
 
@@ -91,7 +89,7 @@ func _process(delta:float) -> void:
 					play_anim("static", note.direction, true)
 
 func pop_splash(note:Note) -> void:
-	if Settings.get_setting("note_splashes") == "never" or not note.has_node("Splash"):
+	if not Settings.get_setting("note_splashes") or not note.has_node("Splash"):
 		return
 	
 	var receptor := receptors.get_child(note.direction)
@@ -124,6 +122,9 @@ func _input(event:InputEvent) -> void:
 
 var key_presses:Array[bool] = []
 
+func sort_notes(a:Note, b:Note) -> float:
+	return b.time if b.time > a.time else a.time
+
 func key_shit(key:int) -> void:
 	key_presses[key] = Input.is_action_pressed(controls[key])
 	
@@ -133,28 +134,25 @@ func key_shit(key:int) -> void:
 		and note.parent == self and not note.was_good_hit)
 	): notes_to_hit.append(note)
 	
-	notes_to_hit.sort_custom(func(a, b):
-		return b.time if b.time > a.time else a.time
-	)
+	notes_to_hit.sort_custom(sort_notes)
 	
 	if Input.is_action_just_pressed(controls[key]):
 		if notes_to_hit.size() > 0:
 			var cool_note:Note = notes_to_hit[0]
 			
-			if notes_to_hit.size() > 1:
-				for i in notes_to_hit.size():
-					if i == 0: continue
-					var dumb_note:Note = notes_to_hit[i]
+			for i in notes_to_hit.size():
+				if i <= 0: continue
+				var dumb_note:Note = notes_to_hit[i]
+				if dumb_note.direction == cool_note.direction:
+					# Same note twice at 5ms of distance? die
+					if absf(dumb_note.time - cool_note.time) <= 5:
+						dumb_note.queue_free()
+						break
 					
-					if dumb_note.direction == cool_note.direction:
-						# Same note twice at 5ms of distance? die
-						if absf(dumb_note.time - cool_note.time) <= 5:
-							dumb_note.queue_free()
-							break
-						# No? then Replace the cool note if its earlier than the dumb one
-						elif dumb_note.time < cool_note.time:
-							cool_note = dumb_note
-							break
+					# No? then Replace the cool note if its earlier than the dumb one
+					elif dumb_note.time < cool_note.time:
+						cool_note = dumb_note
+						break
 			
 			game.note_hit(cool_note, self)
 			play_anim("confirm", key, true)

@@ -61,6 +61,7 @@ var events:Dictionary = {
 
 func _ready() -> void:
 	# set up default events lol!!!!
+	events["splash"] = has_node("Splash")
 	for i in events: event.data[i] = events[i]
 	
 	if style == "default":
@@ -88,7 +89,7 @@ func _process(delta:float) -> void:
 				queue_free()
 	
 	if not in_edit:
-		var hit_area:float = (Timings.worst_timing() / (1.2 * Conductor.playback_rate))
+		var hit_area:float = (Timings.worst_timing / (1.2 * Conductor.playback_rate))
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)
 

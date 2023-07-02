@@ -29,7 +29,7 @@ func update_selection(new_selection:int = 0) -> void:
 	cur_selection = wrapi(cur_selection + new_selection, 0, options.get_child_count())
 	
 	if new_selection != 0:
-		Sound.play_sound("res://assets/audio/sfx/scrollMenu.ogg")
+		Sound.play_sound("res://assets/sounds/sfx/scrollMenu.ogg")
 	
 	var i:int = 0
 	for item in options.get_children():

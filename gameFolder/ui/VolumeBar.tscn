@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://gameFolder/ui/VolumeBar.gd" id="1_1gq5k"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="2_cotma"]
-[ext_resource type="AudioStream" uid="uid://chig62dememgj" path="res://assets/audio/sfx/scrollMenu.ogg" id="3_v8oqd"]
+[ext_resource type="AudioStream" uid="uid://chig62dememgj" path="res://assets/sounds/sfx/scrollMenu.ogg" id="3_v8oqd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1a3wu"]
 bg_color = Color(0.431373, 0.431373, 0.835294, 0.427451)

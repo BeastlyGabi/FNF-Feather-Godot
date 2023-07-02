@@ -12,17 +12,22 @@ var judgements:Array[Judgement] = [
 
 var judgements_hit:Dictionary = {}
 
+var worst_timing:float:
+	get:
+		var worst:int = 0
+		for i in judgements.size():
+			if judgements[i].timing > worst:
+				worst = judgements[i].timing
+		return worst
+
 func reset():
-	notes_hit = 0
-	health = 1.0
-	accuracy = 0.0
-	notes_acc = 0.0
-	cur_clear = "?"
-	cur_grade = Grade.empty()
-	misses = 0
-	combo = 0
-	
 	judgements_hit.clear()
+	
+	notes_hit = 0; health = 1.0
+	accuracy = 0.0; notes_acc = 0.0
+	cur_grade = Grade.empty(); cur_clear = "?"
+	misses = 0; combo = 0
+	
 	for i in judgements.size():
 		judgements_hit[judgements[i].name] = 0
 
@@ -32,16 +37,19 @@ var health:float = 1.0
 var combo:int = 0
 
 var notes_acc:float = 0.0
-var notes_hit:int = 0
+var notes_hit:int:
+	get:
+		var number:int = 0
+		for i in judgements_hit:
+			number += judgements_hit[i]
+		return number
 
 var accuracy:float:
 	get:
 		if notes_acc > 0.0:
-			return (notes_acc / (notes_hit + misses))
+			var notes_passed:int = notes_hit + misses
+			return absf(notes_acc / notes_passed)
 		return 0.0
-
-func worst_timing() -> float:
-	return Settings.timings["shit"]
 
 func judge_values(value_a:float, value_b:float) -> Judgement:
 	var judgement:Judgement = judgements[3]
@@ -57,9 +65,8 @@ func judge_values(value_a:float, value_b:float) -> Judgement:
 	return judgement
 
 func update_accuracy(judge:Judgement) -> void:
-	notes_hit += 1
-	notes_acc += maxf(0, judge.accuracy)
 	judgements_hit[judge.name] += 1
+	notes_acc += maxf(0, judge.accuracy)
 	update_rank()
 
 func score_from_judge(judge:String) -> int:
@@ -76,7 +83,7 @@ class Grade extends Resource:
 	var accuracy:float = 100.0
 	var color:Color = Color.CYAN
 	
-	func _init(_name:String = "N/A", _acc:float = -1.0, _color:Color = Color.WHITE) -> void:
+	func _init(_name:String, _acc:float = -1.0, _color:Color = Color.WHITE) -> void:
 		name = _name
 		accuracy = _acc
 		color = _color

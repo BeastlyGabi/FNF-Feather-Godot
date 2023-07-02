@@ -35,7 +35,7 @@ func _process(_delta:float) -> void:
 		meta_data.chart_offset = 0.0
 		Game.META_DATA = meta_data
 		
-		Sound.play_sound("res://assets/audio/sfx/confirmMenu.ogg")
+		Sound.play_sound("res://assets/sounds/sfx/confirmMenu.ogg")
 		for letter in songs_node.get_children():
 			if letter.id != 0:
 				get_tree().create_tween().tween_property(letter, "position:x", 5000, 0.85)
@@ -60,7 +60,7 @@ func update_selection(new_selection:int = 0) -> void:
 	cur_selection = wrapi(cur_selection + new_selection, 0, songs_node.get_child_count())
 	
 	if new_selection != 0:
-		Sound.play_sound("res://assets/audio/sfx/scrollMenu.ogg")
+		Sound.play_sound("res://assets/sounds/sfx/scrollMenu.ogg")
 	
 	var i:int = 0
 	for item in songs_node.get_children():

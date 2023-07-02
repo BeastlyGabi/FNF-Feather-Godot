@@ -6,6 +6,7 @@ class_name Character extends AnimatedSprite2D
 @export var sing_duration:float = 4.0
 var hold_timer:float = 0.0
 
+@export var allowed_to_dance:bool = true
 @export var dance_interval:int = 2
 @export var is_player:bool = false
 
@@ -34,12 +35,14 @@ func _process(delta:float) -> void:
 			hold_timer = 0.0
 		
 		if not is_player:
-			if hold_timer >= Conductor.step_crochet * (sing_duration * Engine.time_scale) * 0.001:
+			if hold_timer >= Conductor.crochet * (sing_duration * Engine.time_scale) * 0.001:
 				dance()
 				hold_timer = 0.0
 
 var danced:bool = false
 func dance(forced:bool = false) -> void:
+	if not allowed_to_dance: return
+	
 	var anim_name:String = "idle"
 	if quick_dancer():
 		danced = not danced

@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b2mco2q2geqm0"]
+[gd_scene load_steps=7 format=3 uid="uid://b2mco2q2geqm0"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
 [ext_resource type="PackedScene" uid="uid://d3271ykj5ctot" path="res://gameFolder/gameplay/stages/Stage.tscn" id="3_d4j25"]
 [ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/gameplay/notes/strums/4K.tscn" id="3_palnv"]
 [ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
-[ext_resource type="PackedScene" uid="uid://6aaoavdwp0ev" path="res://gameFolder/gameplay/characters/bf.tscn" id="5_qyduk"]
 [ext_resource type="Texture2D" uid="uid://ctwobjckai73u" path="res://assets/images/icons/face.png" id="6_hgky4"]
 
 [node name="Gameplay" type="Node2D"]
@@ -21,13 +20,6 @@ script = ExtResource("1_cnvoi")
 position_smoothing_enabled = true
 
 [node name="Stage" parent="." instance=ExtResource("3_d4j25")]
-
-[node name="Player" parent="." instance=ExtResource("5_qyduk")]
-position = Vector2(965, 390)
-is_player = true
-
-[node name="Opponent" parent="." instance=ExtResource("5_qyduk")]
-position = Vector2(204, 390)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
