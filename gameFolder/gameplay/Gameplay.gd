@@ -342,7 +342,8 @@ func on_beat() -> void:
 				char.dance()
 	
 	for i in [icon_P1, icon_P2]:
-		i.scale = Vector2(i.scale.x + 0.25, i.scale.y + 0.25)
+		var factor:float = 0.25 if beat % 2 == 0 else 0.35
+		i.scale = Vector2(i.scale.x + factor, i.scale.y + factor)
 	
 	# camera beat stuffs
 	if beat % cam_zoom["zoom_interval"] == 0:
