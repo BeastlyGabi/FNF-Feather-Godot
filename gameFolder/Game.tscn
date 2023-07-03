@@ -1,6 +1,241 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwkeyflpkyyn4"]
+[gd_scene load_steps=34 format=3 uid="uid://cwkeyflpkyyn4"]
 
 [ext_resource type="Script" path="res://gameFolder/Game.gd" id="1_2sajl"]
+[ext_resource type="Script" path="res://gameFolder/menus/data/Week.gd" id="2_f6mj3"]
+[ext_resource type="Script" path="res://gameFolder/menus/data/Song.gd" id="3_e6kde"]
+
+[sub_resource type="Resource" id="Resource_x4gf1"]
+script = ExtResource("3_e6kde")
+name = "Tutorial"
+folder = "tutorial"
+icon = "gf"
+color = Color(0.647059, 0, 0.301961, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_l15sk"]
+script = ExtResource("2_f6mj3")
+week_name = "How to Funk"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_x4gf1")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_j4pof"]
+script = ExtResource("3_e6kde")
+name = "Bopeebo"
+folder = "bopeebo"
+icon = "dad"
+color = Color(0.572549, 0.443137, 0.992157, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_fmsps"]
+script = ExtResource("3_e6kde")
+name = "Fresh"
+folder = "fresh"
+icon = "dad"
+color = Color(0.572549, 0.443137, 0.992157, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_xhbml"]
+script = ExtResource("3_e6kde")
+name = "Dad Battle"
+folder = "dadbattle"
+icon = "dad"
+color = Color(0.572549, 0.443137, 0.992157, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_6w425"]
+script = ExtResource("2_f6mj3")
+week_name = "Daddy Dearest"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_j4pof"), SubResource("Resource_fmsps"), SubResource("Resource_xhbml")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["dad", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_ou822"]
+script = ExtResource("3_e6kde")
+name = "Spookeez"
+folder = "spookeez"
+icon = "spooky"
+color = Color(0.133333, 0.2, 0.266667, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_beehf"]
+script = ExtResource("3_e6kde")
+name = "South"
+folder = "south"
+icon = "spooky"
+color = Color(0.133333, 0.2, 0.266667, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_5dig7"]
+script = ExtResource("3_e6kde")
+name = "Monster"
+folder = "monster"
+icon = "monster"
+color = Color(0.133333, 0.2, 0.266667, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_7ajhg"]
+script = ExtResource("2_f6mj3")
+week_name = "Spooky Month"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_ou822"), SubResource("Resource_beehf"), SubResource("Resource_5dig7")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["spooky", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_klgff"]
+script = ExtResource("3_e6kde")
+name = "Pico"
+folder = "pico"
+icon = "pico"
+color = Color(0.580392, 0.0862745, 0.32549, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_kbcr6"]
+script = ExtResource("3_e6kde")
+name = "Philly Nice"
+folder = "philly"
+icon = "pico"
+color = Color(0.580392, 0.0862745, 0.32549, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_01fpu"]
+script = ExtResource("3_e6kde")
+name = "Blammed"
+folder = "blammed"
+icon = "pico"
+color = Color(0.580392, 0.0862745, 0.32549, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_uw841"]
+script = ExtResource("2_f6mj3")
+week_name = "Pico"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_klgff"), SubResource("Resource_kbcr6"), SubResource("Resource_01fpu")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["pico", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_xjob7"]
+script = ExtResource("3_e6kde")
+name = "Satin Panties"
+folder = "satin-panties"
+icon = "mom"
+color = Color(0.988235, 0.588235, 0.843137, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_75gn4"]
+script = ExtResource("3_e6kde")
+name = "High"
+folder = "high"
+icon = "mom"
+color = Color(0.988235, 0.588235, 0.843137, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_7phk7"]
+script = ExtResource("3_e6kde")
+name = "M.I.L.F"
+folder = "milf"
+icon = "mom"
+color = Color(0.988235, 0.588235, 0.843137, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_5poit"]
+script = ExtResource("2_f6mj3")
+week_name = "MOMMY MUST MURDER"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_xjob7"), SubResource("Resource_75gn4"), SubResource("Resource_7phk7")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["dad", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_hnh8n"]
+script = ExtResource("3_e6kde")
+name = "Cocoa"
+folder = "cocoa"
+icon = "parents"
+color = Color(0.627451, 0.819608, 1, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_tmsrf"]
+script = ExtResource("3_e6kde")
+name = "Eggnog"
+folder = "eggnog"
+icon = "parents"
+color = Color(0.627451, 0.819608, 1, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_slnqn"]
+script = ExtResource("3_e6kde")
+name = "Winter Horrorland"
+folder = "winter-horrorland"
+icon = "monster"
+color = Color(0.627451, 0.819608, 1, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_jr116"]
+script = ExtResource("2_f6mj3")
+week_name = "RED SNOW"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_hnh8n"), SubResource("Resource_tmsrf"), SubResource("Resource_slnqn")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["parents", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_fu1t6"]
+script = ExtResource("3_e6kde")
+name = "Senpai"
+folder = "senpai"
+icon = "senpai"
+color = Color(1, 0.470588, 0.74902, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_nxxgy"]
+script = ExtResource("3_e6kde")
+name = "Roses"
+folder = "roses"
+icon = "senpai"
+color = Color(1, 0.470588, 0.74902, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_kp2vv"]
+script = ExtResource("3_e6kde")
+name = "Thorns"
+folder = "thorns"
+icon = "spirit"
+color = Color(0.109804, 0.0705882, 0.462745, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_wl6s2"]
+script = ExtResource("2_f6mj3")
+week_name = "HATING SIMULATOR ft. Moawing"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_fu1t6"), SubResource("Resource_nxxgy"), SubResource("Resource_kp2vv")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["senpai", "bf", "gf"])
+
+[sub_resource type="Resource" id="Resource_g3c0n"]
+script = ExtResource("3_e6kde")
+name = "Ugh"
+folder = "ugh"
+icon = "tankman"
+color = Color(0.964706, 0.713726, 0.0156863, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_tjya1"]
+script = ExtResource("3_e6kde")
+name = "Guns"
+folder = "guns"
+icon = "tankman"
+color = Color(0.964706, 0.713726, 0.0156863, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_pql7p"]
+script = ExtResource("3_e6kde")
+name = "Stress"
+folder = "stress"
+icon = "tankman"
+color = Color(0.964706, 0.713726, 0.0156863, 1)
+difficulties = Array[String](["easy", "normal", "hard"])
+
+[sub_resource type="Resource" id="Resource_jmu4v"]
+script = ExtResource("2_f6mj3")
+week_name = "TANKMAN"
+songs = Array[ExtResource("3_e6kde")]([SubResource("Resource_g3c0n"), SubResource("Resource_tjya1"), SubResource("Resource_pql7p")])
+difficulties = Array[String](["easy", "normal", "hard"])
+characters = Array[String](["tankman", "bf", "gf"])
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_2sajl")
+weeks = Array[ExtResource("2_f6mj3")]([SubResource("Resource_l15sk"), SubResource("Resource_6w425"), SubResource("Resource_7ajhg"), SubResource("Resource_uw841"), SubResource("Resource_5poit"), SubResource("Resource_jr116"), SubResource("Resource_wl6s2"), SubResource("Resource_jmu4v")])

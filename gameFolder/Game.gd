@@ -30,6 +30,8 @@ func switch_scene(next_scene:String, skip_transition:bool = false) -> void:
 
 var CUR_SONG:Chart
 var META_DATA:Chart.SongMetaData
+@export var weeks:Array[Week] = []
+
 func bind_song(_song_name:String, _diff:String = "hard") -> void:
 	CUR_SONG = Chart.load_chart(_song_name, _diff)
 	switch_scene("gameplay/Gameplay")

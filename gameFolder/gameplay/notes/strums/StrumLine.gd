@@ -19,7 +19,7 @@ func _ready() -> void:
 		if not is_cpu:
 			key_presses.append(false)
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
 	for note in notes.get_children():
 		if note == null:
 			note.queue_free()
@@ -69,10 +69,10 @@ func _process(delta:float) -> void:
 			if not is_cpu:
 				play_anim("confirm", note.direction, receptor.frame >= 2)
 			
-			for char in singers:
-				var index:int = note.direction % char.sing_anims.size()
-				char.play_anim(char.sing_anims[index], true)
-				char.hold_timer = 0.0
+			for _char in singers:
+				var index:int = note.direction % _char.sing_anims.size()
+				_char.play_anim(_char.sing_anims[index], true)
+				_char.hold_timer = 0.0
 			
 			if game.voices != null and game.voices.stream != null:
 				game.voices.volume_db = linear_to_db(1.0)

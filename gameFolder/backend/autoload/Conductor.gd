@@ -11,6 +11,11 @@ var offset:float = 0.0
 var crochet:float = 0.0
 var step_crochet:float = 0.0
 
+var rate_crochet:float:
+	get: return crochet / playback_rate
+var rate_step_crochet:float:
+	get: return step_crochet / playback_rate
+
 var bpm:float = 100.0:
 	set(b):
 		crochet = ((60 / b) * 1000.0)

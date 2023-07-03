@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://ba4r8rigrra5"]
 
-[ext_resource type="Script" path="res://gameFolder/menus/MusicSelector.gd" id="1_qdgxr"]
+[ext_resource type="Script" path="res://gameFolder/menus/Story.gd" id="1_qdgxr"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="2_alm3h"]
 
-[node name="MusicSelector" type="Node2D"]
+[node name="Story" type="Node2D"]
 script = ExtResource("1_qdgxr")
 
 [node name="Top_Bar" type="Node" parent="."]

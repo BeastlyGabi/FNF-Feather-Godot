@@ -28,8 +28,6 @@ var must_press:bool:
 @onready var end:Sprite2D = $End
 
 var _did_miss:bool = false
-var _sustain_loaded:bool = false
-
 var copy_opacity:bool = true
 var copy_rotation:bool = false
 
@@ -49,8 +47,8 @@ const default_colors:Dictionary = {
 }
 
 ### for notestyles ###
-func on_hit(is_cpu:bool = false): pass
-func on_miss(is_cpu:bool = false): pass
+func on_hit(_is_cpu:bool = false): pass
+func on_miss(_is_cpu:bool = false): pass
 ####################################
 
 # default ones
@@ -76,7 +74,7 @@ func _ready() -> void:
 func _process(delta:float) -> void:
 	if is_hold and _sustain_exists():
 		var scroll_diff:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
-		var sustain_scale:float = ((length / 2.5) * ((speed / Conductor.playback_rate) / scale.y))
+		var sustain_scale:float = ((length / 2.5) * ((speed * Conductor.playback_rate) / scale.y))
 		
 		hold.points = [Vector2.ZERO, Vector2(0, sustain_scale)]
 		var last_point = hold.points.size() - 1

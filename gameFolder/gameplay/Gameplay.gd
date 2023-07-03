@@ -55,10 +55,10 @@ func setup_characters() -> void:
 	
 	if not stage.hide_spectator:
 		spectator = _load_char(SONG.characters[2])
-		add_child(spectator)
+		stage.add_child(spectator)
 	
-	add_child(opponent)
-	add_child(player)
+	stage.add_child(opponent)
+	stage.add_child(player)
 	
 	player.position = stage.player_position
 	opponent.position = stage.opponent_position
@@ -99,9 +99,8 @@ func _ready() -> void:
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
 	
-	if stage != null:
-		camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
-		camera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.playback_rate
+	camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
+	camera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.playback_rate
 	
 	var audio_folder:String = "res://assets/songs/" + SONG.name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
@@ -142,7 +141,6 @@ func _exit_tree():
 func start_cutscene() -> void:
 	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn"):
 		var cutscene_bs:PackedScene = load("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn")
-		
 		cutscene_bs.game = self
 		cutscene_bs.call("song_beginning" if not ending_song else "song_ending", [])
 		add_child(cutscene_bs.instantiate())
@@ -158,7 +156,7 @@ var count_tweener:Tween
 var count_timer:Timer
 
 func begin_countdown() -> void:
-	Conductor.position = -Conductor.crochet * 5
+	Conductor.position = -(Conductor.rate_crochet * 5)
 	await get_tree().create_timer(0.35).timeout
 	process_countdown(true)
 
@@ -182,16 +180,17 @@ func process_countdown(reset:bool = false) -> void:
 	# THERE'S NO WAY A BEE SHOULD BE ABLE TO FLY (2)
 	get_tree().create_tween().tween_property(countdown_spr, "scale:y", 1.0, 0.10)
 	count_tweener.tween_property(countdown_spr, "modulate:a", 1.0, 0.05)
-	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.crochet / 1100.0)
+	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.rate_crochet / 1100.0)
 	
 	Sound.play_sound(STYLE.get_asset("sounds/sfx/game", \
 	STYLE.countdown_config["sounds"][count_position] + ".ogg"))
 	
 	count_position += 1
 	
-	count_timer.start(Conductor.crochet / 1000.0)
+	count_timer.start(Conductor.rate_crochet / 1000.0)
 	await count_timer.timeout
 	if count_position < 4:
+		dance_characters(count_position)
 		process_countdown()
 		return
 	else:
@@ -344,11 +343,7 @@ var cam_zoom:Dictionary = {
 func on_step() -> void: pass
 
 func on_beat() -> void:
-	for char in self.get_children():
-		if char is Character and not char.is_singing() and not char.is_missing():
-			if beat % char.dance_interval == 0:
-				char.dance()
-	
+	dance_characters(beat)
 	for i in [icon_P1, icon_P2]:
 		var factor:float = 0.15 if beat % 2 == 0 else 0.25
 		i.scale = Vector2(i.scale.x + factor, i.scale.y + factor)
@@ -364,6 +359,12 @@ func on_beat() -> void:
 func on_sect() -> void: pass
 func on_tick() -> void:
 	update_healthbar()
+
+func dance_characters(_beat:int) -> void:
+	for bopper in stage.get_children():
+		if bopper is Character and not bopper.is_singing() and not bopper.is_missing():
+			if _beat % bopper.dance_interval == 0:
+				bopper.dance()
 
 # @swordcube
 func hud_bump_reposition():
@@ -464,8 +465,8 @@ func display_judgement(_name:String) -> void:
 		new_judgement.scale *= 1.25
 		
 		judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
-		judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.step_crochet / 1000.0)
-		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.crochet / 1000.0) \
+		judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.rate_step_crochet / 1000.0)
+		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.rate_crochet / 1000.0) \
 		.set_delay(0.15)
 	
 	last_judge = new_judgement
@@ -487,5 +488,5 @@ func display_combo() -> void:
 		
 		if new_combo.is_inside_tree():
 			get_tree().create_tween().set_ease(Tween.EASE_OUT) \
-			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.crochet / 1000.0) \
+			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.rate_crochet / 1000.0) \
 			.set_delay(0.55)

@@ -7,6 +7,9 @@ var cur_selection:int = 0
 @export var songs:Array[Song] = []
 
 func _ready() -> void:
+	for week in Game.weeks:
+		songs.append_array(week.songs)
+	
 	for i in songs.size():
 		var new_song:Alphabet = $Templates/Template_Letter.duplicate()
 		new_song.visible = true
