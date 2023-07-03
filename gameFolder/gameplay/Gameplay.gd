@@ -306,20 +306,17 @@ func fire_event(name:String, args:Array[Variant]) -> void:
 
 var score_divider:String = " / "
 func update_score() -> void:
-	var score_temp:String = ""
 	var format:String = "%.2f"
 	var true_accuracy:float = Timings.accuracy * 100 / 100
 	if true_accuracy >= 100 or true_accuracy <= 0:
 		format = "%.0f"
 	
-	score_temp += "SCORE: " + str(Timings.score)
-	score_temp += score_divider + "ACCURACY: " + format % true_accuracy + "%"
-	score_temp += score_divider + "MISSES: " + str(Timings.misses)
+	var score_temp:String = "SCORE: %s" % str(Timings.score)
+	score_temp += score_divider + "ACCURACY: %s" % [format % true_accuracy] + "%"
+	score_temp += score_divider + "MISSES: %s" % str(Timings.misses)
 	
 	score_temp += score_divider + Timings.cur_grade.name
-	
-	if Timings.cur_clear != "":
-		score_temp += " (" + Timings.cur_clear + ")"
+	if Timings.cur_clear != "": score_temp += " (%s)" % Timings.cur_clear
 	
 	score_text.text = score_temp + "\n"
 
@@ -407,7 +404,7 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		if note.event.get_event("increase_combo"):
 			Timings.combo += 1
 		
-		Timings.health += 1#0.023
+		Timings.health += 0.023
 		if judge.name == "sick" and note.event.get_event("splash"):
 			strum.pop_splash(note)
 		

@@ -19,7 +19,7 @@ func _ready() -> void:
 		songs_node.add_child(new_song)
 		
 		var new_icon:FollowerSprite2D = $Templates/Template_Icon.duplicate()
-		new_icon.texture = load("res://assets/images/icons/" + songs[i].icon + ".png")
+		new_icon.texture = load("res://assets/images/icons/%s.png" % songs[i].icon)
 		new_icon.hframes = 2
 		new_icon.parent = new_song
 		new_icon.visible = true
