@@ -33,12 +33,12 @@ rounded = true
 fill_mode = 1
 texture_under = ExtResource("3_t42yp")
 texture_progress = ExtResource("3_t42yp")
-tint_under = Color(1, 0, 0, 1)
-tint_progress = Color(0.529412, 1, 0.258824, 1)
+tint_under = Color(1, 0.184314, 0, 1)
+tint_progress = Color(0.529412, 1, 0.431373, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Player_icon" type="Sprite2D" parent="UI/Health_Bar"]
-position = Vector2(280, -50)
+position = Vector2(264, -58)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("6_hgky4")
 centered = false
@@ -46,7 +46,7 @@ flip_h = true
 hframes = 2
 
 [node name="Opponent_icon" type="Sprite2D" parent="UI/Health_Bar"]
-position = Vector2(220, -50)
+position = Vector2(209, -58)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("6_hgky4")
 centered = false
