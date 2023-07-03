@@ -38,16 +38,18 @@ tint_progress = Color(0.529412, 1, 0.258824, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Player_icon" type="Sprite2D" parent="UI/Health_Bar"]
-position = Vector2(347, 5)
+position = Vector2(280, -50)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("6_hgky4")
+centered = false
 flip_h = true
 hframes = 2
 
 [node name="Opponent_icon" type="Sprite2D" parent="UI/Health_Bar"]
-position = Vector2(280, 4)
+position = Vector2(220, -50)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("6_hgky4")
+centered = false
 hframes = 2
 
 [node name="Score_Text" type="Label" parent="UI/Health_Bar"]

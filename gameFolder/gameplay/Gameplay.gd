@@ -323,10 +323,10 @@ func update_score() -> void:
 
 func update_healthbar() -> void:
 	var health_bar_width:float = health_bar.texture_progress.get_size().x
-	health_bar.value = clampi(Timings.health * 45.0, 0, 100)
+	health_bar.value = clampi(Timings.health * 50.0, 0, 100)
 	
 	icon_P1.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P1.texture.get_width())
-	icon_P2.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P2.texture.get_width()) - 65
+	icon_P2.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P2.texture.get_width()) - 80
 
 	icon_P1.frame = 1 if health_bar.value < 20 else 0
 	icon_P2.frame = 1 if health_bar.value > 80 else 0
@@ -347,7 +347,7 @@ func on_beat() -> void:
 				char.dance()
 	
 	for i in [icon_P1, icon_P2]:
-		var factor:float = 0.25 if beat % 2 == 0 else 0.35
+		var factor:float = 0.15 if beat % 2 == 0 else 0.25
 		i.scale = Vector2(i.scale.x + factor, i.scale.y + factor)
 	
 	# camera beat stuffs
@@ -403,7 +403,7 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		if note.event.get_event("increase_combo"):
 			Timings.combo += 1
 		
-		Timings.health += 0.023
+		Timings.health += 1#0.023
 		if judge.name == "sick" and note.event.get_event("splash"):
 			strum.pop_splash(note)
 		
