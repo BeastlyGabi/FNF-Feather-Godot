@@ -4,6 +4,7 @@ var _game_settings:Dictionary = {
 	"downscroll": false,
 	"ghost_tapping": true,
 	"note_splashes": true,
+	"note_skin": "default",
 	"timings": {"sick": 45.0, "good": 90.0, "bad": 135.0, "shit": 180.0}
 }
 

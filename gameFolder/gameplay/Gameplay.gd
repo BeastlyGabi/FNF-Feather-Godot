@@ -78,10 +78,15 @@ func _init() -> void:
 	SONG = Game.CUR_SONG if Game.CUR_SONG != null else Chart.load_chart("test", "normal")
 	
 	var style_folder:String = "res://gameFolder/ui/styles/" + SONG.ui_style + ".tscn"
-	if not ResourceLoader.exists(style_folder):
-		style_folder = "res://gameFolder/ui/styles/normal.tscn"
+	if not ResourceLoader.exists(style_folder): style_folder = style_folder.replace(SONG.ui_style, "normal")
 	STYLE = load(style_folder).instantiate()
 	add_child(STYLE)
+	
+	# Load default noteskin
+	#var skin:String = Settings.get_setting("note_skin")
+	#var note_folder:String = "res://gameFolder/gameplay/notes/" + skin + ".tscn"
+	#if not ResourceLoader.exists(note_folder): note_folder = note_folder.replace(skin, "default")
+	#NOTE_STYLES["default"] = load(note_folder)
 	
 	notes_list = SONG.notes.duplicate()
 	events_list = SONG.events.duplicate()
@@ -395,13 +400,10 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		
 		if note.event.get_event("increase_score"):
 			Timings.score += Timings.score_from_judge(judge.name)
-		
 		if note.event.get_event("increase_combo"):
-			if Timings.combo < 0: Timings.combo = 0
 			Timings.combo += 1
 		
 		Timings.health += 0.023
-		
 		if judge.name == "sick" and note.event.get_event("splash"):
 			strum.pop_splash(note)
 		
@@ -433,11 +435,9 @@ func ghost_miss(direction:int, include_anim:bool = true) -> void:
 	voices.volume_db = linear_to_db(0.0)
 
 func do_miss_damage():
-	Timings.health -= 0.47
+	Timings.health -= 0.087
 	Timings.misses += 1
-	
-	if Timings.combo > 0: Timings.combo = 0
-	else: Timings.combo -= 1
+	Timings.combo = 0
 	
 	Timings.update_rank()
 	update_score()
@@ -446,7 +446,7 @@ var judgement_tween:Tween
 
 func display_judgement(_name:String) -> void:
 	var new_judgement:Sprite2D = STYLE.get_template("Judgement_Sprite").duplicate()
-	new_judgement.texture = load(STYLE.get_asset("images/UI/ratings", _name + ".png"))
+	new_judgement.texture = STYLE.get_judgement_texture(_name)
 	new_judgement.visible = true
 	combo_group.add_child(new_judgement)
 	
@@ -461,7 +461,7 @@ func display_judgement(_name:String) -> void:
 		new_judgement.scale *= 1.25
 		
 		judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
-		judgement_tween.tween_property(new_judgement, "scale", scale_og, 0.08)
+		judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.step_crochet / 1000.0)
 		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.crochet / 1000.0) \
 		.set_delay(0.15)
 	

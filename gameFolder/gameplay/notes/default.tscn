@@ -2,9 +2,9 @@
 
 [ext_resource type="Shader" path="res://assets/data/shaders/ColorRGBMask.gdshader" id="1_j5vg1"]
 [ext_resource type="Script" path="res://gameFolder/gameplay/notes/Note.gd" id="1_m5mka"]
-[ext_resource type="Texture2D" uid="uid://8vru0j2t4y4" path="res://assets/images/noteStyles/default/note hold.png" id="3_byoxl"]
-[ext_resource type="Texture2D" uid="uid://bq86h5hsb3u81" path="res://assets/images/noteStyles/default/note tail.png" id="4_yv6n6"]
-[ext_resource type="Texture2D" uid="uid://w6rv1tp7ol3g" path="res://assets/images/noteStyles/default/arrow.png" id="5_cfqfh"]
+[ext_resource type="Texture2D" uid="uid://bpvdm4k33m6u3" path="res://assets/images/noteStyles/default/note hold.png" id="3_ny768"]
+[ext_resource type="Texture2D" uid="uid://bn4iaive6qx24" path="res://assets/images/noteStyles/default/note tail.png" id="3_qnj7l"]
+[ext_resource type="SpriteFrames" path="res://assets/images/noteStyles/default/arrows.res" id="4_5yuvv"]
 [ext_resource type="Texture2D" uid="uid://bh152f1lv04u8" path="res://assets/images/noteStyles/default/splash.png" id="6_3k0vy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k7f45"]
@@ -86,17 +86,18 @@ position = Vector2(-1, 0)
 scale = Vector2(0.7, 0.7)
 points = PackedVector2Array(0, 0, 0, 0)
 width = 50.0
-texture = ExtResource("3_byoxl")
+texture = ExtResource("3_ny768")
 texture_mode = 1
 
 [node name="End" type="Sprite2D" parent="."]
 position = Vector2(-1, 0)
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("4_yv6n6")
+texture = ExtResource("3_qnj7l")
 
-[node name="Arrow" type="Sprite2D" parent="."]
+[node name="Arrow" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("5_cfqfh")
+sprite_frames = ExtResource("4_5yuvv")
+animation = &"up note"
 
 [node name="Splash" type="Sprite2D" parent="."]
 visible = false

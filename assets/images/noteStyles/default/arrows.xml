@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="arrows.png">
+	<!-- Created with Adobe Flash CS6 version 12.0.0.481 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<SubTexture name="down note0000" x="5" y="5" width="157" height="154"/>
+	<SubTexture name="left note0000" x="5" y="164" width="154" height="157"/>
+	<SubTexture name="note hold0000" x="323" y="233" width="50" height="44"/>
+	<SubTexture name="note tail0000" x="323" y="164" width="50" height="64"/>
+	<SubTexture name="right note0000" x="164" y="164" width="154" height="157"/>
+	<SubTexture name="up note0000" x="167" y="5" width="157" height="154"/>
+</TextureAtlas>

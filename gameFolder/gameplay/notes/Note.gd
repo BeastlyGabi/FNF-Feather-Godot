@@ -31,7 +31,7 @@ var _did_miss:bool = false
 var _sustain_loaded:bool = false
 
 var copy_opacity:bool = true
-var copy_rotation:bool = true
+var copy_rotation:bool = false
 
 const default_colors:Dictionary = {
 	"normal": [
@@ -59,10 +59,14 @@ var events:Dictionary = {
 	"increase_score": true, "increase_combo": true
 }
 
+const dirs:Array[String] = ["left", "down", "up", "right"]
+
 func _ready() -> void:
 	# set up default events lol!!!!
 	events["splash"] = has_node("Splash")
 	for i in events: event.data[i] = events[i]
+	
+	arrow.play(dirs[direction] + " note")
 	
 	if style == "default":
 		for node in _existing_nodes():
@@ -96,10 +100,8 @@ func _process(delta:float) -> void:
 func _sustain_exists() -> bool:
 	var has_sustain:bool = has_node("Hold") and has_node("End")
 	if has_sustain:
-		get_node("Hold").visible = true
-		get_node("End").visible = true
-		get_node("Hold").scale.y = -1 if Settings.get_setting("downscroll") and not in_edit else 1
-	
+		hold.visible = true; end.visible = true
+		hold.scale.y = -1 if Settings.get_setting("downscroll") and not in_edit else 1
 	return has_sustain
 
 func _existing_nodes() -> Array:

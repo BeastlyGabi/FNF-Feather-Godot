@@ -2,13 +2,40 @@
 <TextureAtlas imagePath="receptors.png">
 	<!-- Created with Adobe Flash CS6 version 12.0.0.481 -->
 	<!-- http://www.adobe.com/products/flash.html -->
-	<SubTexture name="up ghost0000" x="472" y="0" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
-	<SubTexture name="up ghost0001" x="472" y="0" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
-	<SubTexture name="up ghost0002" x="371" y="233" width="153" height="150"/>
-	<SubTexture name="up ghost0003" x="371" y="233" width="153" height="150"/>
-	<SubTexture name="up glow0000" x="0" y="0" width="236" height="233"/>
-	<SubTexture name="up glow0001" x="236" y="0" width="236" height="233"/>
-	<SubTexture name="up glow0002" x="0" y="233" width="214" height="212" frameX="-11" frameY="-10" frameWidth="236" frameHeight="233"/>
-	<SubTexture name="up glow0003" x="0" y="233" width="214" height="212" frameX="-11" frameY="-10" frameWidth="236" frameHeight="233"/>
-	<SubTexture name="up static0000" x="214" y="233" width="157" height="154"/>
+	<SubTexture name="down ghost0000" x="1245" y="473" width="142" height="140" frameX="-4" frameY="-2" frameWidth="149" frameHeight="146"/>
+	<SubTexture name="down ghost0001" x="1245" y="473" width="142" height="140" frameX="-4" frameY="-2" frameWidth="149" frameHeight="146"/>
+	<SubTexture name="down ghost0002" x="708" y="602" width="149" height="146"/>
+	<SubTexture name="down ghost0003" x="708" y="602" width="149" height="146"/>
+	<SubTexture name="down glow0000" x="3" y="3" width="239" height="236"/>
+	<SubTexture name="down glow0001" x="3" y="242" width="239" height="236"/>
+	<SubTexture name="down glow0002" x="704" y="227" width="221" height="218" frameX="-6" frameY="-12" frameWidth="239" frameHeight="236"/>
+	<SubTexture name="down glow0003" x="704" y="227" width="221" height="218" frameX="-6" frameY="-12" frameWidth="239" frameHeight="236"/>
+	<SubTexture name="down static0000" x="1143" y="3" width="158" height="155"/>
+	<SubTexture name="left ghost0000" x="1007" y="616" width="140" height="142" frameX="-3" frameY="-3" frameWidth="146" frameHeight="149"/>
+	<SubTexture name="left ghost0001" x="1007" y="616" width="140" height="142" frameX="-3" frameY="-3" frameWidth="146" frameHeight="149"/>
+	<SubTexture name="left ghost0002" x="1245" y="321" width="143" height="149" frameX="0" frameY="0" frameWidth="146" frameHeight="149"/>
+	<SubTexture name="left ghost0003" x="1245" y="321" width="143" height="149" frameX="0" frameY="0" frameWidth="146" frameHeight="149"/>
+	<SubTexture name="left glow0000" x="245" y="3" width="229" height="231"/>
+	<SubTexture name="left glow0001" x="704" y="3" width="219" height="221" frameX="-5" frameY="-5" frameWidth="229" frameHeight="231"/>
+	<SubTexture name="left glow0002" x="475" y="237" width="226" height="228" frameX="-2" frameY="-1" frameWidth="229" frameHeight="231"/>
+	<SubTexture name="left glow0003" x="475" y="237" width="226" height="228" frameX="-2" frameY="-1" frameWidth="229" frameHeight="231"/>
+	<SubTexture name="left static0000" x="1143" y="161" width="155" height="157"/>
+	<SubTexture name="right ghost0000" x="1150" y="616" width="138" height="141" frameX="-3" frameY="-7" frameWidth="148" frameHeight="151"/>
+	<SubTexture name="right ghost0001" x="1150" y="616" width="138" height="141" frameX="-3" frameY="-7" frameWidth="148" frameHeight="151"/>
+	<SubTexture name="right ghost0002" x="708" y="448" width="148" height="151"/>
+	<SubTexture name="right ghost0003" x="708" y="448" width="148" height="151"/>
+	<SubTexture name="right glow0000" x="477" y="3" width="224" height="227" frameX="-1" frameY="-2" frameWidth="227" frameHeight="230"/>
+	<SubTexture name="right glow0001" x="481" y="468" width="224" height="227" frameX="-1" frameY="-2" frameWidth="227" frameHeight="230"/>
+	<SubTexture name="right glow0002" x="245" y="237" width="227" height="230"/>
+	<SubTexture name="right glow0003" x="245" y="237" width="227" height="230"/>
+	<SubTexture name="right static0000" x="928" y="218" width="154" height="157"/>
+	<SubTexture name="up ghost0000" x="860" y="531" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
+	<SubTexture name="up ghost0001" x="860" y="531" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
+	<SubTexture name="up ghost0002" x="928" y="378" width="153" height="150"/>
+	<SubTexture name="up ghost0003" x="928" y="378" width="153" height="150"/>
+	<SubTexture name="up glow0000" x="3" y="481" width="236" height="233"/>
+	<SubTexture name="up glow0001" x="242" y="481" width="236" height="233"/>
+	<SubTexture name="up glow0002" x="926" y="3" width="214" height="212" frameX="-11" frameY="-10" frameWidth="236" frameHeight="233"/>
+	<SubTexture name="up glow0003" x="926" y="3" width="214" height="212" frameX="-11" frameY="-10" frameWidth="236" frameHeight="233"/>
+	<SubTexture name="up static0000" x="1085" y="321" width="157" height="154"/>
 </TextureAtlas>

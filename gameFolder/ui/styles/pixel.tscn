@@ -1,17 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://8sycwyqn2wkn"]
+[gd_scene load_steps=8 format=3 uid="uid://8sycwyqn2wkn"]
 
-[ext_resource type="Script" path="res://gameFolder/ui/styles/UIStyle.gd" id="1_6omiu"]
+[ext_resource type="Script" path="res://gameFolder/ui/styles/data_scripts/UIStyle.gd" id="1_wetm8"]
 [ext_resource type="Texture2D" uid="uid://bwdhu2vuvyrj4" path="res://assets/images/UI/countdown/pixel/prepare.png" id="2_mejji"]
-[ext_resource type="Texture2D" uid="uid://ctvv21tnbdj43" path="res://assets/images/UI/ratings/pixel/sick.png" id="3_hnjla"]
+[ext_resource type="Texture2D" uid="uid://tqidop6pnb5n" path="res://assets/images/UI/ratings/pixel/sick.png" id="3_hnjla"]
+[ext_resource type="Texture2D" uid="uid://ccacckcb1yvlq" path="res://assets/images/UI/ratings/pixel/good.png" id="3_ubipf"]
 [ext_resource type="Texture2D" uid="uid://dtt0im8k5pl54" path="res://assets/images/UI/combo/pixel/num1.png" id="4_1ct0l"]
+[ext_resource type="Texture2D" uid="uid://wfregipxfd7y" path="res://assets/images/UI/ratings/pixel/bad.png" id="4_tpbtr"]
+[ext_resource type="Texture2D" uid="uid://c7wuqbjbaqqto" path="res://assets/images/UI/ratings/pixel/shit.png" id="5_8ouih"]
 
 [node name="pixel" type="Node2D"]
-script = ExtResource("1_6omiu")
+script = ExtResource("1_wetm8")
 note_style = "pixel"
 strum_style = "pixel"
 countdown_config = {
 "sounds": ["intro3", "intro2", "intro1", "introGo"],
 "sprites": ["prepare", "ready", "set", "date"]
+}
+judgement_textures = {
+"bad": ExtResource("4_tpbtr"),
+"good": ExtResource("3_ubipf"),
+"shit": ExtResource("5_8ouih"),
+"sick": ExtResource("3_hnjla")
 }
 
 [node name="Templates" type="Node" parent="."]
