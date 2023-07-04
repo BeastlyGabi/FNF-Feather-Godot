@@ -417,7 +417,10 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 				sprite.queue_free()
 		
 		if note.event.get_event("display_judgement"): display_judgement(judge.name)
-		if note.event.get_event("display_combo"): display_combo()
+		if note.event.get_event("display_combo"):
+			display_combo()
+			if Timings.combo % 10 == 0:
+				display_combo_sprite()
 		
 		Timings.update_accuracy(judge)
 		update_score()
@@ -491,3 +494,16 @@ func display_combo() -> void:
 			get_tree().create_tween().set_ease(Tween.EASE_OUT) \
 			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.rate_crochet / 1000.0) \
 			.set_delay(0.55)
+
+func display_combo_sprite() -> void:
+	var combo_spr:Sprite2D = STYLE.get_template("Combo_Sprite").duplicate()
+	combo_spr.visible = true
+	ui.add_child(combo_spr)
+	
+	combo_spr.position.x = Game.get_screen_center(combo_spr.get_rect().position).x
+	combo_spr.position.x -= combo_spr.texture.get_width() / 4.0
+	
+	if combo_spr.is_inside_tree():
+		create_tween().set_ease(Tween.EASE_IN_OUT) \
+		.tween_property(combo_spr, "modulate:a", 0.0, 1.35 * Conductor.rate_crochet / 1000.0) \
+		.set_delay(0.15)

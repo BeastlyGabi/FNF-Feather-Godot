@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://8sycwyqn2wkn"]
+[gd_scene load_steps=9 format=3 uid="uid://8sycwyqn2wkn"]
 
 [ext_resource type="Script" path="res://gameFolder/ui/styles/data_scripts/UIStyle.gd" id="1_wetm8"]
 [ext_resource type="Texture2D" uid="uid://bwdhu2vuvyrj4" path="res://assets/images/UI/countdown/pixel/prepare.png" id="2_mejji"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dtt0im8k5pl54" path="res://assets/images/UI/combo/pixel/num1.png" id="4_1ct0l"]
 [ext_resource type="Texture2D" uid="uid://wfregipxfd7y" path="res://assets/images/UI/ratings/pixel/bad.png" id="4_tpbtr"]
 [ext_resource type="Texture2D" uid="uid://c7wuqbjbaqqto" path="res://assets/images/UI/ratings/pixel/shit.png" id="5_8ouih"]
+[ext_resource type="Texture2D" uid="uid://bv33gx4j2wnx0" path="res://assets/images/UI/ratings/pixel/combo.png" id="7_mk004"]
 
 [node name="pixel" type="Node2D"]
 script = ExtResource("1_wetm8")
@@ -33,14 +34,18 @@ scale = Vector2(6, 6)
 texture = ExtResource("2_mejji")
 
 [node name="Judgement_Sprite" type="Sprite2D" parent="Templates"]
-visible = false
 texture_filter = 1
 position = Vector2(632, 336)
 scale = Vector2(5, 5)
 texture = ExtResource("3_hnjla")
 
+[node name="Combo_Sprite" type="Sprite2D" parent="Templates"]
+texture_filter = 1
+position = Vector2(624, 536)
+scale = Vector2(4, 4)
+texture = ExtResource("7_mk004")
+
 [node name="Number_Sprite" type="Sprite2D" parent="Templates"]
-visible = false
 texture_filter = 1
 position = Vector2(560, 445)
 scale = Vector2(6, 6)
