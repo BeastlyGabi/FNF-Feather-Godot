@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://bfgv48nat0c6w"]
+[gd_scene load_steps=22 format=3 uid="uid://bfgv48nat0c6w"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/notes/strums/StrumLine.gd" id="1_4pl3r"]
 [ext_resource type="SpriteFrames" path="res://assets/images/noteStyles/default/receptors.res" id="1_bb4hx"]
 [ext_resource type="Shader" path="res://assets/data/shaders/ColorRGBMask.gdshader" id="2_4yihp"]
+[ext_resource type="Script" path="res://gameFolder/gameplay/notes/strums/Receptor.gd" id="4_x72om"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_usaus"]
 shader = ExtResource("2_4yihp")
@@ -35,7 +36,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up glow"]
+"values": [&"left confirm"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -76,7 +77,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up ghost"]
+"values": [&"left press"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -88,7 +89,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(7, 0)]
+"values": [Vector2(8, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ajkkc"]
@@ -116,7 +117,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up static"]
+"values": [&"arrowLEFT"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -164,7 +165,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up glow"]
+"values": [&"down confirm"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -176,7 +177,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(10, 4)]
+"values": [Vector2(3, -3)]
 }
 
 [sub_resource type="Animation" id="Animation_4mvu3"]
@@ -205,7 +206,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up ghost"]
+"values": [&"down press"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -217,7 +218,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(8, -2)]
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_twmjh"]
@@ -245,7 +246,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up static"]
+"values": [&"arrowDOWN"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -257,7 +258,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(8, 0)]
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c8dod"]
@@ -293,7 +294,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up glow"]
+"values": [&"up confirm"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -305,7 +306,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(2, -2)]
+"values": [Vector2(2, -8)]
 }
 
 [sub_resource type="Animation" id="Animation_5uist"]
@@ -334,7 +335,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up ghost"]
+"values": [&"up press"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -374,7 +375,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up static"]
+"values": [&"arrowUP"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -421,7 +422,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up glow"]
+"values": [&"right confirm"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -461,7 +462,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up ghost"]
+"values": [&"right press"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -501,7 +502,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"up static"]
+"values": [&"arrowRIGHT"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -530,12 +531,12 @@ script = ExtResource("1_4pl3r")
 material = SubResource("ShaderMaterial_usaus")
 
 [node name="1" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(0, 8)
-rotation = -1.5708
+position = Vector2(3, 4.76837e-07)
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
-animation = &"up static"
+animation = &"arrowLEFT"
 offset = Vector2(8, 0)
+script = ExtResource("4_x72om")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="Receptors/1"]
 libraries = {
@@ -543,12 +544,11 @@ libraries = {
 }
 
 [node name="2" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(115, 0)
-rotation = 3.14159
+position = Vector2(120, 1)
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
-animation = &"up static"
-offset = Vector2(8, 0)
+animation = &"arrowDOWN"
+script = ExtResource("4_x72om")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="Receptors/2"]
 libraries = {
@@ -556,10 +556,11 @@ libraries = {
 }
 
 [node name="3" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(220, 0)
+position = Vector2(230, 0)
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
-animation = &"up static"
+animation = &"arrowUP"
+script = ExtResource("4_x72om")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="Receptors/3"]
 libraries = {
@@ -567,11 +568,11 @@ libraries = {
 }
 
 [node name="4" type="AnimatedSprite2D" parent="Receptors"]
-position = Vector2(330, 0)
-rotation = 1.57079
+position = Vector2(340, 2)
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("1_bb4hx")
-animation = &"up static"
+animation = &"arrowRIGHT"
+script = ExtResource("4_x72om")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="Receptors/4"]
 libraries = {

@@ -12,18 +12,26 @@ var singers:Array[Character] = []
 
 func _ready() -> void:
 	for i in receptors.get_child_count():
-		var receptor:AnimatedSprite2D = receptors.get_child(i)
+		var receptor:Receptor = receptors.get_child(i)
 		receptor.material = receptors.material.duplicate()
-		play_anim("static", i, true, 1.0)
 		receptor.modulate.a = 0.0
 		
-		if not is_cpu: key_presses.append(false)
+		if not is_cpu:
+			key_presses.append(false)
+			receptor.reset_anim = "press"
+		
+		play_anim("static", i, true, 1.0)
 		
 		get_tree().create_tween().set_ease(Tween.EASE_IN) \
 		.tween_property(receptor, "modulate:a", 1.0, (i) * Conductor.rate_crochet / 1000.0) \
 		.set_delay(0.35)
 
+var update_notes:bool = true
+
 func _process(_delta:float) -> void:
+	if update_notes: note_process()
+
+func note_process() -> void:
 	for note in notes.get_children():
 		if note == null:
 			note.queue_free()
@@ -92,8 +100,6 @@ func _process(_delta:float) -> void:
 					
 					game.note_miss(note)
 					note._did_miss = true
-					
-					play_anim("static", note.direction, true)
 
 func pop_splash(note:Note) -> void:
 	if not Settings.get_setting("note_splashes") or not note.has_node("Splash"):
@@ -180,17 +186,8 @@ func get_key_dir(event:InputEventKey) -> int:
 			break
 	return key
 
-var receptor_last_anim:String
 func play_anim(anim:String, direction:int, forced:bool = false, speed:float = 1.0, reverse:bool = false) -> void:
-	var receptor:AnimatedSprite2D = receptors.get_child(direction)
-	if forced or receptor_last_anim != anim:
-		if forced:
-			receptor.frame = 0
-			receptor.get_node("Anim_Player").seek(0.0)
-		
-		receptor.get_node("Anim_Player").play(anim, -1, speed, reverse)
-		receptor.material.set_shader_parameter("enabled", anim != "static")
-		receptor_last_anim = anim
+	receptors.get_child(direction).play_anim(anim, forced, speed, reverse)
 
 func set_lane_speed(new_speed:float) -> void:
 	pass
