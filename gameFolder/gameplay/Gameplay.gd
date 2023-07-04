@@ -22,13 +22,13 @@ var STYLE:UIStyle
 @onready var icon_P2 := $UI/Health_Bar/Opponent_icon
 
 @onready var strum_lines:CanvasLayer = $Strum_Lines
-@onready var player_strums:StrumLine = $Strum_Lines/Player_Strums
+@onready var player_strums:StrumLine = $Strum_Lines/Player
 
 var player:Character
 var opponent:Character
 var spectator:Character
 
-@onready var stage:Stage = $Stage
+var stage:Stage
 
 var notes_list:Array[Chart.NoteData] = []
 var events_list:Array[Chart.EventData] = []
@@ -36,8 +36,13 @@ var events_list:Array[Chart.EventData] = []
 ###################################################
 ### LOADING FUNCTIONS YOU MAY WANNA IGNORE THESE ###
 
-func setup_stage() -> void: pass
-func setup_strums() -> void: pass
+func setup_stage() -> void:
+	var base:String = "res://gameFolder/gameplay/stages/"
+	if not ResourceLoader.exists(base + SONG.stage + ".tscn"):
+		SONG.stage = "stage"
+	
+	stage = load(base + SONG.stage + ".tscn").instantiate()
+	add_child(stage)
 
 func _load_char(_new_char:String, player:bool = false) -> Character:
 	var base_path:String = "res://gameFolder/gameplay/characters/"
@@ -67,7 +72,7 @@ func setup_characters() -> void:
 	icon_P2.texture = load("res://assets/images/icons/" + opponent.health_icon + ".png")
 	
 	# kinda eh sysm probably gonna redo later
-	var opponent_strums:StrumLine = $Strum_Lines/Opponent_Strums
+	var opponent_strums:StrumLine = $Strum_Lines/Opponent
 	for shit in [opponent_strums.singers]: shit.append(opponent)
 	for piss in [player_strums.singers]: piss.append(player)
 
@@ -95,7 +100,6 @@ func _ready() -> void:
 	Timings.reset()
 	
 	setup_stage()
-	setup_strums()
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
 	
@@ -258,7 +262,7 @@ func note_processing() -> void:
 		new_note.time = note_data.time
 		new_note.speed = SONG.speed
 		
-		new_note.direction = int(note_data.direction % SONG.key_amount)
+		new_note.direction = int(note_data.direction % 4)
 		new_note.lane = note_data.lane
 		new_note.length = note_data.length
 		

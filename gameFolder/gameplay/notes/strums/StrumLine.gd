@@ -14,10 +14,14 @@ func _ready() -> void:
 	for i in receptors.get_child_count():
 		var receptor:AnimatedSprite2D = receptors.get_child(i)
 		receptor.material = receptors.material.duplicate()
-		receptor.material.set_shader_parameter("color", Note.default_colors["normal"][i % 4])
+		play_anim("static", i, true, 1.0)
+		receptor.modulate.a = 0.0
 		
-		if not is_cpu:
-			key_presses.append(false)
+		if not is_cpu: key_presses.append(false)
+		
+		get_tree().create_tween().set_ease(Tween.EASE_IN) \
+		.tween_property(receptor, "modulate:a", 1.0, (i) * Conductor.rate_crochet / 1000.0) \
+		.set_delay(0.35)
 
 func _process(_delta:float) -> void:
 	for note in notes.get_children():
@@ -30,6 +34,9 @@ func _process(_delta:float) -> void:
 		
 		var receptor:AnimatedSprite2D = receptors.get_child(note.direction)
 		note.position = Vector2(receptor.position.x, receptor.position.y + distance * scroll_diff)
+		
+		if receptor.material.get_shader_parameter("color") != note.color:
+			receptor.material.set_shader_parameter("color", note.color)
 		
 		if note.copy_rotation: note.arrow.rotation = receptor.rotation
 		if note.copy_opacity: note.modulate.a = receptor.modulate.a
@@ -184,3 +191,6 @@ func play_anim(anim:String, direction:int, forced:bool = false, speed:float = 1.
 		receptor.get_node("Anim_Player").play(anim, -1, speed, reverse)
 		receptor.material.set_shader_parameter("enabled", anim != "static")
 		receptor_last_anim = anim
+
+func set_lane_speed(new_speed:float) -> void:
+	pass

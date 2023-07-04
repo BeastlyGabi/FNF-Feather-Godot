@@ -13,6 +13,22 @@ func _ready() -> void:
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	switch_scene("menus/Freeplay", true)
 
+const focus_lost_volume:float = 0.08
+
+func _notification(what):
+	match what:
+		NOTIFICATION_WM_WINDOW_FOCUS_IN:
+			if Settings.get_setting("auto_pause"):
+				if get_tree().paused: get_tree().paused = false
+			else:
+				VolumeBar.set_system_volume(Settings.volume)
+		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+			if Settings.get_setting("auto_pause"):
+				if not get_tree().paused: get_tree().paused = true
+			else:
+				# Tween this maybe?
+				VolumeBar.set_system_volume(focus_lost_volume)
+
 const TRANSITIONS:Dictionary = {
 	"default": preload("res://gameFolder/backend/transition/LinearVertical.tscn")
 }

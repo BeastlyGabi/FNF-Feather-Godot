@@ -57,6 +57,12 @@ var events:Dictionary = {
 	"increase_score": true, "increase_combo": true
 }
 
+var color:Color:
+	get:
+		var col:Color = Color.WHITE
+		if arrow.material != null: col = arrow.material.get_shader_parameter("color")
+		return col
+
 const dirs:Array[String] = ["left", "down", "up", "right"]
 
 func _ready() -> void:

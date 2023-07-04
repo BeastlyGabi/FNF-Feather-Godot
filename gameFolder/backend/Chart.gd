@@ -24,9 +24,9 @@ var events:Array[EventData] = []
 var characters:Array[String] = ["bf", "bf", "bf"]
 
 var ui_style:String = "normal"
+var stage:String = "stage"
 
 var note_count:int = 0
-var key_amount:int = 4
 var speed:float = 1.0
 var bpm:float = 100.0
 
@@ -51,21 +51,14 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	
 	if "player1" in json: chart.characters[0] = json.player1
 	if "player2" in json: chart.characters[1] = json.player2
-	
 	if "player3" in json and json.player3 != null:
 		chart.characters[2] = json.player3
 	
 	if "gfVersion" in json and json.gfVersion != null:
 		chart.characters[2] = json.gfVersion
 	
-	if "mania" in json: # Shaggy Charts
-		# "match" didn't seem to do the trick, huh
-		if json.mania == 1: chart.key_amount = 6
-		if json.mania == 2: chart.key_amount = 7
-		if json.mania == 3: chart.key_amount = 9
-	
-	if "keyAmount" in json and json.keyAmount != null:
-		chart.key_amount = json.keyAmount
+	if "stage" in json and json.stage != null:
+		chart.stage = json.stage
 	
 	if "uiSkin" in json: chart.ui_style = json.uiSkin
 	if "uiStyle" in json: chart.ui_style = json.uiStyle
@@ -102,7 +95,7 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 			epic_note.length = float(note[2])
 			
 			var gotta_hit:bool = section.mustHitSection
-			if note[1] > chart.key_amount-1: gotta_hit = not section.mustHitSection
+			if note[1] > 3: gotta_hit = not section.mustHitSection
 			epic_note.lane = 1 if gotta_hit else 0
 			
 			if note.size() > 3 and note[3] != null:

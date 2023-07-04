@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b2mco2q2geqm0"]
+[gd_scene load_steps=6 format=3 uid="uid://b2mco2q2geqm0"]
 
 [ext_resource type="Script" path="res://gameFolder/gameplay/Gameplay.gd" id="1_cnvoi"]
-[ext_resource type="PackedScene" uid="uid://d3271ykj5ctot" path="res://gameFolder/gameplay/stages/Stage.tscn" id="3_d4j25"]
-[ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/gameplay/notes/strums/4K.tscn" id="3_palnv"]
 [ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
+[ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/gameplay/notes/strums/StrumLine.tscn" id="6_8e42i"]
 [ext_resource type="Texture2D" uid="uid://ctwobjckai73u" path="res://assets/images/icons/face.png" id="6_hgky4"]
 
 [node name="Gameplay" type="Node2D"]
@@ -18,8 +17,6 @@ script = ExtResource("1_cnvoi")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
-
-[node name="Stage" parent="." instance=ExtResource("3_d4j25")]
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -70,9 +67,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Strum_Lines" type="CanvasLayer" parent="."]
 
-[node name="Opponent_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(150, 617)
+[node name="Opponent" parent="Strum_Lines" instance=ExtResource("6_8e42i")]
+position = Vector2(150, 615)
 
-[node name="Player_Strums" parent="Strum_Lines" instance=ExtResource("3_palnv")]
-position = Vector2(798, 617)
+[node name="Player" parent="Strum_Lines" instance=ExtResource("6_8e42i")]
+position = Vector2(800, 615)
 is_cpu = false
