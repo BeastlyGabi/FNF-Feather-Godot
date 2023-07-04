@@ -110,6 +110,9 @@ func pop_splash(note:Note) -> void:
 		func(_anim:StringName):
 			le_splash.queue_free()
 	)
+	
+	if note.style == "default":
+		le_splash.rotate(randi_range(-360, 360))
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and not is_cpu:
