@@ -90,8 +90,8 @@ func update_combo(gain:bool) -> void:
 	if gain:
 		combo += 1
 		if combo % 10 == 0: streaks += 1
-		if streaks > max_streaks: max_streaks += 1
-	
+		if streaks > max_streaks:
+			max_streaks = streaks
 	else:
 		if combo > 0: breaks += 1
 		combo = 0; streaks = 0
