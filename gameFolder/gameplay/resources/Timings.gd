@@ -20,13 +20,17 @@ var worst_timing:float:
 				worst = judgements[i].timing
 		return worst
 
+func get_hits(judgement_name:String) -> int:
+	return judgements_hit[judgement_name]
+
 func reset():
 	judgements_hit.clear()
 	
 	notes_hit = 0; health = 1.0
 	accuracy = 0.0; notes_acc = 0.0
 	cur_grade = Grade.empty(); cur_clear = "?"
-	misses = 0; combo = 0
+	misses = 0; combo = 0; breaks = 0
+	streaks = 0; max_streaks = 0
 	
 	for i in judgements.size():
 		judgements_hit[judgements[i].name] = 0
@@ -34,7 +38,10 @@ func reset():
 var score:int = 0
 var misses:int = 0
 var health:float = 1.0
-var combo:int = 0
+
+# yes I know there's a lot of things related to combo but idc
+var streaks:int = 0; var max_streaks:int = 0
+var combo:int = 0; var breaks:int = 0
 
 var notes_acc:float = 0.0
 var notes_hit:int:
@@ -70,13 +77,24 @@ func update_accuracy(judge:Judgement) -> void:
 	update_rank()
 
 func score_from_judge(judge:String) -> int:
-	var _score:int = 0
+	var return_value:int = 0
 	match judge:
-		"sick": _score = 350
-		"good": _score = 100
-		"bad": _score = 50
-		"shit": _score = 0
-	return _score
+		"sick": return_value = 350
+		"good": return_value = 100
+		"bad": return_value = 50
+		"shit": return_value = 0
+	return return_value
+
+func update_combo(gain:bool) -> void:
+	# COMBO STUFF LOL!!!
+	if gain:
+		combo += 1
+		if combo % 10 == 0: streaks += 1		
+		if streaks > max_streaks: max_streaks += 1
+	
+	else:
+		if combo > 0: breaks += 1
+		combo = 0; streaks = 0
 
 class Grade extends Resource:
 	var name:String = "S"

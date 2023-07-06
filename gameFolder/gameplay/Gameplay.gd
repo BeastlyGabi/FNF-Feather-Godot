@@ -20,6 +20,7 @@ var STYLE:UIStyle
 @onready var ui:CanvasLayer = $UI
 @onready var health_bar:TextureProgressBar = $UI/Health_Bar
 @onready var score_text:Label = $UI/Health_Bar/Score_Text
+@onready var combo_counter:Label = $UI/Judge_Counter
 @onready var combo_group:Node2D = $UI/Combo_Group
 
 @onready var icon_P1 := $UI/Health_Bar/Player_icon
@@ -343,6 +344,18 @@ func update_score() -> void:
 	if Timings.cur_clear != "": score_temp += " (%s)" % Timings.cur_clear
 	
 	score_text.text = score_temp + "\n"
+	update_judgement_counter()
+
+func update_judgement_counter() -> void:
+	if combo_counter == null or not combo_counter.visible:
+		return
+	
+	var text:String = "- Judgements -"
+	for i in Timings.judgements_hit:
+		text += "\n%s: %s" % [i.to_pascal_case() + "s", Timings.get_hits(i)]
+	
+	text += "\nCombo Streaks: %s / %s" % [Timings.streaks, Timings.max_streaks]
+	combo_counter.text = text
 
 func update_healthbar() -> void:
 	var health_bar_width:float = health_bar.texture_progress.get_size().x
@@ -431,7 +444,7 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		if note.event.get_event("increase_score"):
 			Timings.score += Timings.score_from_judge(judge.name)
 		if note.event.get_event("increase_combo"):
-			Timings.combo += 1
+			Timings.update_combo(true)
 		
 		Timings.health += 0.023
 		if judge.name == "sick" and note.event.get_event("splash"):
@@ -470,8 +483,8 @@ func ghost_miss(direction:int, include_anim:bool = true) -> void:
 func do_miss_damage():
 	Timings.health -= 0.087
 	Timings.misses += 1
-	Timings.combo = 0
 	
+	Timings.update_combo(false)
 	Timings.update_rank()
 	update_score()
 
