@@ -4,6 +4,10 @@ var NOTE_STYLES:Dictionary = {
 	"default": preload("res://gameFolder/gameplay/notes/default.tscn")
 }
 
+const SUBSCENES:Dictionary = {
+	"pause" = preload("res://gameFolder/subScenes/PauseMenu.tscn")
+}
+
 var SONG:Chart
 var STYLE:UIStyle
 
@@ -139,7 +143,7 @@ func _ready() -> void:
 	
 	update_score()
 	update_healthbar()
-	begin_countdown()
+	start_cutscene()
 
 func _exit_tree():
 	Conductor.playback_rate = 1.0
@@ -200,6 +204,7 @@ func process_countdown(reset:bool = false) -> void:
 		process_countdown()
 		return
 	else:
+		can_pause = true
 		# ITS WINGS ARE TOO SMALL TO GET ITS FAT BODY OFF THE GROUND. (3)
 		if countdown_spr != null: countdown_spr.queue_free()
 		count_timer.queue_free()
@@ -226,7 +231,11 @@ func end_song(_skip_cutscene:bool = false) -> void:
 	stop_music()
 	if not _skip_cutscene:
 		start_cutscene()
+	
 	ending_song = true
+	can_pause = false
+
+var can_pause:bool = false
 
 func _process(delta:float) -> void:
 	if starting_song:
@@ -236,6 +245,10 @@ func _process(delta:float) -> void:
 			Conductor.position = inst.get_playback_position() * 1000.0
 	
 	Timings.health = clampf(Timings.health, 0.0, 2.0)
+	
+	if not get_tree().paused:
+		if can_pause and Input.is_action_just_pressed("ui_pause"):
+			pause_game()
 	
 	### CAMERA ZOOMING ###
 	var cam_lerp:float = lerpf(camera.zoom.x, stage.camera_zoom, 0.01)
@@ -253,6 +266,10 @@ func _process(delta:float) -> void:
 	if SONG != null and inst.stream != null:
 		note_processing()
 		event_processing()
+
+func pause_game() -> void:
+	get_tree().paused = true
+	add_child(SUBSCENES["pause"].instantiate())
 
 func note_processing() -> void:
 	if notes_list.size() > 0:
@@ -364,6 +381,12 @@ func on_sect() -> void: pass
 func on_tick() -> void:
 	update_healthbar()
 
+func _notification(what):
+	match what:
+		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+			if can_pause and not get_tree().paused:
+				pause_game()
+
 func dance_characters(_beat:int) -> void:
 	for bopper in stage.get_children():
 		if bopper is Character and not bopper.is_singing() and not bopper.is_missing():
@@ -379,7 +402,6 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
 			match event.keycode:
-				KEY_ESCAPE: Game.switch_scene("menus/Freeplay")
 				KEY_8:
 					get_tree().paused = true
 					var options = load("res://gameFolder/menus/Options.tscn")

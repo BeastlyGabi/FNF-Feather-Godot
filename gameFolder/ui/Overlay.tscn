@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="2_42jcd"]
 
 [node name="Overlay" type="CanvasLayer"]
+process_mode = 3
 layer = 128
 script = ExtResource("1_yhu8t")
 

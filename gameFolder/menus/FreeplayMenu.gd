@@ -37,7 +37,7 @@ func _process(_delta:float) -> void:
 			update_selection(-1 if is_up else 1)
 		
 		if Input.is_action_just_pressed("ui_cancel"):
-			Game.switch_scene("menus/Main")
+			Game.switch_scene("menus/MainMenu")
 		
 		if Input.is_action_just_pressed("ui_accept"):
 			can_move = false

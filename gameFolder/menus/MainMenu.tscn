@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b3vxaif6gup5x"]
 
-[ext_resource type="Script" path="res://gameFolder/menus/Main.gd" id="1_va83e"]
+[ext_resource type="Script" path="res://gameFolder/menus/MainMenu.gd" id="1_va83e"]
 [ext_resource type="Texture2D" uid="uid://dxtt3ho5kn6c4" path="res://assets/images/gameMenus/menuBG.png" id="2_5gt7k"]
 [ext_resource type="SpriteFrames" uid="uid://cvcmp8kp2kwhj" path="res://assets/images/gameMenus/mainMenu/story.res" id="3_l553g"]
 [ext_resource type="SpriteFrames" uid="uid://yrhx6b32j2ac" path="res://assets/images/gameMenus/mainMenu/freeplay.res" id="4_x6s5x"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://b4xxxge1g4rvv"]
 
 [ext_resource type="Texture2D" uid="uid://bo3o2cu7v0vcj" path="res://assets/images/gameMenus/menuDesat.png" id="1_gkdc5"]
-[ext_resource type="Script" path="res://gameFolder/menus/Freeplay.gd" id="1_ody2j"]
+[ext_resource type="Script" path="res://gameFolder/menus/FreeplayMenu.gd" id="1_ody2j"]
 [ext_resource type="Script" path="res://gameFolder/menus/data/Song.gd" id="2_6j3qw"]
 [ext_resource type="PackedScene" uid="uid://bnp1rl11bug1f" path="res://gameFolder/ui/Alphabet.tscn" id="3_y41ba"]
 [ext_resource type="Script" path="res://gameFolder/ui/FollowerSprite2D.gd" id="5_bjkt6"]

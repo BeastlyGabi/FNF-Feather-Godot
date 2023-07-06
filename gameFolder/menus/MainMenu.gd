@@ -8,7 +8,7 @@ var cur_selection:int = 0
 func _select() -> void:
 	var cur_option:String = options.get_child(cur_selection).name.to_lower()
 	match cur_option:
-		_: Game.switch_scene("menus/Freeplay")
+		_: Game.switch_scene("menus/FreeplayMenu")
 
 func _ready():
 	Game.discord.update_status("Main Menu", "In the Menus")

@@ -17,38 +17,33 @@ func _ready() -> void:
 	add_child(discord)
 	
 	discord.update_status("Main Menu", "In the Menus")
-	switch_scene("menus/Main", true)
+	switch_scene("menus/MainMenu", true)
 
 const focus_lost_volume:float = 0.08
 
 func _notification(what):
 	match what:
 		NOTIFICATION_WM_WINDOW_FOCUS_IN:
-			if Settings.get_setting("auto_pause"):
-				if get_tree().paused: get_tree().paused = false
-			else:
-				VolumeBar.set_system_volume(Settings.volume)
+			VolumeBar.set_system_volume(Settings.volume)
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
-			if Settings.get_setting("auto_pause"):
-				if not get_tree().paused: get_tree().paused = true
-			else:
-				# Tween this maybe?
-				VolumeBar.set_system_volume(focus_lost_volume)
+			# Tween this maybe?
+			VolumeBar.set_system_volume(focus_lost_volume)
 
 const TRANSITIONS:Dictionary = {
 	"default": preload("res://gameFolder/backend/transition/LinearVertical.tscn")
 }
 
 func switch_scene(next_scene:String, skip_transition:bool = false) -> void:
+	var scene_path:String = "res://gameFolder/" + next_scene + ".tscn"
+	LAST_SCENE = scene_path
+	
 	if !skip_transition:
 		get_tree().paused = true
 		add_child(TRANSITIONS["default"].instantiate())
 		await(get_tree().create_timer(0.45).timeout)
 		get_tree().paused = false
 	
-	var scene_path:String = "res://gameFolder/" + next_scene + ".tscn"
 	get_tree().change_scene_to_file(scene_path)
-	LAST_SCENE = scene_path
 
 var CUR_SONG:Chart
 var META_DATA:Chart.SongMetaData
@@ -58,8 +53,14 @@ func bind_song(_song_name:String, _diff:String = "hard") -> void:
 	CUR_SONG = Chart.load_chart(_song_name, _diff)
 	switch_scene("gameplay/Gameplay")
 
-func reset_scene(skip_trans:bool = false) -> void:
-	switch_scene(LAST_SCENE, skip_trans)
+func reset_scene(skip_transition:bool = false) -> void:
+	if !skip_transition:
+		get_tree().paused = true
+		add_child(TRANSITIONS["default"].instantiate())
+		await(get_tree().create_timer(0.45).timeout)
+		get_tree().paused = false
+	
+	get_tree().change_scene_to_file(LAST_SCENE)
 
 func float_to_minute(value:float) -> int: return int(value / 60)
 func float_to_seconds(value:float) -> float: return fmod(value, 60)
