@@ -8,10 +8,15 @@ var SCREEN:Dictionary = {
 var VERSION:Versioning
 var LAST_SCENE:String
 
+var discord:DiscordNode = DiscordNode.new()
+
 func _ready() -> void:
 	VERSION = Versioning.new(0, 0, 1)
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	add_child(discord)
+	
+	discord.update_status("Main Menu", "In the Menus")
 	switch_scene("menus/Main", true)
 
 const focus_lost_volume:float = 0.08

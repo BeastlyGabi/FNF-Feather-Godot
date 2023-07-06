@@ -11,6 +11,7 @@ func _select() -> void:
 		_: Game.switch_scene("menus/Freeplay")
 
 func _ready():
+	Game.discord.update_status("Main Menu", "In the Menus")
 	$Version_Text.text = "FNF v" + Game.VERSION.get_fnf_ver() + \
 	" / Feather v" + Game.VERSION.name + " [" + Game.VERSION.branch_to_string() + "]"
 	

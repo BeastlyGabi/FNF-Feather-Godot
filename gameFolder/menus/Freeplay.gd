@@ -8,6 +8,7 @@ var cur_selection:int = 0
 
 func _ready() -> void:
 	Game.reset_menu_music(false)
+	Game.discord.update_status("Freeplay", "In the Menus")
 	for week in Game.weeks:
 		songs.append_array(week.songs)
 	

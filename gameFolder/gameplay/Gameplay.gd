@@ -103,6 +103,8 @@ func _ready() -> void:
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
 	
+	Game.discord.update_status("Gameplay", "Playing %s" % Game.META_DATA.display_name)
+	
 	camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
 	camera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.playback_rate
 	

@@ -22,11 +22,11 @@ config/icon="res://art/icon.png"
 
 Game="*res://gameFolder/Game.tscn"
 Settings="*res://gameFolder/backend/autoload/Settings.gd"
+Sound="*res://gameFolder/backend/autoload/Sound.tscn"
 Conductor="*res://gameFolder/backend/autoload/Conductor.gd"
 Timings="*res://gameFolder/gameplay/resources/Timings.gd"
 Overlay="*res://gameFolder/ui/Overlay.tscn"
 VolumeBar="*res://gameFolder/ui/VolumeBar.tscn"
-Sound="*res://gameFolder/backend/autoload/Sound.tscn"
 
 [display]
 
