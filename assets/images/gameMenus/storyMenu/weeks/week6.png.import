@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbu4kmfw2e75c"
-path="res://.godot/imported/week4.png-89d77ca0ed3acd796b82b8f9946eb7c9.ctex"
+uid="uid://d4ff8soov4dxo"
+path="res://.godot/imported/week6.png-3e512a28865f5b2d31001e1ad7e22f02.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/gameMenus/musicSelection/weeks/week4.png"
-dest_files=["res://.godot/imported/week4.png-89d77ca0ed3acd796b82b8f9946eb7c9.ctex"]
+source_file="res://assets/images/gameMenus/storyMenu/weeks/week6.png"
+dest_files=["res://.godot/imported/week6.png-3e512a28865f5b2d31001e1ad7e22f02.ctex"]
 
 [params]
 

@@ -5,6 +5,9 @@ enum DevBranch {STABLE, BETA, ALPHA}
 var name:String
 var branch:DevBranch = DevBranch.ALPHA
 
+func get_fnf_ver() -> String:
+	return "0.2.8"
+
 func _init(major:int, minor:int, patch:int = -1) -> void:
 	var _ver:String = str(major) + "." + str(minor)
 	if patch != -1: _ver += str(patch)

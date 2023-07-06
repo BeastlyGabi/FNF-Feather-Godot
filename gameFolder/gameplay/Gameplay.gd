@@ -221,9 +221,10 @@ func start_song() -> void:
 	play_music(0.0)
 
 func end_song(_skip_cutscene:bool = false) -> void:
-	if not ending_song: ending_song = true
-	if not _skip_cutscene: start_cutscene()
 	stop_music()
+	if not _skip_cutscene:
+		start_cutscene()
+	ending_song = true
 
 func _process(delta:float) -> void:
 	if starting_song:

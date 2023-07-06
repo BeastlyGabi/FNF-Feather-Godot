@@ -12,7 +12,7 @@ func _ready() -> void:
 	VERSION = Versioning.new(0, 0, 1)
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	switch_scene("menus/Freeplay", true)
+	switch_scene("menus/Main", true)
 
 const focus_lost_volume:float = 0.08
 
@@ -75,31 +75,42 @@ var current_scene:
 	get: return get_tree().current_scene
 
 var flicker_timer:SceneTreeTimer
-func flicker_object(obj:Variant, duration:float = 0.06, interval:int = 8, end_call = null, end_visibility:bool = false) -> void:
-	if obj == null: return
+func flicker_object(obj:CanvasItem, duration:float = 0.06, interval:int = 8, end_call = null, end_visibility:bool = false) -> void:
+	if obj == null or not obj.is_inside_tree(): return
 	
 	if interval <= 0:
-		obj.modulate.a = 0.0 if not end_visibility else 1.0
+		if obj != null and obj.is_inside_tree():
+			obj.visible = end_visibility
+		
 		if end_call != null:
 			end_call.call()
 			flicker_timer = null
 		return
 	
-	obj.modulate.a = 0.0
+	if obj != null and obj.is_inside_tree(): obj.visible = false
+	
 	if flicker_timer == null or interval > 0:
 		flicker_timer = get_tree().create_timer(duration)
 		flicker_timer.timeout.connect(
 			func():
 				await get_tree().create_timer(duration).timeout
 				interval -= 1
-				flicker_object(obj, duration, interval, end_call)
+				if obj != null and obj.is_inside_tree():
+					flicker_object(obj, duration, interval, end_call)
 		)
 	
 	await flicker_timer.timeout
-	obj.modulate.a = 1.0
+	if obj != null and obj.is_inside_tree():
+		obj.visible = true
 
 func get_screen_center(base:Vector2) -> Vector2:
 	return Vector2(
 		(Game.SCREEN["width"] - base.x) / 2.0,
 		(Game.SCREEN["height"] - base.y) / 2.0
 	)
+
+func reset_menu_music(fade_in:bool = false) -> void:
+	if Sound.music.stream != null and Sound.music.playing: return
+	Sound.play_music("res://assets/sounds/music/freakyMenu.ogg")
+	Sound.music.volume_db = linear_to_db(0.7) if not fade_in else -35.0
+	if fade_in: Sound.ask_to_fade(0.7, 35.0)
