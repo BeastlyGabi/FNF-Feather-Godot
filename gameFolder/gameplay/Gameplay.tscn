@@ -67,20 +67,16 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Judge_Counter" type="Label" parent="UI"]
 offset_top = 272.0
-offset_right = 129.0
-offset_bottom = 398.0
+offset_right = 104.0
+offset_bottom = 358.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("4_wgyi5")
 theme_override_font_sizes/font_size = 20
-text = "- Judgements -
-Sicks: 0
+text = "Sicks: 0
 Goods: 0
 Bads: 0
-Shits: 0
-
-Combo Streaks: 0 / 0"
-horizontal_alignment = 1
+Shits: 0"
 
 [node name="Strum_Lines" type="CanvasLayer" parent="."]
 

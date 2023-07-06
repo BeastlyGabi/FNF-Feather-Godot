@@ -350,11 +350,9 @@ func update_judgement_counter() -> void:
 	if combo_counter == null or not combo_counter.visible:
 		return
 	
-	var text:String = "- Judgements -"
+	var text:String = ""
 	for i in Timings.judgements_hit:
 		text += "\n%s: %s" % [i.to_pascal_case() + "s", Timings.get_hits(i)]
-	
-	text += "\nCombo Streaks: %s / %s" % [Timings.streaks, Timings.max_streaks]
 	combo_counter.text = text
 
 func update_healthbar() -> void:
