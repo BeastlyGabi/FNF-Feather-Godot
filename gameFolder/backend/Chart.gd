@@ -66,36 +66,36 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	if "noteStyle" in json: chart.ui_style = json.noteStyle
 	if "assetModifier" in json: chart.ui_style = json.assetModifier
 	
-	for section in json.notes:
+	for bar in json.notes:
 		var cam_thing:EventData = EventData.new()
 		cam_thing.name = "Simple Camera Movement"
 		
 		# I gotta take changes into account, god.
-		var bpm_condition:bool = "changeBPM" in section and "bpm" in section and section.changeBPM
-		var cur_bpm:float = section.bpm if bpm_condition else json.bpm
+		var bpm_condition:bool = "changeBPM" in bar and "bpm" in bar and bar.changeBPM
+		var cur_bpm:float = bar.bpm if bpm_condition else json.bpm
 		
-		var sect_len:int = section.lengthInSteps if "lengthInSteps" in section else 16
-		cam_thing.time = ((60 / cur_bpm) * 1000.0) / 4.0 * sect_len * json.notes.find(section)
+		var sect_len:int = bar.lengthInSteps if "lengthInSteps" in bar else 16
+		cam_thing.time = ((60 / cur_bpm) * 1000.0) / 4.0 * sect_len * json.notes.find(bar)
 		
 		var cam_char:String = "opponent"
-		if "mustHitSection" in section and section.mustHitSection:
+		if "mustHitSection" in bar and bar.mustHitSection:
 			cam_char = "player"
 		
-		if "gfSection" in section and section.gfSection:
+		if "gfSection" in bar and bar.gfSection:
 			cam_char = "spectator"
 		
 		cam_thing.args.append(cam_char)
 		chart.events.append(cam_thing)
 		
 		# this format is actually so fucking dumb.
-		for note in section.sectionNotes:
+		for note in bar.sectionNotes:
 			var epic_note:NoteData = NoteData.new()
 			epic_note.time = float(note[0])
 			epic_note.direction = int(note[1])
 			epic_note.length = float(note[2])
 			
-			var gotta_hit:bool = section.mustHitSection
-			if note[1] > 3: gotta_hit = not section.mustHitSection
+			var gotta_hit:bool = bar.mustHitSection
+			if note[1] > 3: gotta_hit = not bar.mustHitSection
 			epic_note.lane = 1 if gotta_hit else 0
 			
 			if note.size() > 3 and note[3] != null:

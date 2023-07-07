@@ -183,13 +183,15 @@ func process_countdown(reset:bool = false) -> void:
 	
 	countdown_spr.visible = true
 	countdown_spr.modulate.a = 0.0
-	countdown_spr.scale.y *= 1.25
+	if STYLE.name != "pixel":
+		countdown_spr.scale.y *= 1.25
 	ui.add_child(countdown_spr)
 	
 	if count_tweener != null: count_tweener.stop()
 	count_tweener = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	# THERE'S NO WAY A BEE SHOULD BE ABLE TO FLY (2)
-	get_tree().create_tween().tween_property(countdown_spr, "scale:y", 1.0, 0.10)
+	if STYLE.name != "pixel":
+		get_tree().create_tween().tween_property(countdown_spr, "scale:y", 1.0, 0.10)
 	count_tweener.tween_property(countdown_spr, "modulate:a", 1.0, 0.05)
 	count_tweener.tween_property(countdown_spr, "modulate:a", 0.0, Conductor.rate_crochet / 1100.0)
 	

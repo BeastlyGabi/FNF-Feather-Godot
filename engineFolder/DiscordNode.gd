@@ -9,8 +9,11 @@ func _ready() -> void:
 	rpc_error.connect(_on_error_rpc)
 
 func update_status(new_state:String, new_details:String, new_assets:Dictionary = {}) -> void:
+	if not is_inside_tree(): return
+	
 	if new_assets == {}:
 		new_assets = {"large_image": "bianca", "large_text": Game.VERSION.name + " (" + Game.VERSION.branch_to_string() + ")"}
+	
 	update_presence({
 		state = new_state,
 		details = new_details,

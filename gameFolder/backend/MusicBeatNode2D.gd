@@ -4,8 +4,8 @@ var step:int:
 	get: return Conductor.step
 var beat:int:
 	get: return Conductor.beat
-var sect:int:
-	get: return Conductor.sect
+var bar:int:
+	get: return Conductor.bar
 var tick:int:
 	get: return Conductor.tick
 
