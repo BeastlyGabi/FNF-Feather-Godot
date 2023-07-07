@@ -306,6 +306,10 @@ func event_processing() -> void:
 
 func fire_event(name:String, args:Array[Variant]) -> void:
 	match name:
+		"BPM Change":
+			var prev_bpm:float = Conductor.bpm
+			Conductor.bpm = args[0]
+			print_debug("BPM Changed! previous was %s, now changed to %s" % [prev_bpm, Conductor.bpm])
 		"Simple Camera Movement":
 			var char:Character = player
 			var stage_offset:Vector2 = Vector2.ZERO

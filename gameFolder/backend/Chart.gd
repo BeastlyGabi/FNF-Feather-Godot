@@ -66,16 +66,18 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	if "noteStyle" in json: chart.ui_style = json.noteStyle
 	if "assetModifier" in json: chart.ui_style = json.assetModifier
 	
+	var bpm_bar:float = json.bpm
 	for bar in json.notes:
-		var cam_thing:EventData = EventData.new()
-		cam_thing.name = "Simple Camera Movement"
-		
-		# I gotta take changes into account, god.
-		var bpm_condition:bool = "changeBPM" in bar and "bpm" in bar and bar.changeBPM
-		var cur_bpm:float = bar.bpm if bpm_condition else json.bpm
+		if "changeBPM" in bar and bar.changeBPM and bar.bpm != null:
+			bpm_bar = bar.bpm
 		
 		var sect_len:int = bar.lengthInSteps if "lengthInSteps" in bar else 16
-		cam_thing.time = ((60 / cur_bpm) * 1000.0) / 4.0 * sect_len * json.notes.find(bar)
+		var bar_time:float = ((60 / bpm_bar) * 1000.0) / 4.0 * sect_len * json.notes.find(bar)
+		
+		## CAMERA MOVEMENT EVENT
+		var cam_thing:EventData = EventData.new()
+		cam_thing.name = "Simple Camera Movement"
+		cam_thing.time = bar_time
 		
 		var cam_char:String = "opponent"
 		if "mustHitSection" in bar and bar.mustHitSection:
@@ -86,6 +88,16 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 		
 		cam_thing.args.append(cam_char)
 		chart.events.append(cam_thing)
+		##########################
+		
+		# BPM CHANGE EVENT
+		if "changeBPM" in bar and bar.changeBPM and bar.bpm != null:
+			var bpm_change:EventData = EventData.new()
+			bpm_change.name = "BPM Change"
+			bpm_change.time = bar_time
+			bpm_change.args.append(bar.bpm)
+			chart.events.append(bpm_change)
+		############################
 		
 		# this format is actually so fucking dumb.
 		for note in bar.sectionNotes:
@@ -110,4 +122,5 @@ static func load_chart(folder:String = "test", diff:String = "normal") -> Chart:
 	
 	chart.note_count = chart.notes.size()
 	Conductor.bpm = chart.bpm
+	Conductor.pull_bpm_changes(chart)
 	return chart

@@ -32,11 +32,41 @@ var bar:int = 0:
 var tick:int = 0:
 	get: return floor(_get_tick(self.position))
 
+var bpm_changes:Array = []
+func pull_bpm_changes(chart:Chart):
+	bpm_changes = []
+	
+	var event_steps:int = 0
+	var event_time:float = 0.0
+	var current_bpm:float = bpm
+	
+	if chart.events.size() > 1:
+		for i in chart.events.size():
+			var event:Chart.EventData = chart.events[i]
+			if event.name == "BPM Change":
+				event_steps += 16
+				current_bpm = event.args[0]
+				event_time += ((60 / current_bpm) * 1000.0 / 4.0) * 16;
+				
+				var change:Dictionary = {
+					"step": int(event_steps),
+					"time": float(event_time),
+					"bpm": float(current_bpm)
+				}
+				bpm_changes.append(change)
+	
+	print("bpm change list size ", bpm_changes.size())
+
 var prev_step:int = -1; var prev_beat:int = -1;
 var prev_bar:int = -1; var prev_tick:int = -1
 
 func _process(_delta:float) -> void:
 	var last_event:Dictionary = {"step": 0, "time": 0.0, "bpm": 0.0}
+	
+	for i in bpm_changes.size():
+		if position >= bpm_changes[i]["time"]:
+			last_event = bpm_changes[i]
+	
 	var dumb_calc:float = ((position - offset) - last_event["time"]) / step_crochet
 	step = last_event["step"] + floor(dumb_calc)
 	
