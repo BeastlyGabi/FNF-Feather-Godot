@@ -27,7 +27,8 @@ func _notification(what):
 			VolumeBar.set_system_volume(Settings.volume)
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
 			# Tween this maybe?
-			VolumeBar.set_system_volume(focus_lost_volume)
+			if Settings.volume > focus_lost_volume:
+				VolumeBar.set_system_volume(focus_lost_volume)
 
 const TRANSITIONS:Dictionary = {
 	"default": preload("res://gameFolder/backend/transition/LinearVertical.tscn")

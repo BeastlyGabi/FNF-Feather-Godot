@@ -17,19 +17,19 @@ texture = ExtResource("2_5gt7k")
 [node name="Options" type="Node2D" parent="."]
 
 [node name="Story" type="AnimatedSprite2D" parent="Options"]
-position = Vector2(624, 200)
+position = Vector2(625, 200)
 sprite_frames = ExtResource("3_l553g")
 animation = &"white"
 
 [node name="Freeplay" type="AnimatedSprite2D" parent="Options"]
-position = Vector2(624, 360)
+position = Vector2(625, 360)
 sprite_frames = ExtResource("4_x6s5x")
 animation = &"basic"
 
 [node name="Options" type="AnimatedSprite2D" parent="Options"]
-position = Vector2(624, 528)
+position = Vector2(625, 530)
 sprite_frames = ExtResource("5_cx0rc")
-animation = &"white"
+animation = &"basic"
 
 [node name="Version_Text" type="Label" parent="."]
 offset_top = 701.0
