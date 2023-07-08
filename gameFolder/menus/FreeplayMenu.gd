@@ -7,6 +7,7 @@ var cur_selection:int = 0
 @export var songs:Array[Song] = []
 
 func _ready() -> void:
+	Overlay.tween_in_out(false)
 	Game.reset_menu_music(false)
 	Game.discord.update_status("Freeplay", "In the Menus")
 	for week in Game.weeks:

@@ -21,11 +21,5 @@ func _input(_event:InputEvent) -> void:
 		var value:float = 0.1 if is_up else -0.1
 		
 		Settings.volume = clampf(Settings.volume + value, 0.0, 1.0)
-		set_system_volume(Settings.volume)
 		show_the_thing()
 		beep.play(0.0)
-		
-		#Settings.save_settings()
-
-func set_system_volume(new_volume) -> void:
-	AudioServer.set_bus_volume_db(0, linear_to_db(new_volume))

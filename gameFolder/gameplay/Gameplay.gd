@@ -104,6 +104,8 @@ func _init() -> void:
 func _ready() -> void:
 	Timings.reset()
 	
+	Overlay.tween_in_out(true)
+	
 	setup_stage()
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
@@ -342,12 +344,18 @@ func update_score() -> void:
 	if true_accuracy >= 100 or true_accuracy <= 0:
 		format = "%.0f"
 	
-	var score_temp:String = "SCORE: %s" % str(Timings.score)
-	score_temp += score_divider + "ACCURACY: %s" % [format % true_accuracy] + "%"
-	score_temp += score_divider + "MISSES: %s" % str(Timings.misses)
+	var score_temp:String
 	
-	score_temp += score_divider + Timings.cur_grade.name
-	if Timings.cur_clear != "": score_temp += " (%s)" % Timings.cur_clear
+	score_temp = "- SCORE: %s" % str(Timings.score)
+	score_temp += score_divider + "MISSES: %s" % str(Timings.misses)
+	score_temp += score_divider + "RANK: %s" % [Timings.cur_grade.name]
+	
+	if Timings.notes_hit > 0:
+		score_temp += " [%s" % [format % true_accuracy] + "%"
+		if Timings.cur_clear != "":
+			score_temp += score_divider + "%s" % Timings.cur_clear
+		score_temp += "]"
+	score_temp += ' -'
 	
 	score_text.text = score_temp + "\n"
 	update_judgement_counter()
@@ -421,7 +429,7 @@ func _input(event:InputEvent) -> void:
 			match event.keycode:
 				KEY_8:
 					get_tree().paused = true
-					var options = load("res://gameFolder/menus/Options.tscn")
+					var options = load("res://gameFolder/menus/OptionsMenu.tscn")
 					add_child(options.instantiate())
 				KEY_Q:
 					Conductor.playback_rate -= 0.01

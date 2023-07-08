@@ -3,6 +3,14 @@ extends CanvasLayer
 var delta_timeout:float = 0.0
 var process_every_frame:bool = false
 
+func tween_in_out(out:bool = false):
+	for i in self.get_children():
+		var to_y:int = -100 if out else 0
+		if i.position.y == to_y: break
+		
+		get_tree().create_tween().set_ease(Tween.EASE_IN if out else Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC) \
+		.tween_property(i, "position:y", to_y, 1.35)
+
 func _ready():
 	$Version_Label.text = Game.VERSION.name
 	if Game.VERSION.branch_to_string() != "":

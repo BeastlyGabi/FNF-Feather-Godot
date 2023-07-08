@@ -26,11 +26,10 @@ func get_hits(judgement_name:String) -> int:
 func reset():
 	judgements_hit.clear()
 	
-	notes_hit = 0; health = 1.0
-	accuracy = 0.0; notes_acc = 0.0
+	score = 0; notes_hit = 0; health = 1.0
+	accuracy = 0.0; notes_acc = 0.0; misses = 0;
 	cur_grade = Grade.empty(); cur_clear = "?"
-	misses = 0; combo = 0; breaks = 0
-	streaks = 0; max_streaks = 0
+	combo = 0; breaks = 0; streaks = 0; max_streaks = 0
 	
 	for i in judgements.size():
 		judgements_hit[judgements[i].name] = 0

@@ -11,6 +11,7 @@ var LAST_SCENE:String
 var discord:DiscordNode = DiscordNode.new()
 
 func _ready() -> void:
+	old_volume = Settings.volume
 	VERSION = Versioning.new(0, 0, 1)
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -19,16 +20,16 @@ func _ready() -> void:
 	discord.update_status("Main Menu", "In the Menus")
 	switch_scene("menus/MainMenu", true)
 
-const focus_lost_volume:float = 0.08
+const focus_lost_volume:float = 0.05
+var old_volume:float = 1.0
 
 func _notification(what):
 	match what:
-		NOTIFICATION_WM_WINDOW_FOCUS_IN:
-			VolumeBar.set_system_volume(Settings.volume)
+		NOTIFICATION_WM_WINDOW_FOCUS_IN: Settings.volume = old_volume
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
-			# Tween this maybe?
 			if Settings.volume > focus_lost_volume:
-				VolumeBar.set_system_volume(focus_lost_volume)
+				old_volume = Settings.volume
+				Settings.volume = focus_lost_volume
 
 const TRANSITIONS:Dictionary = {
 	"default": preload("res://gameFolder/backend/transition/LinearVertical.tscn")
