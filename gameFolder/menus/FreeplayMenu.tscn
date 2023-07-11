@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4xxxge1g4rvv"]
+[gd_scene load_steps=8 format=3 uid="uid://b4xxxge1g4rvv"]
 
 [ext_resource type="Texture2D" uid="uid://bo3o2cu7v0vcj" path="res://assets/images/gameMenus/menuDesat.png" id="1_gkdc5"]
 [ext_resource type="Script" path="res://gameFolder/menus/FreeplayMenu.gd" id="1_ody2j"]
 [ext_resource type="Script" path="res://gameFolder/menus/data/Song.gd" id="2_6j3qw"]
 [ext_resource type="PackedScene" uid="uid://bnp1rl11bug1f" path="res://gameFolder/ui/Alphabet.tscn" id="3_y41ba"]
+[ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_p403i"]
 [ext_resource type="Script" path="res://gameFolder/ui/FollowerSprite2D.gd" id="5_bjkt6"]
 
 [sub_resource type="Resource" id="Resource_ic8t5"]
@@ -22,6 +23,43 @@ songs = Array[ExtResource("2_6j3qw")]([SubResource("Resource_ic8t5")])
 position = Vector2(640.358, 363.5)
 scale = Vector2(0.99589, 0.99589)
 texture = ExtResource("1_gkdc5")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Score_BG" type="ColorRect" parent="UI"]
+offset_left = 937.0
+offset_right = 1281.0
+offset_bottom = 96.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Score_Text" type="Label" parent="UI"]
+offset_left = 937.0
+offset_right = 1281.0
+offset_bottom = 32.0
+theme_override_fonts/font = ExtResource("4_p403i")
+theme_override_font_sizes/font_size = 32
+text = "PERSONAL BEST: 000"
+
+[node name="Accuracy_Text" type="Label" parent="UI"]
+offset_left = 937.0
+offset_top = 34.0
+offset_right = 1281.0
+offset_bottom = 66.0
+theme_override_fonts/font = ExtResource("4_p403i")
+theme_override_font_sizes/font_size = 30
+text = "ACCURACY: 0% (N/A)"
+horizontal_alignment = 1
+
+[node name="Diff_Text" type="Label" parent="UI"]
+offset_left = 937.0
+offset_top = 67.0
+offset_right = 1281.0
+offset_bottom = 92.0
+theme_override_fonts/font = ExtResource("4_p403i")
+theme_override_font_sizes/font_size = 24
+text = "< NULL >"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Songs_Node" type="Node" parent="."]
 

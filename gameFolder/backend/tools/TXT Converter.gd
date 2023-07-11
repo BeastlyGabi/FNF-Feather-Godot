@@ -75,7 +75,7 @@ func _ready() -> void:
 	
 func _process(_delta:float) -> void:
 	if Input.is_action_just_pressed("ui_cancel") and not fps_box.has_focus():
-		Game.switch_scene("menus/Freeplay")
+		Game.switch_scene("menus/MainMenu")
 
 # funny signal shits
 func set_path(new_path:String) -> void:

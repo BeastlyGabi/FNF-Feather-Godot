@@ -17,8 +17,23 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	#add_child(discord)
 	
+	reset_week_diffs()
 	discord.update_status("Main Menu", "In the Menus")
 	switch_scene("menus/MainMenu", true)
+
+func _input(event:InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and not get_tree().paused:
+			match event.keycode:
+				KEY_7:
+					var no_mod_scenes:Array[String] = ["Gameplay", "Chart Editor"]
+					for scene in no_mod_scenes:
+						if current_scene.name == scene:
+							return
+					
+					var mods_menu:PackedScene = load("res://gameFolder/menus/ModsMenu.tscn")
+					get_tree().paused = true
+					add_child(mods_menu.instantiate())
 
 const focus_lost_volume:float = 0.05
 var old_volume:float = 1.0
@@ -54,6 +69,10 @@ var META_DATA:Chart.SongMetaData
 func bind_song(_song_name:String, _diff:String = "hard") -> void:
 	CUR_SONG = Chart.load_chart(_song_name, _diff)
 	switch_scene("gameplay/Gameplay")
+
+func reset_week_diffs() -> void:
+	for week in weeks: for song in week.songs:
+		song.difficulties = week.difficulties.duplicate()
 
 func reset_scene(skip_transition:bool = false) -> void:
 	if !skip_transition:
@@ -117,8 +136,17 @@ func get_screen_center(base:Vector2) -> Vector2:
 		(Game.SCREEN["height"] - base.y) / 2.0
 	)
 
-func reset_menu_music(fade_in:bool = false) -> void:
-	if Sound.music.stream != null and Sound.music.playing: return
-	Sound.play_music("res://assets/sounds/music/freakyMenu.ogg")
+var previous_menu_song:String
+func reset_menu_music(fade_in:bool = false, forced:bool = false) -> void:
+	var next_menu_song:String = "freakyMenu"
+	#match current_scene.name:
+	#	"Options": next_menu_song = "keeper"
+	
+	if not forced or previous_menu_song == next_menu_song:
+		if Sound.music.stream != null and Sound.music.playing:
+			return
+	
+	Sound.play_music("res://assets/sounds/music/%s.ogg" % next_menu_song)
 	Sound.music.volume_db = linear_to_db(0.7) if not fade_in else -35.0
 	if fade_in: Sound.ask_to_fade(0.7, 35.0)
+	previous_menu_song = next_menu_song

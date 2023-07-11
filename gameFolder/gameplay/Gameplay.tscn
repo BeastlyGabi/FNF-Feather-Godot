@@ -30,10 +30,10 @@ is_cpu = false
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Health_Bar" type="TextureProgressBar" parent="UI"]
-offset_left = 311.0
-offset_top = 72.0
-offset_right = 912.0
-offset_bottom = 91.0
+offset_left = 310.0
+offset_top = 56.0
+offset_right = 911.0
+offset_bottom = 75.0
 value = 50.0
 rounded = true
 fill_mode = 1
@@ -61,7 +61,7 @@ hframes = 2
 [node name="Score_Text" type="Label" parent="UI/Health_Bar"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.27362
+anchor_left = 0.271956
 anchor_top = 5.36842
 anchor_right = 0.271956
 anchor_bottom = 5.36842

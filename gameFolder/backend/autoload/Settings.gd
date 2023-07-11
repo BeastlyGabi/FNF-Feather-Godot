@@ -1,12 +1,21 @@
 extends Node
 
+enum ComboCamera {WORLD = 0, HUD}
+enum ComboStyle {FEATHER = 0, VANILLA}
+
 var _game_settings:Dictionary = {
-	"downscroll": false,
-	"ghost_tapping": true,
-	"note_splashes": true,
-	"auto_pause": false,
-	"note_skin": "default",
-	"timings": {"sick": 45.0, "good": 90.0, "bad": 135.0, "shit": 180.0}
+	## GAMEPLAY
+	"downscroll": false, # Whether notes should scroll donwards
+	"ghost_tapping": true, # Whether you should be able to press there are no notes to be able to hit
+	"timings": {"sick": 45.0, "good": 90.0, "bad": 135.0, "shit": 180.0}, # Define your Judgement Timings
+	
+	## VISUALS
+	"combo_style": ComboStyle.FEATHER, # Choose your combo popup style
+	"combo_camera": ComboCamera.HUD, # Choose where the combo should be in gameplay
+	"note_splashes": true, # Whether the firework effect should be shown when hitting "Sick!"s on Notes
+	
+	## MISC
+	"auto_pause": false, # Whether the game should base itself when onfocused
 }
 
 var volume:float = 1.0:

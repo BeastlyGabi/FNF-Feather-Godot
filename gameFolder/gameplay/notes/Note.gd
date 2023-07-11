@@ -88,8 +88,7 @@ func _process(delta:float) -> void:
 			* end.scale.y) / 2.0)) * scroll_diff
 		
 		end.position = Vector2(hold.points[last_point].x, end_point)
-		end.flip_v = scroll_diff < 0
-		end.modulate.a = hold.modulate.a
+		end.flip_v = scroll_diff < 0; end.modulate.a = hold.modulate.a
 		
 		if was_good_hit:
 			length -= (delta * 1000.0 * Conductor.playback_rate)
@@ -97,7 +96,7 @@ func _process(delta:float) -> void:
 				queue_free()
 	
 	if not in_edit:
-		var hit_area:float = (Timings.worst_timing / (1.2 * Conductor.playback_rate))
+		var hit_area:float = (Timings.worst_timing / (1.2 / Conductor.playback_rate))
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)
 

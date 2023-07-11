@@ -15,6 +15,7 @@ func _ready():
 	$Version_Text.text = "FNF v" + Game.VERSION.get_fnf_ver() + \
 	" / Feather v" + Game.VERSION.name + " [" + Game.VERSION.branch_to_string() + "]"
 	
+	Overlay.tween_in_out(false)
 	Game.reset_menu_music(false)
 	
 	for i in options.get_child_count():

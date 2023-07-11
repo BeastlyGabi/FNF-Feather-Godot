@@ -37,19 +37,19 @@ texture = ExtResource("2_mejji")
 visible = false
 texture_filter = 1
 position = Vector2(632, 336)
-scale = Vector2(5, 5)
+scale = Vector2(4, 4)
 texture = ExtResource("3_hnjla")
 
 [node name="Combo_Sprite" type="Sprite2D" parent="Templates"]
 visible = false
 texture_filter = 1
-position = Vector2(624, 536)
-scale = Vector2(4, 4)
+position = Vector2(600, 472)
+scale = Vector2(3, 3)
 texture = ExtResource("7_mk004")
 
 [node name="Number_Sprite" type="Sprite2D" parent="Templates"]
 visible = false
 texture_filter = 1
-position = Vector2(560, 445)
-scale = Vector2(6, 6)
+position = Vector2(560, 413)
+scale = Vector2(4, 4)
 texture = ExtResource("4_1ct0l")

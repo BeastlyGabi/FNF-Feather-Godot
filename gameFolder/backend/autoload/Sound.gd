@@ -4,9 +4,8 @@ extends Node2D
 @onready var sounds:Node = $Sounds
 
 func play_music(path:String, volume:float = 1.0, start_time:float = 0.0, looped:bool = true) -> void:
-	music.stream = load(path)
-	music.volume_db = linear_to_db(volume)
-	music.stream.loop = looped
+	music.stream = load(path); music.volume_db = linear_to_db(volume)
+	if music.stream != null: music.stream.loop = looped
 	music.play(start_time)
 
 func play_sound(path:String, volume:float = 1.0, start_time:float = 0.0) -> void:

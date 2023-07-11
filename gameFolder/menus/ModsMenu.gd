@@ -22,8 +22,8 @@ func _process(_delta:float) -> void:
 			"txt converter": Game.switch_scene("backend/tools/TXT Converter")
 	
 	if Input.is_action_just_pressed("ui_cancel"):
-		queue_free()
 		get_tree().paused = false
+		queue_free()
 
 func update_selection(new_selection:int = 0) -> void:
 	cur_selection = wrapi(cur_selection + new_selection, 0, options.get_child_count())

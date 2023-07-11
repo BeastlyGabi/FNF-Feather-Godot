@@ -92,23 +92,20 @@ func _init() -> void:
 	STYLE = load(style_folder).instantiate()
 	add_child(STYLE)
 	
-	# Load default noteskin
-	#var skin:String = Settings.get_setting("note_skin")
-	#var note_folder:String = "res://gameFolder/gameplay/notes/" + skin + ".tscn"
-	#if not ResourceLoader.exists(note_folder): note_folder = note_folder.replace(skin, "default")
-	#NOTE_STYLES["default"] = load(note_folder)
-	
 	notes_list = SONG.notes.duplicate()
 	events_list = SONG.events.duplicate()
 
 func _ready() -> void:
 	Timings.reset()
-	
 	Overlay.tween_in_out(true)
 	
 	setup_stage()
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
+	
+	match Settings.get_setting("combo_camera"):
+		Settings.ComboCamera.WORLD:
+			combo_group.reparent(self)
 	
 	Game.discord.update_status("Gameplay", "Playing %s" % Game.META_DATA.display_name)
 	
@@ -234,11 +231,13 @@ func start_song() -> void:
 
 func end_song(_skip_cutscene:bool = false) -> void:
 	stop_music()
-	if not _skip_cutscene:
-		start_cutscene()
-	
 	ending_song = true
 	can_pause = false
+	
+	if not _skip_cutscene:
+		start_cutscene()
+	else:
+		Game.switch_scene("menus/FreeplayMenu")
 
 var can_pause:bool = false
 
@@ -427,10 +426,6 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
 			match event.keycode:
-				KEY_8:
-					get_tree().paused = true
-					var options = load("res://gameFolder/menus/OptionsMenu.tscn")
-					add_child(options.instantiate())
 				KEY_Q:
 					Conductor.playback_rate -= 0.01
 				KEY_E:
@@ -514,18 +509,22 @@ func display_judgement(_name:String) -> void:
 	if judgement_tween != null:
 		judgement_tween.stop()
 	
-	if new_judgement.is_inside_tree():
-		var scale_og:Vector2 = new_judgement.scale
-		new_judgement.scale *= 1.25
-		
-		judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
-		judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.rate_step_crochet / 1000.0)
-		judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, 1.25 * Conductor.rate_crochet / 1000.0) \
-		.set_delay(0.15)
+	if not new_judgement.is_inside_tree(): return
+	judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	
-	last_judge = new_judgement
-
-var last_judge:Sprite2D
+	match Settings.get_setting("combo_style"):
+		Settings.ComboStyle.FEATHER:
+			var scale_og:Vector2 = new_judgement.scale; new_judgement.scale *= 1.25
+			judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.rate_step_crochet / 1000.0)
+		
+		Settings.ComboStyle.VANILLA:
+			#new_judgement.acceleration.y = 550
+			#new_judgement.velocity.y = -randi_range(140, 175)
+			#new_judgement.velocity.x = -randi_range(0, 10)
+			pass
+	
+	judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, \
+	1.25 * Conductor.rate_crochet / 1000.0).set_delay(0.15)
 
 func display_combo() -> void:
 	var combo:String = str(Timings.combo).pad_zeros(3)
@@ -537,23 +536,42 @@ func display_combo() -> void:
 		new_combo.visible = true
 		combo_group.add_child(new_combo)
 		
-		new_combo.position.x = Game.get_screen_center(new_combo.get_rect().position).x - 75
-		new_combo.position.x += 50 * i
+		new_combo.position.x = Game.get_screen_center(new_combo.get_rect().position).x - 60
+		new_combo.position.x += 35 * i
 		
-		if new_combo.is_inside_tree():
-			get_tree().create_tween().set_ease(Tween.EASE_OUT) \
-			.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.rate_crochet / 1000.0) \
-			.set_delay(0.55)
+		if not new_combo.is_inside_tree(): return
+		
+		match Settings.get_setting("combo_style"):
+			Settings.ComboStyle.FEATHER:
+				get_tree().create_tween().set_ease(Tween.EASE_OUT) \
+				.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.rate_crochet / 1000.0) \
+				.set_delay(0.55)
+			
+			Settings.ComboStyle.VANILLA:
+				#new_combo.acceleration.y = randi_range(200, 300)
+				#new_combo.velocity.y -= randi_range(140, 160)
+				#new_combo.velocity.x = randf_range(-5, 5)
+				get_tree().create_tween().set_ease(Tween.EASE_OUT) \
+				.tween_property(new_combo, "modulate:a", 0.0, 0.50 * Conductor.rate_crochet / 1000.0) \
+				.set_delay(0.55)
 
 func display_combo_sprite() -> void:
 	var combo_spr:Sprite2D = STYLE.get_template("Combo_Sprite").duplicate()
 	combo_spr.visible = true
-	ui.add_child(combo_spr)
+	combo_group.get_parent().add_child(combo_spr)
 	
 	combo_spr.position.x = Game.get_screen_center(combo_spr.get_rect().position).x
 	combo_spr.position.x -= combo_spr.texture.get_width() / 4.0
 	
-	if combo_spr.is_inside_tree():
-		create_tween().set_ease(Tween.EASE_IN_OUT) \
-		.tween_property(combo_spr, "modulate:a", 0.0, 1.35 * Conductor.rate_crochet / 1000.0) \
-		.set_delay(0.15)
+	if not combo_spr.is_inside_tree(): return
+	match Settings.get_setting("combo_style"):
+		Settings.ComboStyle.VANILLA:
+			#combo_spr.acceleration.y = randi_range(200, 300)
+			#combo_spr.velocity.y = -randi_range(140, 160)
+			pass
+	
+	create_tween().set_ease(Tween.EASE_IN_OUT) \
+	.tween_property(combo_spr, "modulate:a", 0.0, 1.35 * \
+	Conductor.rate_crochet / 1000.0).set_delay(0.15)
+
+func is_combo_on_hud() -> bool: return combo_group.get_parent() == ui
