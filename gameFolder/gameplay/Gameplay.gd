@@ -103,7 +103,7 @@ func _ready() -> void:
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
 	
-	match Settings.get_setting("combo_camera"):
+	match Settings.get("combo_camera"):
 		Settings.ComboCamera.WORLD:
 			combo_group.reparent(self)
 	
@@ -136,7 +136,7 @@ func _ready() -> void:
 				new_stream.stream.loop = false
 				sounds.add_child(new_stream)
 	
-	if not Settings.get_setting("downscroll"):
+	if not Settings.get("downscroll"):
 		health_bar.position.y = Game.SCREEN["height"] - 85
 		for strum_line in strum_lines.get_children():
 			strum_line.position.y = 100
@@ -408,7 +408,7 @@ func on_tick() -> void:
 func _notification(what):
 	match what:
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
-			if Settings.get_setting("auto_pause"):
+			if Settings.get("auto_pause"):
 				if can_pause and not get_tree().paused:
 					pause_game()
 
@@ -513,7 +513,7 @@ func display_judgement(_name:String) -> void:
 	if not new_judgement.is_inside_tree(): return
 	judgement_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	
-	match Settings.get_setting("combo_style"):
+	match Settings.get("combo_style"):
 		Settings.ComboStyle.FEATHER:
 			var scale_og:Vector2 = new_judgement.scale; new_judgement.scale *= 1.25
 			judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.rate_step_crochet / 1000.0)
@@ -542,7 +542,7 @@ func display_combo() -> void:
 		
 		if not new_combo.is_inside_tree(): return
 		
-		match Settings.get_setting("combo_style"):
+		match Settings.get("combo_style"):
 			Settings.ComboStyle.FEATHER:
 				get_tree().create_tween().set_ease(Tween.EASE_OUT) \
 				.tween_property(new_combo, "scale", Vector2.ZERO, 0.50 * Conductor.rate_crochet / 1000.0) \
@@ -565,7 +565,7 @@ func display_combo_sprite() -> void:
 	combo_spr.position.x -= combo_spr.texture.get_width() / 4.0
 	
 	if not combo_spr.is_inside_tree(): return
-	match Settings.get_setting("combo_style"):
+	match Settings.get("combo_style"):
 		Settings.ComboStyle.VANILLA:
 			#combo_spr.acceleration.y = randi_range(200, 300)
 			#combo_spr.velocity.y = -randi_range(140, 160)

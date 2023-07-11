@@ -37,7 +37,7 @@ func note_process() -> void:
 			note.queue_free()
 			return
 		
-		var scroll_diff:int = 1 if Settings.get_setting("downscroll") else -1
+		var scroll_diff:int = 1 if Settings.get("downscroll") else -1
 		var distance:float = (Conductor.position - note.time) * (0.45 * note.speed)
 		
 		var receptor:AnimatedSprite2D = receptors.get_child(note.direction)
@@ -102,7 +102,7 @@ func note_process() -> void:
 					note._did_miss = true
 
 func pop_splash(note:Note) -> void:
-	if not Settings.get_setting("note_splashes") or not note.has_node("Splash"):
+	if not Settings.get("note_splashes") or not note.has_node("Splash"):
 		return
 	
 	var receptor := receptors.get_child(note.direction)
@@ -174,7 +174,7 @@ func key_shit(key:int) -> void:
 			play_anim("confirm", key, true)
 		
 		else:
-			if not Settings.get_setting("ghost_tapping"):
+			if not Settings.get("ghost_tapping"):
 				game.ghost_miss(key)
 
 func get_key_dir(event:InputEventKey) -> int:

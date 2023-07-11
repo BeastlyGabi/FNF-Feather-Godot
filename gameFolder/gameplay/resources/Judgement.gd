@@ -14,7 +14,7 @@ func _init(_name:String, _accuracy:float, _splash:bool = false, _image:String = 
 	self.splash = _splash
 	
 	self.accuracy = _accuracy
-	self.timing = Settings.get_setting("timings")[name]
+	self.timing = Settings.get("timings")[name]
 
 static func path_to_judge(_image:String, _skin:String = "normal") -> String:
 	return "res://assets/images/UI/ratings/" + _skin + "/" + _image + ".png"

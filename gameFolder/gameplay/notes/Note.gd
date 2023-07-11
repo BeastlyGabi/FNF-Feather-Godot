@@ -79,7 +79,7 @@ func _ready() -> void:
 
 func _process(delta:float) -> void:
 	if is_hold and _sustain_exists():
-		var scroll_diff:int = -1 if Settings.get_setting("downscroll") and not in_edit else 1
+		var scroll_diff:int = -1 if Settings.get("downscroll") and not in_edit else 1
 		var sustain_scale:float = ((length / 2.5) * ((speed * Conductor.playback_rate) / scale.y))
 		
 		hold.points = [Vector2.ZERO, Vector2(0, sustain_scale)]
@@ -104,7 +104,7 @@ func _sustain_exists() -> bool:
 	var has_sustain:bool = has_node("Hold") and has_node("End")
 	if has_sustain:
 		hold.visible = true; end.visible = true
-		hold.scale.y = -1 if Settings.get_setting("downscroll") and not in_edit else 1
+		hold.scale.y = -1 if Settings.get("downscroll") and not in_edit else 1
 	return has_sustain
 
 func _existing_nodes() -> Array:
