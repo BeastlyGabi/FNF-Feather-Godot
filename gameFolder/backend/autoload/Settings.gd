@@ -52,23 +52,25 @@ func load_cfg() -> void:
 	flush(_cfg_filepath)
 
 func _load_file(path:String) -> void:
-	if _file == null: _file = ConfigFile.new()
-	if not path.begins_with("user://"): path = "user://%s" % path
-	if not path.ends_with(".cfg"): path = path + ".cfg'"
+	path = _format_path(path)
 	
+	if _file == null: _file = ConfigFile.new()
 	var err:Error = _file.load(path)
 	if err != OK: _file.save(path)
 
-func flush(_path:String) -> void:
-	if not _path.begins_with("user://"): _path = "user://%s" % _path
-	if not _path.ends_with(".cfg"): _path = _path + ".cfg'"
-	
-	if _file == null: _load_file(_path)
-	var _err:Error = _file.load(_path)
-	if _err != OK:
+func flush(path:String) -> void:
+	if _file == null: _load_file(path)
+	var err:Error = _file.load(path)
+	if err != OK:
 		_file.clear()
+		_file = null
 		return
 	
-	_file.save(_path)
+	_file.save(path)
 	_file.clear()
 	_file = null
+
+func _format_path(path:String) -> String:
+	if not path.begins_with("user://"): path = "user://%s" % path
+	if not path.ends_with(".cfg"): path = path + ".cfg'"
+	return path

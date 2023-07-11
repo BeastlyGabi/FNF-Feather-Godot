@@ -489,6 +489,7 @@ func ghost_miss(direction:int, include_anim:bool = true) -> void:
 	voices.volume_db = linear_to_db(0.0)
 
 func do_miss_damage():
+	if starting_song: return
 	Timings.health -= 0.087
 	Timings.misses += 1
 	
