@@ -5,17 +5,17 @@ enum ComboStyle {FEATHER = 0, VANILLA}
 
 var _game_settings:Dictionary = {
 	## GAMEPLAY
-	"downscroll": false, # Whether notes should scroll donwards
+	"downscroll": false, # Whether notes should scroll downards
 	"ghost_tapping": true, # Whether you should be able to press there are no notes to be able to hit
 	"timings": {"sick": 45.0, "good": 90.0, "bad": 135.0, "shit": 180.0}, # Define your Judgement Timings
 	
 	## VISUALS
 	"combo_style": ComboStyle.FEATHER, # Choose your combo popup style
 	"combo_camera": ComboCamera.HUD, # Choose where the combo should be in gameplay
-	"note_splashes": true, # Whether the firework effect should be shown when hitting "Sick!"s on Notes
+	"note_splashes": true, # Whether a splash effect should be shown when hitting "Sick!"s on Notes
 	
 	## MISC
-	"auto_pause": false, # Whether the game should base itself when onfocused
+	"auto_pause": true, # Whether the game should pause itself when unfocused
 }
 
 var volume:float = 1.0:

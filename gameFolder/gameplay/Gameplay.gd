@@ -408,8 +408,9 @@ func on_tick() -> void:
 func _notification(what):
 	match what:
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
-			if can_pause and not get_tree().paused:
-				pause_game()
+			if Settings.get_setting("auto_pause"):
+				if can_pause and not get_tree().paused:
+					pause_game()
 
 func dance_characters(_beat:int) -> void:
 	for bopper in stage.get_children():
