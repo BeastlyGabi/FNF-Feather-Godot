@@ -12,9 +12,7 @@ func tween_in_out(out:bool = false):
 		.tween_property(i, "position:y", to_y, 1.35)
 
 func _ready():
-	$Version_Label.text = Game.VERSION.name
-	if Game.VERSION.branch_to_string() != "":
-		$Version_Label.text += " [" + Game.VERSION.branch_to_string() + "]"
+	$Version_Label.text = Game.VERSION.ff_version
 
 func _process(delta:float) -> void:
 	if not process_every_frame:

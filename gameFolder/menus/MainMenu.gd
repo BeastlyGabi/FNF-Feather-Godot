@@ -12,8 +12,8 @@ func _select() -> void:
 
 func _ready():
 	Game.discord.update_status("Main Menu", "In the Menus")
-	$Version_Text.text = "FNF v" + Game.VERSION.get_fnf_ver() + \
-	" / Feather v" + Game.VERSION.name + " [" + Game.VERSION.branch_to_string() + "]"
+	$Version_Text.text = "FNF v%s" % Game.VERSION.fnf_version + \
+	" / Feather v%s" % Game.VERSION.ff_version
 	
 	Overlay.tween_in_out(false)
 	Game.reset_menu_music(false)
