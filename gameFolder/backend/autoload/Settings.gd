@@ -4,7 +4,7 @@ extends Node
 var _file:ConfigFile = ConfigFile.new()
 const _cfg_filepath:String = "user://settings.cfg"
 
-### <-- SETTINGS ### -->
+### <-- SETTINGS --> ###
 
 ## GAMEPLAY
 var downscroll:bool = false # Whether notes should scroll downards
@@ -27,7 +27,7 @@ var volume:float = 1.0:
 		volume = v
 		AudioServer.set_bus_volume_db(0, linear_to_db(v))
 
-### <-- FUNCTIONS ### -->
+### <-- FUNCTIONS --> ###
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.BLACK)
