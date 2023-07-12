@@ -1,8 +1,8 @@
 [gd_scene load_steps=34 format=3 uid="uid://cwkeyflpkyyn4"]
 
 [ext_resource type="Script" path="res://gameFolder/Game.gd" id="1_2sajl"]
-[ext_resource type="Script" path="res://gameFolder/menus/data/Week.gd" id="2_f6mj3"]
-[ext_resource type="Script" path="res://gameFolder/menus/data/Song.gd" id="3_e6kde"]
+[ext_resource type="Script" path="res://gameFolder/data/Week.gd" id="2_f6mj3"]
+[ext_resource type="Script" path="res://gameFolder/data/Song.gd" id="3_e6kde"]
 
 [sub_resource type="Resource" id="Resource_x4gf1"]
 script = ExtResource("3_e6kde")

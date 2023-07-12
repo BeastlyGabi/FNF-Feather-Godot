@@ -21,12 +21,12 @@ config/icon="res://art/icon.png"
 [autoload]
 
 Game="*res://gameFolder/Game.tscn"
-Settings="*res://gameFolder/backend/autoload/Settings.gd"
-Sound="*res://gameFolder/backend/autoload/Sound.tscn"
-Conductor="*res://gameFolder/backend/autoload/Conductor.gd"
-Timings="*res://gameFolder/gameplay/resources/Timings.gd"
-Overlay="*res://gameFolder/ui/Overlay.tscn"
-VolumeBar="*res://gameFolder/ui/VolumeBar.tscn"
+Settings="*res://gameFolder/scripts/autoload/Settings.gd"
+Sound="*res://gameFolder/scenes/autoload/Sound.tscn"
+Conductor="*res://gameFolder/scripts/autoload/Conductor.gd"
+Timings="*res://gameFolder/scripts/game/Timings.gd"
+Overlay="*res://gameFolder/scenes/game/ui/Overlay.tscn"
+VolumeBar="*res://gameFolder/scenes/game/ui/VolumeBar.tscn"
 
 [display]
 

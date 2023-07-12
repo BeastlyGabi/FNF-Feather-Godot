@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://b3vxaif6gup5x"]
+
+[ext_resource type="Script" path="res://gameFolder/scripts/game/menus/MainMenu.gd" id="1_va83e"]
+[ext_resource type="Texture2D" uid="uid://dxtt3ho5kn6c4" path="res://assets/images/gameMenus/menuBG.png" id="2_5gt7k"]
+[ext_resource type="SpriteFrames" uid="uid://cvcmp8kp2kwhj" path="res://assets/images/gameMenus/mainMenu/story.res" id="3_l553g"]
+[ext_resource type="SpriteFrames" uid="uid://yrhx6b32j2ac" path="res://assets/images/gameMenus/mainMenu/freeplay.res" id="4_x6s5x"]
+[ext_resource type="SpriteFrames" uid="uid://boqoiqph05x7w" path="res://assets/images/gameMenus/mainMenu/options.res" id="5_cx0rc"]
+[ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="6_agb3a"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_va83e")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(642, 365)
+texture = ExtResource("2_5gt7k")
+
+[node name="Options" type="Node2D" parent="."]
+
+[node name="Story" type="AnimatedSprite2D" parent="Options"]
+position = Vector2(625, 200)
+sprite_frames = ExtResource("3_l553g")
+animation = &"white"
+
+[node name="Freeplay" type="AnimatedSprite2D" parent="Options"]
+position = Vector2(625, 360)
+sprite_frames = ExtResource("4_x6s5x")
+animation = &"basic"
+
+[node name="Options" type="AnimatedSprite2D" parent="Options"]
+position = Vector2(625, 530)
+sprite_frames = ExtResource("5_cx0rc")
+animation = &"basic"
+
+[node name="Version_Text" type="Label" parent="."]
+offset_top = 701.0
+offset_right = 479.0
+offset_bottom = 724.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("6_agb3a")
+text = "Friday Night Funkin' v0.2.8 / Funkin' Feather v0.1"

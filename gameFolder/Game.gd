@@ -21,18 +21,14 @@ const cpu_text_quotes:Dictionary = {
 var VERSION:Versioning
 var LAST_SCENE:String
 
-var discord:DiscordNode = DiscordNode.new()
-
 func _ready() -> void:
 	old_volume = Settings.volume
 	VERSION = Versioning.new(0, 0, 1)
 	LAST_SCENE = get_tree().current_scene.scene_file_path
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	#add_child(discord)
 	
 	reset_week_diffs()
-	discord.update_status("Main Menu", "In the Menus")
-	switch_scene("menus/MainMenu", true)
+	switch_scene("game/menus/MainMenu", true)
 
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
@@ -44,7 +40,7 @@ func _input(event:InputEvent) -> void:
 						if current_scene.name == scene:
 							return
 					
-					var mods_menu:PackedScene = load("res://gameFolder/menus/ModsMenu.tscn")
+					var mods_menu:PackedScene = load("res://gameFolder/scenes/game/menus/ModsMenu.tscn")
 					get_tree().paused = true
 					add_child(mods_menu.instantiate())
 
@@ -60,11 +56,11 @@ func _notification(what):
 				Settings.volume = focus_lost_volume
 
 const TRANSITIONS:Dictionary = {
-	"default": preload("res://gameFolder/backend/transition/LinearVertical.tscn")
+	"default": preload("res://gameFolder/scenes/transition/LinearVertical.tscn")
 }
 
 func switch_scene(next_scene:String, skip_transition:bool = false) -> void:
-	var scene_path:String = "res://gameFolder/" + next_scene + ".tscn"
+	var scene_path:String = "res://gameFolder/scenes/" + next_scene + ".tscn"
 	LAST_SCENE = scene_path
 	
 	if !skip_transition:
@@ -81,7 +77,7 @@ var META_DATA:Chart.SongMetaData
 
 func bind_song(_song_name:String, _diff:String = "hard") -> void:
 	CUR_SONG = Chart.load_chart(_song_name, _diff)
-	switch_scene("gameplay/Gameplay")
+	switch_scene("game/Gameplay")
 
 func reset_week_diffs() -> void:
 	for week in weeks: for song in week.songs:

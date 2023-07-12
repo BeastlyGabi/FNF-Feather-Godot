@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dglptbieaj8fy"]
+
+[ext_resource type="Script" path="res://gameFolder/scripts/autoload/Sound.gd" id="1_0k83h"]
+
+[node name="Sound" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_0k83h")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]

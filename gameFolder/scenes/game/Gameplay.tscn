@@ -1,0 +1,122 @@
+[gd_scene load_steps=6 format=3 uid="uid://b2mco2q2geqm0"]
+
+[ext_resource type="Script" path="res://gameFolder/scripts/game/Gameplay.gd" id="1_cnvoi"]
+[ext_resource type="Texture2D" uid="uid://ih4xeuda00f5" path="res://assets/images/UI/healthBar.png" id="3_t42yp"]
+[ext_resource type="FontFile" uid="uid://b8csy7m57kuot" path="res://assets/data/fonts/vcr.ttf" id="4_wgyi5"]
+[ext_resource type="PackedScene" uid="uid://bfgv48nat0c6w" path="res://gameFolder/scenes/game/notes/StrumLine.tscn" id="6_8e42i"]
+[ext_resource type="Texture2D" uid="uid://ctwobjckai73u" path="res://assets/images/icons/face.png" id="6_hgky4"]
+
+[node name="Gameplay" type="Node2D"]
+script = ExtResource("1_cnvoi")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Inst" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Voices" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+
+[node name="Strum_Lines" type="CanvasLayer" parent="."]
+
+[node name="Opponent" parent="Strum_Lines" instance=ExtResource("6_8e42i")]
+position = Vector2(150, 615)
+
+[node name="Player" parent="Strum_Lines" instance=ExtResource("6_8e42i")]
+position = Vector2(800, 615)
+is_cpu = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Health_Bar" type="TextureProgressBar" parent="UI"]
+offset_left = 310.0
+offset_top = 56.0
+offset_right = 911.0
+offset_bottom = 75.0
+value = 50.0
+rounded = true
+fill_mode = 1
+texture_under = ExtResource("3_t42yp")
+texture_progress = ExtResource("3_t42yp")
+tint_under = Color(1, 0.184314, 0, 1)
+tint_progress = Color(0.529412, 1, 0.431373, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Player_icon" type="Sprite2D" parent="UI/Health_Bar"]
+position = Vector2(264, -58)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_hgky4")
+centered = false
+flip_h = true
+hframes = 2
+
+[node name="Opponent_icon" type="Sprite2D" parent="UI/Health_Bar"]
+position = Vector2(209, -58)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_hgky4")
+centered = false
+hframes = 2
+
+[node name="Score_Text" type="Label" parent="UI/Health_Bar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.271956
+anchor_top = 5.36842
+anchor_right = 0.271956
+anchor_bottom = 5.36842
+offset_left = -164.445
+offset_top = -63.0
+offset_right = 437.555
+offset_bottom = -42.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_wgyi5")
+theme_override_font_sizes/font_size = 18
+text = "- SCORE: Nuh / MISSES: Uh / RANK: Nuh [Uh% / Nuh Uh] -"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Combo_Group" type="Node2D" parent="UI"]
+
+[node name="Judge_Counter" type="Label" parent="UI"]
+offset_top = 272.0
+offset_right = 104.0
+offset_bottom = 358.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_wgyi5")
+theme_override_font_sizes/font_size = 20
+text = "Sicks: 0
+Goods: 0
+Bads: 0
+Shits: 0"
+
+[node name="CPU_Text" type="Label" parent="UI"]
+visible = false
+offset_left = 574.0
+offset_top = 257.0
+offset_right = 707.0
+offset_bottom = 289.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("4_wgyi5")
+theme_override_font_sizes/font_size = 32
+text = "[CPU]"
+horizontal_alignment = 1
+
+[node name="Quote" type="Label" parent="UI/CPU_Text"]
+layout_mode = 0
+offset_left = -443.0
+offset_top = 32.0
+offset_right = 590.0
+offset_bottom = 53.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_wgyi5")
+theme_override_font_sizes/font_size = 20
+text = "\"Skill Issue\""
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
