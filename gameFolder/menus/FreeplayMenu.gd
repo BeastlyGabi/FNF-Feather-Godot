@@ -14,7 +14,6 @@ var last_difficulty:String
 @onready var diff_text:Label = $UI/Diff_Text
 
 func _ready() -> void:
-	Overlay.tween_in_out(true)
 	Game.reset_menu_music(false)
 	Game.discord.update_status("Freeplay", "In the Menus")
 	for week in Game.weeks:

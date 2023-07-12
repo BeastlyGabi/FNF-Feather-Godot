@@ -97,7 +97,6 @@ func _init() -> void:
 
 func _ready() -> void:
 	Timings.reset()
-	Overlay.tween_in_out(true)
 	
 	setup_stage()
 	setup_characters()
