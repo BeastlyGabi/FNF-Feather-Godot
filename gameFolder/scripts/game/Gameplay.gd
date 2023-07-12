@@ -5,11 +5,12 @@ var NOTE_STYLES:Dictionary = {
 }
 
 const SUBSCENES:Dictionary = {
-	"pause" = preload("res://gameFolder/scenes/game/PauseMenu.tscn")
+	"pause" = preload("res://gameFolder/scenes/game/menus/PauseMenu.tscn")
 }
 
 var CHART:Chart
 var STYLE:UIStyle
+var TIMINGS:Timings
 
 @onready var camera:Camera2D = $Camera2D
 
@@ -100,12 +101,12 @@ func _init() -> void:
 	STYLE = load(style_folder).instantiate()
 	add_child(STYLE)
 	
+	TIMINGS = Timings.new()
+	
 	notes_list = CHART.notes.duplicate()
 	events_list = CHART.events.duplicate()
 
 func _ready() -> void:
-	Timings.reset()
-	
 	setup_stage()
 	setup_characters()
 	fire_event("Simple Camera Movement", ["opponent"])
@@ -253,7 +254,7 @@ func _process(delta:float) -> void:
 		if (absf((inst.get_playback_position() * 1000.0) -  Conductor.position) > 8.0):
 			Conductor.position = inst.get_playback_position() * 1000.0
 	
-	Timings.health = clampf(Timings.health, 0.0, 2.0)
+	TIMINGS.health = clampf(TIMINGS.health, 0.0, 2.0)
 	
 	if $UI/CPU_Text.visible:
 		cpu_txt_sine += 180.0 * (delta / 4.0)
@@ -351,20 +352,20 @@ func fire_event(name:String, args:Array[Variant]) -> void:
 var score_divider:String = " / "
 func update_score() -> void:
 	var format:String = "%.2f"
-	var true_accuracy:float = Timings.accuracy * 100 / 100
+	var true_accuracy:float = TIMINGS.accuracy * 100 / 100
 	if true_accuracy >= 100 or true_accuracy <= 0:
 		format = "%.0f"
 	
 	var score_temp:String
 	
-	score_temp = "- SCORE: %s" % str(Timings.score)
-	score_temp += score_divider + "MISSES: %s" % str(Timings.misses)
-	score_temp += score_divider + "RANK: %s" % [Timings.cur_grade.name]
+	score_temp = "- SCORE: %s" % str(TIMINGS.score)
+	score_temp += score_divider + "MISSES: %s" % str(TIMINGS.misses)
+	score_temp += score_divider + "RANK: %s" % [TIMINGS.cur_grade.name]
 	
-	if Timings.notes_hit > 0:
+	if TIMINGS.notes_hit > 0:
 		score_temp += " [%s" % [format % true_accuracy] + "%"
-		if Timings.cur_clear != "":
-			score_temp += score_divider + "%s" % Timings.cur_clear
+		if TIMINGS.cur_clear != "":
+			score_temp += score_divider + "%s" % TIMINGS.cur_clear
 		score_temp += "]"
 	score_temp += ' -'
 	
@@ -376,13 +377,13 @@ func update_judgement_counter() -> void:
 		return
 	
 	var text:String = ""
-	for i in Timings.judgements_hit:
-		text += "\n%s: %s" % [i.to_pascal_case() + "s", Timings.get_hits(i)]
+	for i in TIMINGS.judgements_hit:
+		text += "\n%s: %s" % [i.to_pascal_case() + "s", TIMINGS.get_hits(i)]
 	combo_counter.text = text
 
 func update_healthbar() -> void:
 	var health_bar_width:float = health_bar.texture_progress.get_size().x
-	health_bar.value = clampi(Timings.health * 50.0, 0, 100)
+	health_bar.value = clampi(TIMINGS.health * 50.0, 0, 100)
 	
 	icon_P1.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P1.texture.get_width()) - 50
 	icon_P2.position.x = health_bar.position.x + ((health_bar_width * (1 - health_bar.value / 100)) - icon_P2.texture.get_width()) - 125
@@ -468,14 +469,14 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		char.hold_timer = 0.0
 	
 	if not strum.is_cpu:
-		var judge:Judgement = Timings.judge_values(note.time, Conductor.position)
+		var judge:Judgement = TIMINGS.judge_values(note.time, Conductor.position)
 		
 		if note.event.get_event("increase_score"):
-			Timings.score += Timings.score_from_judge(judge.name)
+			TIMINGS.score += TIMINGS.score_from_judge(judge.name)
 		if note.event.get_event("increase_combo"):
-			Timings.update_combo(true)
+			TIMINGS.update_combo(true)
 		
-		Timings.health += 0.023
+		TIMINGS.health += 0.023
 		if judge.name == "sick" and note.event.get_event("splash"):
 			strum.pop_splash(note)
 		
@@ -486,10 +487,10 @@ func note_hit(note:Note, strum:StrumLine) -> void:
 		if note.event.get_event("display_judgement"): display_judgement(judge.name)
 		if note.event.get_event("display_combo"):
 			display_combo()
-			if Timings.combo % 10 == 0:
+			if TIMINGS.combo % 10 == 0:
 				display_combo_sprite()
 		
-		Timings.update_accuracy(judge)
+		TIMINGS.update_accuracy(judge)
 		update_score()
 	
 	if not note.is_hold:
@@ -519,11 +520,11 @@ func ghost_miss(direction:int, include_anim:bool = true) -> void:
 
 func do_miss_damage():
 	if starting_song: return
-	Timings.health -= 0.087
-	Timings.misses += 1
+	TIMINGS.health -= 0.087
+	TIMINGS.misses += 1
 	
-	Timings.update_combo(false)
-	Timings.update_rank()
+	TIMINGS.update_combo(false)
+	TIMINGS.update_rank()
 	update_score()
 
 var judgement_tween:Tween
@@ -556,7 +557,7 @@ func display_judgement(_name:String) -> void:
 	1.25 * Conductor.rate_crochet / 1000.0).set_delay(0.15)
 
 func display_combo() -> void:
-	var combo:String = str(Timings.combo).pad_zeros(3)
+	var combo:String = str(TIMINGS.combo).pad_zeros(3)
 	var numbers:PackedStringArray = combo.split("")
 	
 	for i in numbers.size():

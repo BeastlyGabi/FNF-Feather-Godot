@@ -1,4 +1,4 @@
-extends Node
+class_name Timings extends Node
 
 var judgements:Array[Judgement] = [
 	# Name, Accuracy, Note Splash, Image (Optional)
@@ -21,7 +21,7 @@ var worst_timing:float:
 func get_hits(judgement_name:String) -> int:
 	return judgements_hit[judgement_name]
 
-func reset():
+func _init():
 	judgements_hit.clear()
 	
 	score = 0; notes_hit = 0; health = 1.0

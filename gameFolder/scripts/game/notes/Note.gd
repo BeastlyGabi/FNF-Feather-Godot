@@ -96,7 +96,7 @@ func _process(delta:float) -> void:
 				queue_free()
 	
 	if not in_edit:
-		var hit_area:float = (Timings.worst_timing / (1.2 / Conductor.playback_rate))
+		var hit_area:float = (parent.game.TIMINGS.worst_timing / (1.2 / Conductor.playback_rate))
 		can_be_hit = time > Conductor.position - hit_area and time < Conductor.position + hit_area
 		too_late = (time < Conductor.position - hit_area and not was_good_hit)
 

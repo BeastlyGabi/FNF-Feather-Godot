@@ -43,9 +43,6 @@ func note_process() -> void:
 		var receptor:AnimatedSprite2D = receptors.get_child(note.direction)
 		note.position = Vector2(receptor.position.x, receptor.position.y + distance * scroll_diff)
 		
-		if receptor.material.get_shader_parameter("color") != note.color:
-			receptor.material.set_shader_parameter("color", note.color)
-		
 		if note.copy_rotation: note.arrow.rotation = receptor.rotation
 		if note.copy_opacity: note.modulate.a = receptor.modulate.a
 		
@@ -172,6 +169,7 @@ func key_shit(key:int) -> void:
 			
 			game.note_hit(cool_note, self)
 			play_anim("confirm", key, true)
+			_set_note_color(key, cool_note.color)
 		
 		else:
 			if not Settings.get("ghost_tapping"):
@@ -191,3 +189,8 @@ func play_anim(anim:String, direction:int, forced:bool = false, speed:float = 1.
 
 func set_lane_speed(new_speed:float) -> void:
 	pass
+
+func _set_note_color(direction:int, color:Color) -> void:
+	var receptor := receptors.get_child(direction)
+	if receptor.material.get_shader_parameter("color") != color:
+		receptor.material.set_shader_parameter("color", color)
