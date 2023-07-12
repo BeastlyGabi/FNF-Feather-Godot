@@ -23,3 +23,5 @@ func _input(_event:InputEvent) -> void:
 		Settings.volume = clampf(Settings.volume + value, 0.0, 1.0)
 		show_the_thing()
 		beep.play(0.0)
+		
+		Settings.flush(Settings._cfg_filepath)

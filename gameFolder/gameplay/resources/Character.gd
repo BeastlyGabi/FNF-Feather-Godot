@@ -1,24 +1,33 @@
 class_name Character extends AnimatedSprite2D
 
-@export var health_icon:String = "face"
-@export var health_color:Color = Color8(255, 0, 0)
+@export var health_icon:Texture2D = load("res://assets/images/icons/face.png")
+@export var health_color:Color
 @export var camera_offset:Vector2 = Vector2.ZERO
 @export var sing_duration:float = 4.0
-var hold_timer:float = 0.0
+@export var flip_if_opponent:bool = false
 
 @export var allowed_to_dance:bool = true
 @export var dance_interval:int = 2
-@export var is_player:bool = false
+
+var hold_timer:float = 0.0
+var is_player:bool = false
 
 @onready var anim:AnimationPlayer = $Anim_Player
 
 var sing_anims:Array[String] = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
+var miss_anims:Array[String] = []
+
 var _swapped_horizontals:bool = false
 
 func _ready() -> void:
 	dance(true)
 	
-	if not is_player:
+	for i in sing_anims:
+		if anim.has_animation(i + "miss"):
+			miss_anims.append(i + "miss")
+		else: miss_anims.append(i)
+	
+	if not is_player and flip_if_opponent:
 		_swapped_horizontals = true
 		scale.x *= -1
 		
@@ -46,7 +55,7 @@ func dance(forced:bool = false) -> void:
 	var anim_name:String = "idle"
 	if quick_dancer():
 		danced = not danced
-		anim_name = "dance" + "Right" if danced else "Left"
+		anim_name = "danceRight" if danced else "danceLeft"
 	
 	play_anim(anim_name, forced)
 

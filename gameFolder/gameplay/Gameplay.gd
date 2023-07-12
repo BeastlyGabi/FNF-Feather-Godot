@@ -8,7 +8,7 @@ const SUBSCENES:Dictionary = {
 	"pause" = preload("res://gameFolder/subScenes/PauseMenu.tscn")
 }
 
-var SONG:Chart
+var CHART:Chart
 var STYLE:UIStyle
 
 @onready var camera:Camera2D = $Camera2D
@@ -23,6 +23,9 @@ var STYLE:UIStyle
 @onready var combo_counter:Label = $UI/Judge_Counter
 @onready var combo_group:Node2D = $UI/Combo_Group
 
+# literally stolen from hypno's lullaby/psych engine
+var cpu_txt_sine:float = 0.0
+
 @onready var icon_P1 := $UI/Health_Bar/Player_icon
 @onready var icon_P2 := $UI/Health_Bar/Opponent_icon
 
@@ -32,7 +35,6 @@ var STYLE:UIStyle
 var player:Character
 var opponent:Character
 var spectator:Character
-
 var stage:Stage
 
 var notes_list:Array[Chart.NoteData] = []
@@ -43,10 +45,10 @@ var events_list:Array[Chart.EventData] = []
 
 func setup_stage() -> void:
 	var base:String = "res://gameFolder/gameplay/stages/"
-	if not ResourceLoader.exists(base + SONG.stage + ".tscn"):
-		SONG.stage = "stage"
+	if not ResourceLoader.exists(base + CHART.stage + ".tscn"):
+		CHART.stage = "stage"
 	
-	stage = load(base + SONG.stage + ".tscn").instantiate()
+	stage = load(base + CHART.stage + ".tscn").instantiate()
 	add_child(stage)
 
 func _load_char(_new_char:String, player:bool = false) -> Character:
@@ -60,11 +62,11 @@ func _load_char(_new_char:String, player:bool = false) -> Character:
 	return _char
 
 func setup_characters() -> void:
-	player = _load_char(SONG.characters[0], true)
-	opponent = _load_char(SONG.characters[1])
+	player = _load_char(CHART.characters[0], true)
+	opponent = _load_char(CHART.characters[1])
 	
 	if not stage.hide_spectator:
-		spectator = _load_char(SONG.characters[2])
+		spectator = _load_char(CHART.characters[2])
 		stage.add_child(spectator)
 	
 	stage.add_child(opponent)
@@ -73,8 +75,14 @@ func setup_characters() -> void:
 	player.position = stage.player_position
 	opponent.position = stage.opponent_position
 	
-	icon_P1.texture = load("res://assets/images/icons/" + player.health_icon + ".png")
-	icon_P2.texture = load("res://assets/images/icons/" + opponent.health_icon + ".png")
+	icon_P1.texture = player.health_icon
+	icon_P2.texture = opponent.health_icon
+	
+	var color_a:Color = player.health_color
+	var color_b:Color = opponent.health_color
+	
+	if color_a != null: health_bar.tint_progress = color_a
+	if color_b != null: health_bar.tint_under = color_b
 	
 	# kinda eh sysm probably gonna redo later
 	var opponent_strums:StrumLine = $Strum_Lines/Opponent
@@ -85,15 +93,15 @@ func setup_characters() -> void:
 
 func _init() -> void:
 	super._init()
-	SONG = Game.CUR_SONG if Game.CUR_SONG != null else Chart.load_chart("test", "normal")
+	CHART = Game.CUR_SONG if Game.CUR_SONG != null else Chart.load_chart("test", "normal")
 	
-	var style_folder:String = "res://gameFolder/ui/styles/" + SONG.ui_style + ".tscn"
-	if not ResourceLoader.exists(style_folder): style_folder = style_folder.replace(SONG.ui_style, "normal")
+	var style_folder:String = "res://gameFolder/ui/styles/" + CHART.ui_style + ".tscn"
+	if not ResourceLoader.exists(style_folder): style_folder = style_folder.replace(CHART.ui_style, "normal")
 	STYLE = load(style_folder).instantiate()
 	add_child(STYLE)
 	
-	notes_list = SONG.notes.duplicate()
-	events_list = SONG.events.duplicate()
+	notes_list = CHART.notes.duplicate()
+	events_list = CHART.events.duplicate()
 
 func _ready() -> void:
 	Timings.reset()
@@ -111,7 +119,7 @@ func _ready() -> void:
 	camera.zoom = Vector2(stage.camera_zoom, stage.camera_zoom)
 	camera.position_smoothing_speed = 3 * stage.camera_speed * Conductor.playback_rate
 	
-	var audio_folder:String = "res://assets/songs/" + SONG.name + "/audio"
+	var audio_folder:String = "res://assets/songs/" + CHART.name + "/audio"
 	for file in DirAccess.get_files_at(audio_folder):
 		
 		if file.ends_with(".import"):
@@ -148,8 +156,8 @@ func _exit_tree():
 	Conductor.playback_rate = 1.0
 
 func start_cutscene() -> void:
-	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn"):
-		var cutscene_bs:PackedScene = load("res://gameFolder/gameplay/cutscenes/" + SONG.name + ".tscn")
+	if ResourceLoader.exists("res://gameFolder/gameplay/cutscenes/" + CHART.name + ".tscn"):
+		var cutscene_bs:PackedScene = load("res://gameFolder/gameplay/cutscenes/" + CHART.name + ".tscn")
 		cutscene_bs.game = self
 		cutscene_bs.call("song_beginning" if not ending_song else "song_ending", [])
 		add_child(cutscene_bs.instantiate())
@@ -249,6 +257,11 @@ func _process(delta:float) -> void:
 	
 	Timings.health = clampf(Timings.health, 0.0, 2.0)
 	
+	if $UI/CPU_Text.visible:
+		cpu_txt_sine += 180.0 * (delta / 4.0)
+		var speed:float = 230.0 # lower = faster
+		$UI/CPU_Text.modulate.a = 1.0 - absf(sin((PI * cpu_txt_sine) / speed))
+	
 	if not get_tree().paused:
 		if can_pause and Input.is_action_just_pressed("ui_pause"):
 			pause_game()
@@ -265,10 +278,11 @@ func _process(delta:float) -> void:
 		var i_lerp:float = lerpf(i.scale.x, 0.8, 0.15)
 		i.scale.x = i_lerp
 		i.scale.y = i_lerp
-	
-	if SONG != null and inst.stream != null:
-		note_processing()
-		event_processing()
+
+func _physics_process(_delta:float) -> void:
+	# my brain is still melting from this.
+	call_deferred_thread_group("note_processing")
+	call_deferred_thread_group("event_processing")
 
 func pause_game() -> void:
 	get_tree().paused = true
@@ -276,14 +290,14 @@ func pause_game() -> void:
 
 func note_processing() -> void:
 	if notes_list.size() > 0:
-		if notes_list[0].time - Conductor.position > (3500.0 * (SONG.speed / Conductor.playback_rate)):
+		if notes_list[0].time - Conductor.position > (3500.0 * (CHART.speed / Conductor.playback_rate)):
 			return
 		
 		var note_data:Chart.NoteData = notes_list[0]
 		
 		var new_note:Note = NOTE_STYLES["default"].instantiate()
 		new_note.time = note_data.time
-		new_note.speed = SONG.speed
+		new_note.speed = CHART.speed
 		
 		new_note.direction = int(note_data.direction % 4)
 		new_note.lane = note_data.lane
@@ -407,7 +421,7 @@ func on_tick() -> void:
 func _notification(what):
 	match what:
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT:
-			if Settings.get("auto_pause"):
+			if Settings.get("auto_pause") and not player_strums.is_cpu:
 				if can_pause and not get_tree().paused:
 					pause_game()
 
@@ -426,10 +440,19 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
 			match event.keycode:
-				KEY_Q:
-					Conductor.playback_rate -= 0.01
-				KEY_E:
-					Conductor.playback_rate += 0.01
+				KEY_6:
+					player_strums.is_cpu = not player_strums.is_cpu
+					$UI/CPU_Text.visible = player_strums.is_cpu
+					
+					var quotes_array:Array = Game.cpu_text_quotes["global"]
+					if Game.cpu_text_quotes.has(CHART.name):
+						quotes_array = Game.cpu_text_quotes[CHART.name]
+					
+					$UI/CPU_Text/Quote.text = quotes_array[randi_range(0, quotes_array.size() - 1)]
+					
+					cpu_txt_sine = 1.0 if player_strums.is_cpu else 0.0
+				KEY_Q: Conductor.playback_rate -= 0.01
+				KEY_E: Conductor.playback_rate += 0.01
 		
 		# Looking for inputs? i moved the to the StrumLine Script!
 
@@ -480,10 +503,18 @@ func note_miss(note:Note, include_anim:bool = true) -> void:
 	if note.event.get_event("cancelled"):
 		return
 	
+	if include_anim and player.miss_anims.size() > 0:
+		var index:int = note.direction % player.miss_anims.size()
+		player.play_anim(player.miss_anims[index], true)
+	
 	do_miss_damage()
 	voices.volume_db = linear_to_db(0.0)
 
 func ghost_miss(direction:int, include_anim:bool = true) -> void:
+	if include_anim and player.miss_anims.size() > 0:
+		var index:int = direction % player.miss_anims.size()
+		player.play_anim(player.miss_anims[index], true)
+	
 	do_miss_damage()
 	voices.volume_db = linear_to_db(0.0)
 
@@ -499,9 +530,8 @@ func do_miss_damage():
 var judgement_tween:Tween
 
 func display_judgement(_name:String) -> void:
-	var new_judgement:Sprite2D = STYLE.get_template("Judgement_Sprite").duplicate()
-	new_judgement.texture = STYLE.get_judgement_texture(_name)
-	new_judgement.visible = true
+	var new_judgement:VelocitySprite2D = STYLE.get_template("Judgement_Sprite").duplicate()
+	new_judgement.texture = STYLE.get_judgement_texture(_name); new_judgement.visible = true
 	combo_group.add_child(new_judgement)
 	
 	new_judgement.position.x = Game.get_screen_center(new_judgement.get_rect().position).x
@@ -519,10 +549,9 @@ func display_judgement(_name:String) -> void:
 			judgement_tween.tween_property(new_judgement, "scale", scale_og, Conductor.rate_step_crochet / 1000.0)
 		
 		Settings.ComboStyle.VANILLA:
-			#new_judgement.acceleration.y = 550
-			#new_judgement.velocity.y = -randi_range(140, 175)
-			#new_judgement.velocity.x = -randi_range(0, 10)
-			pass
+			new_judgement.acceleration.y = 350 * Conductor.playback_rate
+			new_judgement.velocity.y = -randi_range(140, 175) * Conductor.playback_rate
+			new_judgement.velocity.x = -randi_range(0, 10) * Conductor.playback_rate
 	
 	judgement_tween.tween_property(new_judgement, "modulate:a", 0.0, \
 	1.25 * Conductor.rate_crochet / 1000.0).set_delay(0.15)
@@ -532,7 +561,7 @@ func display_combo() -> void:
 	var numbers:PackedStringArray = combo.split("")
 	
 	for i in numbers.size():
-		var new_combo:Sprite2D = STYLE.get_template("Number_Sprite").duplicate()
+		var new_combo:VelocitySprite2D = STYLE.get_template("Number_Sprite").duplicate()
 		new_combo.texture = load(STYLE.get_asset("images/UI/combo", "num" + numbers[i] + ".png"))
 		new_combo.visible = true
 		combo_group.add_child(new_combo)
@@ -549,15 +578,15 @@ func display_combo() -> void:
 				.set_delay(0.55)
 			
 			Settings.ComboStyle.VANILLA:
-				#new_combo.acceleration.y = randi_range(200, 300)
-				#new_combo.velocity.y -= randi_range(140, 160)
-				#new_combo.velocity.x = randf_range(-5, 5)
+				new_combo.acceleration.y = randi_range(200, 300) * Conductor.playback_rate
+				new_combo.velocity.y -= randi_range(140, 160) * Conductor.playback_rate
+				new_combo.velocity.x = randf_range(-5, 5) * Conductor.playback_rate
 				get_tree().create_tween().set_ease(Tween.EASE_OUT) \
 				.tween_property(new_combo, "modulate:a", 0.0, 0.50 * Conductor.rate_crochet / 1000.0) \
 				.set_delay(0.55)
 
 func display_combo_sprite() -> void:
-	var combo_spr:Sprite2D = STYLE.get_template("Combo_Sprite").duplicate()
+	var combo_spr:VelocitySprite2D = STYLE.get_template("Combo_Sprite").duplicate()
 	combo_spr.visible = true
 	combo_group.get_parent().add_child(combo_spr)
 	
@@ -567,9 +596,8 @@ func display_combo_sprite() -> void:
 	if not combo_spr.is_inside_tree(): return
 	match Settings.get("combo_style"):
 		Settings.ComboStyle.VANILLA:
-			#combo_spr.acceleration.y = randi_range(200, 300)
-			#combo_spr.velocity.y = -randi_range(140, 160)
-			pass
+			combo_spr.acceleration.y = randi_range(200, 300) * Conductor.playback_rate
+			combo_spr.velocity.y = -randi_range(140, 160) * Conductor.playback_rate
 	
 	create_tween().set_ease(Tween.EASE_IN_OUT) \
 	.tween_property(combo_spr, "modulate:a", 0.0, 1.35 * \

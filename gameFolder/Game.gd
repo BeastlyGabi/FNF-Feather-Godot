@@ -5,6 +5,19 @@ var SCREEN:Dictionary = {
 	"height": ProjectSettings.get_setting("display/window/size/viewport_height"),
 }
 
+# text that appears belw the cpu text during gameplay
+# definitely not stolen from hypno's lullaby, you definitely should not check out
+# https://github.com/PopcornColonell/hypnosource
+const cpu_text_quotes:Dictionary = {
+	"global": [""], # global will always show up no matter what song you are
+	"test": ["bado beepo..."],
+	"dadbattle": [
+		"kinda predictable coming from a whimp like you.",
+		"you still have a lot to learn dude."
+	],
+	"ugh": ["what the hell is your problem man."]
+}
+
 var VERSION:Versioning
 var LAST_SCENE:String
 
