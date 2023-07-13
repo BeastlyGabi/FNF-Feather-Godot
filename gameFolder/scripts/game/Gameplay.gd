@@ -376,8 +376,8 @@ func update_judgement_counter() -> void:
 		return
 	
 	var text:String = ""
-	for i in TIMINGS.judgements_hit:
-		text += "\n%s: %s" % [i.to_pascal_case() + "s", TIMINGS.get_hits(i)]
+	for i in TIMINGS.judgements:
+		text += "\n%s: %s" % [i.name.to_pascal_case() + "s", TIMINGS.get_hits(i.name)]
 	combo_counter.text = text
 
 func update_healthbar() -> void:
@@ -396,8 +396,6 @@ var cam_zoom:Dictionary = {
 	"bump_strength": 0.050,
 	"hud_bump_strength": 0.035
 }
-
-func on_step() -> void: pass
 
 func on_beat() -> void:
 	dance_characters(beat)

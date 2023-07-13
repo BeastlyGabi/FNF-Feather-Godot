@@ -8,8 +8,6 @@ var judgements:Array[Judgement] = [
 	Judgement.new("shit", 0.0, false, "shit")
 ]
 
-var judgements_hit:Dictionary = {}
-
 var worst_timing:float:
 	get:
 		var worst:int = 0
@@ -19,18 +17,17 @@ var worst_timing:float:
 		return worst
 
 func get_hits(judgement_name:String) -> int:
-	return judgements_hit[judgement_name]
+	var judgement:Judgement
+	for i in judgements.size():
+		if judgements[i].name == judgement_name:
+			judgement = judgements[i]
+	return judgement.hits
 
 func _init():
-	judgements_hit.clear()
-	
 	score = 0; notes_hit = 0; health = 1.0
 	accuracy = 0.0; notes_acc = 0.0; misses = 0;
 	cur_grade = Grade.empty(); cur_clear = "?"
 	combo = 0; breaks = 0; streaks = 0; max_streaks = 0
-	
-	for i in judgements.size():
-		judgements_hit[judgements[i].name] = 0
 
 var score:int = 0
 var misses:int = 0
@@ -44,8 +41,8 @@ var notes_acc:float = 0.0
 var notes_hit:int:
 	get:
 		var number:int = 0
-		for i in judgements_hit:
-			number += judgements_hit[i]
+		for i in judgements.size():
+			number += judgements[i].hits
 		return number
 
 var accuracy:float:
@@ -69,7 +66,7 @@ func judge_values(value_a:float, value_b:float) -> Judgement:
 	return judgement
 
 func update_accuracy(judge:Judgement) -> void:
-	judgements_hit[judge.name] += 1
+	judge.hits += 1
 	notes_acc += maxf(0, judge.accuracy)
 	update_rank()
 
@@ -124,9 +121,9 @@ func update_rank():
 	
 	cur_clear = ""
 	if misses == 0: # Etterna shit
-		if judgements_hit["sick"] > 0: cur_clear = "SFC"
-		if judgements_hit["good"] > 0: cur_clear = "GFC"
-		if judgements_hit["bad"] > 0 or judgements_hit["shit"] > 0:
+		if get_hits("sick") > 0: cur_clear = "SFC"
+		if get_hits("good") > 0: cur_clear = "GFC"
+		if get_hits("bad") > 0 or get_hits("shit") > 0:
 			cur_clear = "FC"
 	else:
 		if misses < 10: cur_clear = "SDCB"

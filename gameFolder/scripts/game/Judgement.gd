@@ -4,6 +4,7 @@ var name:String = "sick"
 var image:String = "sick"
 
 var timing:float = 45.0
+var hits:int = 0
 
 var splash:bool = true
 var accuracy:float = 100.0

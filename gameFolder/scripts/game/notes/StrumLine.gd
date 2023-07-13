@@ -186,8 +186,13 @@ func get_key_dir(event:InputEventKey) -> int:
 func play_anim(anim:String, direction:int, forced:bool = false, speed:float = 1.0, reverse:bool = false) -> void:
 	receptors.get_child(direction).play_anim(anim, forced, speed, reverse)
 
-func set_lane_speed(new_speed:float) -> void:
-	pass
+func set_lane_speed(new_speed:float, direction:int = -1) -> void:
+	for note in notes.get_children():
+		if direction != -1: # Change the speed of the lanes for this direction
+			if note.direction == direction:
+				note.speed = new_speed
+		else: # Change the speed of every single note
+			note.speed = new_speed
 
 func _set_note_color(direction:int, color:Color) -> void:
 	var receptor := receptors.get_child(direction)
