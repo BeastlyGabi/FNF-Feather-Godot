@@ -79,6 +79,7 @@ func _ready() -> void:
 
 func _process(delta:float) -> void:
 	if is_hold and _sustain_exists():
+		hold.position = arrow.position
 		var scroll_diff:int = -1 if Settings.get("downscroll") and not in_edit else 1
 		var sustain_scale:float = ((length / 2.5) * ((speed * Conductor.playback_rate) / scale.y))
 		
