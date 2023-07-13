@@ -46,9 +46,6 @@ func load_cfg() -> void:
 		else:
 			set(key.name, _file.get_value("Settings", key.name))
 	
-	if _file.has_section_key("System", "volume"):
-		volume = _file.get_value("System", "volume", 1.0)
-	
 	flush(_cfg_filepath)
 
 func _load_file(path:String) -> void:

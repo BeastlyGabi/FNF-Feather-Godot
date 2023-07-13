@@ -18,9 +18,8 @@ var menu_offset:Vector2 = Vector2(35, 0.28)
 @export_multiline var text:String:
 	set(t):
 		if text != t:
-			_clear_all_prev()
-			# Set thenew text
 			text = t
+			_clear_all_prev()
 			load_text()
 
 

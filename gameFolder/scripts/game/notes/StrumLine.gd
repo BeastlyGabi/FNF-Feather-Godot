@@ -131,14 +131,14 @@ func _input(event:InputEvent) -> void:
 		
 		var glowing:bool = receptors.get_child(key).animation.ends_with("glow")
 		play_anim("press" if not glowing and event.pressed else "static", key, true)
-		key_shit(key)
+		do_key_shit(key)
 
 var key_presses:Array[bool] = []
 
 func sort_notes(a:Note, b:Note) -> float:
 	return b.time if b.time > a.time else a.time
 
-func key_shit(key:int) -> void:
+func do_key_shit(key:int) -> void:
 	key_presses[key] = Input.is_action_pressed(controls[key])
 	
 	var notes_to_hit:Array[Note] = []
@@ -146,7 +146,6 @@ func key_shit(key:int) -> void:
 		return (note.direction == key and note.can_be_hit and not note.too_late
 		and note.parent == self and not note.was_good_hit)
 	): notes_to_hit.append(note)
-	
 	notes_to_hit.sort_custom(sort_notes)
 	
 	if Input.is_action_just_pressed(controls[key]):

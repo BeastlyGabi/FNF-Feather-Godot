@@ -280,14 +280,14 @@ func _process(delta:float) -> void:
 
 func _physics_process(_delta:float) -> void:
 	# my brain is still melting from this.
-	call_deferred_thread_group("note_processing")
-	call_deferred_thread_group("event_processing")
+	call_deferred_thread_group("do_note_spawn")
+	call_deferred_thread_group("do_event_process")
 
 func pause_game() -> void:
 	get_tree().paused = true
 	add_child(SUBSCENES["pause"].instantiate())
 
-func note_processing() -> void:
+func do_note_spawn() -> void:
 	if notes_list.size() > 0:
 		if notes_list[0].time - Conductor.position > (3500.0 * (_get_chart_speed() / Conductor.playback_rate)):
 			return
@@ -308,8 +308,7 @@ func note_processing() -> void:
 		
 		notes_list.erase(note_data)
 
-
-func event_processing() -> void:
+func do_event_process() -> void:
 	if events_list.size() > 0:
 		var cur_event:Chart.EventData = events_list[0]
 		if cur_event.time > Conductor.position + cur_event.delay:

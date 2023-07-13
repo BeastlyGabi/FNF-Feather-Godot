@@ -1,5 +1,7 @@
 extends Node2D
 
+static var seen_intro:bool = false
+
 @onready var bg:Sprite2D = $Background
 @onready var options:Node2D = $Options
 
@@ -10,25 +12,30 @@ func _select() -> void:
 	match cur_option:
 		_: Game.switch_scene("game/menus/FreeplayMenu")
 
-func _ready():
+func _ready() -> void:
 	$Version_Text.text = "FNF v%s" % Game.VERSION.fnf_version + \
 	" / Feather v%s" % Game.VERSION.ff_version
 	
 	Game.reset_menu_music(false)
 	
-	for i in options.get_child_count():
-		var option:AnimatedSprite2D = options.get_child(i)
-		option.position.x = 2000 if i % 2 == 0 else -2000
-		
-		var cur_tween:Tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
-		cur_tween.tween_property(option, "position:x", 625, 0.35).set_delay(0.15 * i)
-		if i >= options.get_child_count() - 1:
-			cur_tween.finished.connect(func(): can_move = true)
+	if not seen_intro:
+		for i in options.get_child_count():
+			var option:AnimatedSprite2D = options.get_child(i)
+			option.position.x = 2000 if i % 2 == 0 else -2000
+			
+			var cur_tween:Tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+			cur_tween.tween_property(option, "position:x", 625, 0.35).set_delay(0.15 * i)
+			if i >= options.get_child_count() - 1:
+				cur_tween.finished.connect(func(): can_move = true)
+	else:
+		can_move = true
 
-func _process(_delta):
+func _process(_delta:float) -> void:
 	animate_buttons()
 	
 	if can_move:
+		if not seen_intro: seen_intro = true
+		
 		if Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("ui_down"):
 			var is_up:bool = Input.is_action_just_pressed("ui_up")
 			update_selection(-1 if is_up else 1)

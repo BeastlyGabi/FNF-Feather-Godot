@@ -44,7 +44,7 @@ func _input(event:InputEvent) -> void:
 					get_tree().paused = true
 					add_child(mods_menu.instantiate())
 
-const focus_lost_volume:float = 0.05
+const focus_lost_volume:float = 0.35
 var old_volume:float = 1.0
 
 func _notification(what):

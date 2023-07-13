@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://gameFolder/scripts/transition/LinearVertical.gd" id="1_i7xlf"]
 
 [sub_resource type="Gradient" id="Gradient_ff3np"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+offsets = PackedFloat32Array(0, 0.252708, 0.787004, 1)
+colors = PackedColorArray(0, 0, 0, 0.181818, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_2i1g2"]
 gradient = SubResource("Gradient_ff3np")
